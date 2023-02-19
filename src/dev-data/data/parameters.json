@@ -1,0 +1,176 @@
+[
+    {
+        "name": "Voltage_1",
+        "type": "volt",
+        "value": 0,
+        "address": 164
+    },
+    {
+        "name": "Voltage_2",
+        "type": "volt",
+        "value": 0,
+        "address": 166
+    },
+    {
+        "name": "Voltage_3",
+        "type": "volt",
+        "value": 0,
+        "address": 168
+    },
+    {
+        "name": "Volt_average",
+        "type": "volt",
+        "value": 0,
+        "address": 170
+    },
+    {
+        "name": "Line_V1_2",
+        "type": "volt",
+        "value": 0,
+        "address": 172
+    },
+    {
+        "name": "Line_V2_3",
+        "type": "volt",
+        "value": 0,
+        "address": 174
+    },
+    {
+        "name": "Line_V3_1",
+        "type": "volt",
+        "value": 0,
+        "address": 176
+    },
+    {
+        "name": "Line_Average",
+        "type": "volt",
+        "value": 0,
+        "address": 178
+    },
+    {
+        "name": "Current_1",
+        "type": "current",
+        "value": 0,
+        "address": 180
+    },
+    {
+        "name": "Current_2",
+        "type": "current",
+        "value": 0,
+        "address": 182
+    },
+    {
+        "name": "Current_3",
+        "type": "current",
+        "value": 0,
+        "address": 184
+    },
+    {
+        "name": "Current_phase_N",
+        "type": "current",
+        "value": 0,
+        "address": 186
+    },
+    {
+        "name": "Current_TB",
+        "type": "current",
+        "value": 0,
+        "address": 188
+    },
+    {
+        "name": "f1",
+        "type": "frequency",
+        "value": 0,
+        "address": 190
+    },
+    {
+        "name": "f2",
+        "type": "frequency",
+        "value": 0,
+        "address": 191
+    },
+    {
+        "name": "f3",
+        "type": "frequency",
+        "value": 0,
+        "address": 192
+    },
+    {
+        "name": "f_tb",
+        "type": "frequency",
+        "value": 0,
+        "address": 193
+    },
+    {
+        "name": "pf1",
+        "type": "pf",
+        "value": 0,
+        "address": 194
+    },
+    {
+        "name": "pf2",
+        "type": "pf",
+        "value": 0,
+        "address": 195
+    },
+    {
+        "name": "pf3",
+        "type": "pf",
+        "value": 0,
+        "address": 196
+    },
+    {
+        "name": "pf_tb",
+        "type": "pf",
+        "value": 0,
+        "address": 197
+    },
+    {
+        "name": "integral_active_power_1",
+        "type": "integral_power",
+        "value": 0,
+        "address": 198
+    },
+    {
+        "name": "integral_active_power_2",
+        "type": "integral_power",
+        "value": 0,
+        "address": 202
+    },
+    {
+        "name": "integral_active_power_3",
+        "type": "integral_power",
+        "value": 0,
+        "address": 204
+    },
+    {
+        "name": "total_integral_active_power",
+        "type": "integral_power",
+        "value": 0,
+        "address": 206
+    },
+    {
+        "name": "instantaneous_active_power_1",
+        "type": "instantaneous_power",
+        "value": 0,
+        "address": 238
+    },
+    {
+        "name": "instantaneous_active_power_2",
+        "type": "instantaneous_power",
+        "value": 0,
+        "address": 242
+    },
+    {
+        "name": "instantaneous_active_power_3",
+        "type": "instantaneous_power",
+        "value": 0,
+        "address": 244
+    },
+    {
+        "name": "total_instantaneous_active_power",
+        "type": "instantaneous_power",
+        "value": 0,
+        "address": 246
+    }    
+]
