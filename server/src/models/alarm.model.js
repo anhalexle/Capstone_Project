@@ -12,7 +12,7 @@ const alarmSchema = mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['HIGH', 'LOW', 'NOT EQUAL'],
+    enum: ['HI', 'LO', 'HI HI', 'LO LO'],
     required: true,
   },
   createdAt: {
