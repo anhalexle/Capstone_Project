@@ -7,22 +7,22 @@ class DataType {
     volt: {
       address: [164, 16],
       unit: 10,
-      threshHold: { max: 500, min: 0 },
+      threshHold: { hi_hi: 500, hi: 300, lo_lo: 50, lo: 0 },
     },
     current: {
       address: [180, 10],
       unit: 100,
-      threshHold: { max: 100, min: 0 },
+      threshHold: { hi_hi: 100, hi: 50, lo_lo: 0.5, lo: 0 },
     },
     frequency: {
       address: [190, 4],
       unit: 10,
-      threshHold: { eq: 50 },
+      threshHold: { hi_hi: 60, hi: 55, lo: 45, lo_lo: 40 },
     },
     pf: {
       address: [194, 4],
       unit: 1000,
-      threshHold: { max: 0.92, min: 0.95 },
+      threshHold: { hi_hi: 1, hi: 0.95, lo: 0.92, lo_lo: 0.9 },
     },
     integral_power: {
       address: [
@@ -30,7 +30,7 @@ class DataType {
         [202, 6],
       ],
       unit: 1000,
-      threshHold: { max: 0.1, min: 0.2 },
+      threshHold: { hi_hi: 0.3, hi: 0.2, lo: 0.1, lo_lo: 0.05 },
     },
     instantaneous_power: {
       address: [
