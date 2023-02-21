@@ -54,7 +54,8 @@ import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 
 // Chart
-import DefaultLineChart from "examples/Charts/LineCharts/DefaultLineChart";
+import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
+import datasets from "./MOCK_DATA.json";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -72,56 +73,12 @@ export default function App() {
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
 
-  function randomDate(start, end) {
-    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-  }
-
-  const datasets = [
-    {
-      value: 100,
-      createdAt: randomDate(new Date(2012, 0, 1), new Date()),
-    },
-    {
-      value: 100,
-      createdAt: randomDate(new Date(2012, 0, 1), new Date()),
-    },
-    {
-      value: 100,
-      createdAt: randomDate(new Date(2012, 0, 1), new Date()),
-    },
-    {
-      value: 100,
-      createdAt: randomDate(new Date(2012, 0, 1), new Date()),
-    },
-    {
-      value: 100,
-      createdAt: randomDate(new Date(2012, 0, 1), new Date()),
-    },
-    {
-      value: 100,
-      createdAt: randomDate(new Date(2012, 0, 1), new Date()),
-    },
-    {
-      value: 100,
-      createdAt: randomDate(new Date(2012, 0, 1), new Date()),
-    },
-    {
-      value: 100,
-      createdAt: randomDate(new Date(2012, 0, 1), new Date()),
-    },
-    {
-      value: 100,
-      createdAt: randomDate(new Date(2012, 0, 1), new Date()),
-    },
-  ];
-
   const char = {
-    labels: datasets.map((data) => data.createdAt.getDate()),
-    datasets: [
-      {
-        data: datasets.map((data) => data.value),
-      },
-    ],
+    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    datasets: {
+      label: "Voltage",
+      data: datasets.map((data) => data.value),
+    },
   };
 
   // Cache for the rtl
@@ -249,7 +206,17 @@ export default function App() {
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
 
-      <DefaultLineChart chart={char} />
+      <ReportsLineChart
+        color="success"
+        title="المبيعات اليومية"
+        description={
+          <>
+            (<strong>+15%</strong>) زيادة في مبيعات اليوم..
+          </>
+        }
+        date="تم التحديث منذ 4 دقائق"
+        chart={char}
+      />
     </ThemeProvider>
   );
 }
