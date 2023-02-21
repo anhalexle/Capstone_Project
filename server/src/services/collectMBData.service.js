@@ -65,44 +65,58 @@ const getLatestDataFromDB = async (type) =>
     },
   ]);
 
-const createAlarm = async (type, dataCreated) => {
-  const threshHold = dataFeatures.getThreshHold(type);
-  if (threshHold && dataCreated.value !== threshHold.eq) {
+const createAlarm = (type, dataCreated) => {
+  const { lo_lo, lo, hi, hi_hi } = dataFeatures.getThreshHold(type);
+  let alarmType;
+  let checkData;
+  let length;
+  if (
+    (dataCreated > lo && dataCreated < hi) ||
+    (type === 'instantaneous_power' && dataCreated < hi)
+  )
+    return;
+  if (type !== 'instantaneous_power') {
+    if (dataCreated.value < lo_lo) {
+      alarmType = 'LO LO';
+      checkData = (val) => val < lo_lo;
+    } else if (dataCreated.value <= lo) {
+      alarmType = 'LO';
+      checkData = (val) => val <= lo && val >= lo_lo;
+    }
+  }
+  if (dataCreated.value > hi_hi) {
+    alarmType = 'HI HI';
+    checkData = (val) => val > hi_hi;
+  } else if (dataCreated.value >= hi) {
+    alarmType = 'HI';
+    checkData = (val) => val >= hi && val <= hi_hi;
+  }
+  if (checkData) {
     setTimeout(async () => {
-      const checkData = await dataFeatures.readDataFromModBus(type);
-      if (checkData !== threshHold.eq) {
+      if (type === 'pf' || type === 'frequency') {
+        length = 1;
+      } else length = 2;
+      const currentData = await dataFeatures.readSpecificOne(
+        type,
+        dataCreated.address,
+        length
+      );
+      if (checkData(currentData)) {
         const alarmData = {
           parameter: dataCreated._id,
-          type: 'NOT EQUAL',
+          type: alarmType,
         };
-        await Alarm.create(alarmData);
-      }
-    }, 5000);
-  } else if (threshHold && dataCreated.value < threshHold.min) {
-    setTimeout(async () => {
-      const checkData = await dataFeatures.readDataFromModBus(type);
-      if (checkData > threshHold.max) {
-        createAlarm(type, dataCreated);
-      } else if (checkData < threshHold.min) {
-        const alarmData = {
-          parameter: dataCreated._id,
-          type: 'LOW',
+        const newAlarm = await Alarm.create(alarmData);
+        const alarmFilter = {
+          parameter: {
+            name: newAlarm.parameter.name,
+            value: newAlarm.parameter.value,
+            createdAt: newAlarm.parameter.createdAt,
+          },
+          type: newAlarm.type,
         };
-        await Alarm.create(alarmData);
-      }
-    }, 5000);
-  } else if (threshHold && dataCreated.value > threshHold.max) {
-    setTimeout(async () => {
-      const checkData = await dataFeatures.readDataFromModBus(type);
-      if (checkData < threshHold.min) {
-        createAlarm(type, dataCreated);
-      } else if (checkData > threshHold.max) {
-        const alarmData = {
-          parameter: dataCreated._id,
-          type: 'HIGH',
-        };
-        await Alarm.create(alarmData);
-      }
+        socket.emit('alarm', alarmFilter);
+      } else createAlarm(type, dataCreated);
     }, 5000);
   }
 };
@@ -119,11 +133,13 @@ const mainService = async (type) => {
       return value;
     });
     const res = compareArrays(newModBusData, oldData);
-    if (res) {
+    if (res.length > 0) {
       const promises = res.map(async (index) => {
         oldModBusData[index].value = newModBusData[index];
         const newDataCreated = await Data.create(oldModBusData[index]);
-        createAlarm(type, newDataCreated);
+        if (type !== 'integral_power') {
+          createAlarm(type, newDataCreated);
+        }
         return newDataCreated;
       });
       return await Promise.all(promises);

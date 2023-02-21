@@ -30,7 +30,6 @@ class DataType {
         [202, 6],
       ],
       unit: 1000,
-      threshHold: { hi_hi: 0.3, hi: 0.2, lo: 0.1, lo_lo: 0.05 },
     },
     instantaneous_power: {
       address: [
@@ -38,7 +37,7 @@ class DataType {
         [242, 6],
       ],
       unit: 1000,
-      threshHold: { max: 0.1, min: 0.2 },
+      threshHold: { hi_hi: 300 * 1 * 0.9, hi: 300 * 1 * 0.8 },
     },
   };
 
@@ -75,6 +74,12 @@ class DataType {
 
   getAllDataType() {
     return Object.keys(this.#dataType);
+  }
+
+  async readSpecificOne(type, startAdd, length) {
+    const mbData = await this.client.readHoldingRegisters(startAdd, length);
+    const [data] = mbData.data;
+    return data / this.#dataType[type].unit;
   }
 }
 

@@ -18,14 +18,14 @@ const createPipeLine = (date, name) => {
   ];
   if (date.day && date.month && date.year) {
     theDate = new Date(
-      `${date.year}-${date.month < 10 ? `0${date.month}` : `${date.month}`}-${
-        date.day < 10 ? `0${date.day}` : `${date.day}`
-      }T00:00:00.000Z`
+      `${date.year}-${date.month < 10 ? `0${date.month}` : `${date.month}`}-
+      ${date.day < 10 ? `0${date.day}` : `${date.day}`}T00:00:00.000Z`
     );
     nextDate = new Date(
-      `${date.year}-${date.month < 10 ? `0${date.month}` : `${date.month}`}-${
-        date.day + 1 < 10 ? `0${date.day + 1}` : `${date.day + 1}`
-      }T00:00:00.000Z`
+      `${date.year}-${date.month < 10 ? `0${date.month}` : `${date.month}`}-
+        ${
+          date.day + 1 < 10 ? `0${date.day + 1}` : `${date.day + 1}`
+        }T00:00:00.000Z`
     );
   } else if (date.month && date.year) {
     theDate = new Date(
@@ -34,9 +34,10 @@ const createPipeLine = (date, name) => {
       }-01T00:00:00.000Z`
     );
     nextDate = new Date(
-      `${date.year}-${
-        date.month + 1 < 10 ? `0${date.month + 1}` : `${date.month + 1}`
-      }-01T00:00:00.000Z`
+      `${date.year}-
+        ${
+          date.month + 1 < 10 ? `0${date.month + 1}` : `${date.month + 1}`
+        }-01T00:00:00.000Z`
     );
   } else {
     theDate = new Date(`${date.year}-01-01T00:00:00.000Z`);

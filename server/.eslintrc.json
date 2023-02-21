@@ -2,7 +2,7 @@
   "extends": ["airbnb", "prettier", "plugin:node/recommended"],
   "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": "warn",
     "spaced-comment": "off",
     "no-console": "off",
     "consistent-return": "off",
@@ -20,7 +20,10 @@
     "import/order": "off",
     "no-restricted-syntax": 2,
     "no-extend-native": "off",
-    "no-await-in-loop": "off"
+    "no-await-in-loop": "off",
+    "linebreak-style": ["error", "windows"],
+    "no-multi-spaces": ["error", { "ignoreEOLComments": true }],
+    "camelcase": "off"
   },
   "parserOptions": {
     "ecmaVersion": 13
