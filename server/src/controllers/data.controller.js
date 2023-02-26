@@ -61,7 +61,13 @@ exports.getAllDataFromSocket = (req, res, next) => {
 
 exports.getAllData = new CRUDFactory(Data).getAll();
 
-exports.calcElectricBill = catchAsync(async (req, res, next) => {});
+exports.calcElectricBill = catchAsync(async (req, res, next) => {
+  const { month, type } = req.body;
+  const year = new Date(Date.now()).getFullYear();
+  const date = { month, year };
+  const aggPipeline = createPipeLine(date, 'integral_power');
+  const allData = await Data.aggregate(aggPipeline);
+});
 
 exports.drawChart = catchAsync(async (req, res, next) => {
   const { date, name } = req.body;

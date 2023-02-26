@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 
 const connectDB = require('../../db/connect');
 const Data = require('../../models/data.model');
+const Bill = require('../../models/bill.model');
 
 dotenv.config({ path: './config.env' });
 
@@ -16,6 +17,7 @@ dotenv.config({ path: './config.env' });
 const data = JSON.parse(
   fs.readFileSync(`${__dirname}/parameters.json`, 'utf-8')
 );
+const bill = JSON.parse(fs.readFileSync(`${__dirname}/bill.json`, 'utf-8'));
 
 // IMPORT DATA INTO DB
 const importData = async () => {

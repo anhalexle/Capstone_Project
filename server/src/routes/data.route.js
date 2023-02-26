@@ -12,7 +12,7 @@ router.route('/drawChart').post(dataController.drawChart);
 
 router.use(authController.restrictTo('admin', 'manager'));
 
-router.use('/calc-electric-bill', dataController.calcElectricBill);
+router.use('/calc-electric-bill/').post(dataController.calcElectricBill);
 
 router.route('/secret').get(dataController.getAllData);
 

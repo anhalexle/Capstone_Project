@@ -12,6 +12,7 @@ const socket = socketIO('http://localhost:3000');
 
 const client = new ModBusRTU();
 const DataFeatures = require('../utils/dataFeatures');
+const calculateElectricBill = require('../utils/billCalculate');
 
 const dataFeatures = new DataFeatures(client);
 
@@ -139,6 +140,12 @@ const mainService = async (type) => {
         const newDataCreated = await Data.create(oldModBusData[index]);
         if (type !== 'integral_power') {
           createAlarm(type, newDataCreated);
+        }
+        if (
+          type === 'integral_power' &&
+          oldModBusData[index].name === 'total_integral_active_power'
+        ) {
+          calculateElectricBill(1);
         }
         return newDataCreated;
       });
