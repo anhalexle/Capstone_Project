@@ -5,7 +5,7 @@ const ElectricBillOneMonth = require('../models/electricBill.model');
 const ObjOfTime = {
   OffPeak: [
     { from: [0, 0], to: [4, 0] },
-    { from: [22, 0], to: [0, 0] },
+    { from: [22, 0], to: [24, 0] },
   ],
   Peak: [
     { from: [9, 30], to: [11, 30] },
@@ -37,7 +37,7 @@ const totalIntegralPower = async (date, arr) => {
       el.to[0],
       el.to[1]
     );
-
+    // [ [ { totalIntegralPower: 250 } ], [] ]
     return await Data.aggregate([
       {
         $match: {
@@ -68,7 +68,15 @@ const totalIntegralPower = async (date, arr) => {
         $project: {
           _id: 0,
           totalIntegralPower: {
-            $subtract: ['$lastValue', '$firstValue'],
+            $switch: {
+              branches: [
+                {
+                  case: { $eq: ['$firstValue', '$lastValue'] },
+                  then: '$lastValue',
+                },
+              ],
+              default: { $subtract: ['$lastValue', '$firstValue'] },
+            },
           },
         },
       },
@@ -77,7 +85,7 @@ const totalIntegralPower = async (date, arr) => {
   const arrOfRes = await Promise.all(promises);
   return arrOfRes.reduce((acc, el) => {
     const [value] = el;
-    if (value) return acc + value;
+    if (value) return acc + value.totalIntegralPower;
     return acc;
   }, 0);
 };
@@ -119,6 +127,7 @@ const checkMonthAndCalculateBill = async (type) => {
       runValidators: true,
     }
   );
+  global._io.emit('update-electric-bill', totalBill);
 };
 
 module.exports = checkMonthAndCalculateBill;
