@@ -118,7 +118,8 @@ const checkMonthAndCalculateBill = async (type) => {
   }-${now.getFullYear()}`;
   const checkDB = ElectricBillOneMonth.findOne({ dateCreated });
   if (!checkDB) await ElectricBillOneMonth.create({ dateCreated });
-  const totalBill = await calculateElectricBillInDay(now, type);
+  let totalBill = await calculateElectricBillInDay(now, type);
+  totalBill += checkDB.totalBill;
   await ElectricBillOneMonth.findOneAndUpdate(
     { dateCreated },
     { totalBill },

@@ -21,7 +21,7 @@ const alarmSchema = mongoose.Schema({
   // },
 });
 
-alarmSchema.pre('save', function (next) {
+alarmSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'parameter',
     select: 'name value createdAt',

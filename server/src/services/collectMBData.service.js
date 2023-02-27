@@ -14,7 +14,7 @@ const client = new ModBusRTU();
 const DataFeatures = require('../utils/dataFeatures');
 const calculateElectricBill = require('../utils/billCalculate');
 
-const dataFeatures = new DataFeatures(client);
+const dataFeatures = new DataFeatures();
 
 client.connectRTUBuffered('COM2', { baudRate: 9600 });
 client.setID(1);
@@ -32,7 +32,8 @@ const compareArrays = (arr1, arr2) => {
   const result = arr1.reduce((acc, el, index) => {
     // NewData must be different from oldData higher than 5 percent
     // Dead band
-    if (Math.abs(el - arr2[index]) >= arr2[index] * 0.05) {
+
+    if (Math.abs(el - arr2[index]) > arr2[index] * 0.05) {
       acc.push(index);
     }
     return acc;
@@ -40,7 +41,7 @@ const compareArrays = (arr1, arr2) => {
   return result;
 };
 
-const getLatestDataFromDB = async (type) =>
+const getLatestDataFromDB = async (type, noId = true) =>
   await Data.aggregate([
     { $match: { type } },
     { $sort: { createdAt: 1 } },
@@ -49,6 +50,8 @@ const getLatestDataFromDB = async (type) =>
         _id: { name: '$name', type: '$type' },
         newData: { $last: '$value' },
         newAddress: { $last: '$address' },
+        createdDate: { $last: '$createdAt' },
+        newId: { $last: '$_id' },
       },
     },
     {
@@ -56,97 +59,39 @@ const getLatestDataFromDB = async (type) =>
     },
     {
       $project: {
-        // ko lấy id
-        _id: 0,
+        _id: { $cond: { if: noId, then: null, else: '$newId' } },
         name: '$_id.name',
         type: '$_id.type',
         value: '$newData',
         address: '$newAddress',
+        createdAt: '$createdDate',
       },
     },
   ]);
 
-const createAlarm = (type, dataCreated) => {
-  const { lo_lo, lo, hi, hi_hi } = dataFeatures.getThreshHold(type);
-  let alarmType;
-  let checkData;
-  let length;
-  if (
-    (dataCreated > lo && dataCreated < hi) ||
-    (type === 'instantaneous_power' && dataCreated < hi)
-  )
-    return;
-  if (type !== 'instantaneous_power') {
-    if (dataCreated.value < lo_lo) {
-      alarmType = 'LO LO';
-      checkData = (val) => val < lo_lo;
-    } else if (dataCreated.value <= lo) {
-      alarmType = 'LO';
-      checkData = (val) => val <= lo && val >= lo_lo;
-    }
-  }
-  if (dataCreated.value > hi_hi) {
-    alarmType = 'HI HI';
-    checkData = (val) => val > hi_hi;
-  } else if (dataCreated.value >= hi) {
-    alarmType = 'HI';
-    checkData = (val) => val >= hi && val <= hi_hi;
-  }
-  if (checkData) {
-    setTimeout(async () => {
-      if (type === 'pf' || type === 'frequency') {
-        length = 1;
-      } else length = 2;
-      const currentData = await dataFeatures.readSpecificOne(
-        type,
-        dataCreated.address,
-        length
-      );
-      if (checkData(currentData)) {
-        const alarmData = {
-          parameter: dataCreated._id,
-          type: alarmType,
-        };
-        const newAlarm = await Alarm.create(alarmData);
-        const alarmFilter = {
-          parameter: {
-            name: newAlarm.parameter.name,
-            value: newAlarm.parameter.value,
-            createdAt: newAlarm.parameter.createdAt,
-          },
-          type: newAlarm.type,
-        };
-        socket.emit('alarm', alarmFilter);
-      } else createAlarm(type, dataCreated);
-    }, 5000);
-  }
-};
-
 const mainService = async (type) => {
   try {
-    let newModBusData = await dataFeatures.readDataFromModBus(type);
+    let newModBusData = await dataFeatures.readDataFromModBus(client, type);
     if (type !== 'pf' && type !== 'frequency') {
       newModBusData = newModBusData.filter((data, index) => index % 2 === 0);
     }
     const oldModBusData = await getLatestDataFromDB(type);
+
     const oldData = oldModBusData.map((el) => {
       const { value } = el;
       return value;
     });
     const res = compareArrays(newModBusData, oldData);
+
     if (res.length > 0) {
       const promises = res.map(async (index) => {
         oldModBusData[index].value = newModBusData[index];
-        const newDataCreated = await Data.create(oldModBusData[index]);
-        if (type !== 'integral_power') {
-          createAlarm(type, newDataCreated);
-        }
-        if (
-          type === 'integral_power' &&
-          oldModBusData[index].name === 'total_integral_active_power'
-        ) {
-          calculateElectricBill(1);
-        }
+        const newDataCreated = await Data.create({
+          name: oldModBusData[index].name,
+          type: oldModBusData[index].type,
+          value: oldModBusData[index].value,
+          address: oldModBusData[index].address,
+        });
         return newDataCreated;
       });
       return await Promise.all(promises);
@@ -173,7 +118,9 @@ const getNewDataAndEmit = async () => {
 const getAllDataAndEmit = async () => {
   try {
     const allData = [];
-    const promises = dataType.map(async (type) => getLatestDataFromDB(type));
+    const promises = dataType.map(async (type) =>
+      getLatestDataFromDB(type, false)
+    );
     allData.push(...(await Promise.all(promises)));
     socket.emit('send-all-data', allData);
   } catch (err) {
@@ -194,7 +141,8 @@ connectDB(process.env.DATABASE)
   .then(() => {
     socket.on('send-me-data', async () => {
       await getAllDataAndEmit();
-      setInterval(getNewDataAndEmit, 1000);
+      socket.on('alarm', (data) => console.log(data));
+      setInterval(getNewDataAndEmit, 5000);
     });
   })
   .catch((err) => console.log(err));
