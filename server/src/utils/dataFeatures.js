@@ -35,7 +35,7 @@ class DataType {
         [242, 6],
       ],
       unit: 1000,
-      threshHold: { hi_hi: 300 * 1 * 0.9, hi: 300 * 1 * 0.8 },
+      threshHold: { hi_hi: 30 * 1 * 0.9, hi: 30 * 1 * 0.8 },
     },
   };
 
@@ -84,7 +84,7 @@ class DataType {
     let alarmType;
     if (
       (type === 'instantaneous_power' && dataCreated.value < hi) ||
-      (lo && lo_lo && dataCreated.value > lo && dataCreated.value < hi)
+      (dataCreated.value > lo && dataCreated.value < hi)
     )
       return;
     if (type !== 'instantaneous_power') {
@@ -104,6 +104,12 @@ class DataType {
       parameter: dataCreated._id,
       type: alarmType,
     };
+
+    console.log({
+      reason: dataCreated.name,
+      value: dataCreated.value,
+      alarmType,
+    });
 
     const newAlarm = await Alarm.create(alarmData);
     const alarmFilter = await Alarm.findById(newAlarm._id).select(

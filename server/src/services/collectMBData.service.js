@@ -6,13 +6,11 @@ dotenv.config({ path: './config.env' });
 
 const connectDB = require('../db/connect');
 const Data = require('../models/data.model');
-const Alarm = require('../models/alarm.model');
 
 const socket = socketIO('http://localhost:3000');
 
 const client = new ModBusRTU();
 const DataFeatures = require('../utils/dataFeatures');
-const calculateElectricBill = require('../utils/billCalculate');
 
 const dataFeatures = new DataFeatures();
 
@@ -92,6 +90,8 @@ const mainService = async (type) => {
           value: oldModBusData[index].value,
           address: oldModBusData[index].address,
         });
+        if (newDataCreated.name === 'total_integral_active_power')
+          socket.emit('calculate-electric-bill', newDataCreated);
         return newDataCreated;
       });
       return await Promise.all(promises);
@@ -142,7 +142,8 @@ connectDB(process.env.DATABASE)
     socket.on('send-me-data', async () => {
       await getAllDataAndEmit();
       socket.on('alarm', (data) => console.log(data));
-      setInterval(getNewDataAndEmit, 5000);
+      socket.on('update-electric-bill', (data) => console.log(data));
+      setInterval(getNewDataAndEmit, 1000);
     });
   })
   .catch((err) => console.log(err));

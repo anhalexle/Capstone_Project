@@ -1,4 +1,6 @@
 const DataType = require('../utils/dataFeatures');
+const Data = require('../models/data.model');
+const calculateElectricBill = require('../utils/billCalculate');
 
 const dataFeatures = new DataType();
 
@@ -18,20 +20,43 @@ class SocketServices {
     });
 
     socket.on('send-all-data', async (allData) => {
-      const filterData = allData.reduce((acc, data) => {
-        data.forEach((dataChild) => acc.push(dataChild));
-        return acc;
-      }, []);
-      socket.emit('send-all-data-client', filterData);
-      console.log(filterData);
-      await checkAndCreateAllAlarm(filterData);
+      try {
+        const documents = await Data.countDocuments({});
+        const filterData = allData.reduce((acc, data) => {
+          data.forEach((dataChild) => acc.push(dataChild));
+          return acc;
+        }, []);
+        socket.emit('send-all-data-client', filterData);
+        if (documents !== 29) {
+          await checkAndCreateAllAlarm(filterData);
+        }
+      } catch (err) {
+        console.log(err);
+      }
     });
     socket.on('new-data', async (newData) => {
-      console.log(newData);
-      await checkAndCreateAllAlarm(newData);
+      try {
+        await checkAndCreateAllAlarm(newData);
+        newData.forEach((data) => {
+          if (data.name === 'total_integral_active_power') {
+            console.log(data);
+          }
+        });
+        socket.emit('new-data-client', newData);
+      } catch (err) {
+        console.log(err);
+      }
     });
     // socket.emit('new-data-client');
     // name value createdAt
+
+    socket.on('calculate-electric-bill', async (electricBill) => {
+      try {
+        await calculateElectricBill(1);
+      } catch (err) {
+        console.log(err);
+      }
+    });
   }
 }
 
