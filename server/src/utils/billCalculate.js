@@ -112,17 +112,7 @@ const calculateElectricBillInDay = async (date, type) => {
     } else {
       billOneDay.push(ObjOfTime.OffPeak, ObjOfTime.Regular, ObjOfTime.Peak);
     }
-    // const res = await billOneDay.reduce(async (acc, el) => {
-    //   const totalPower = await totalIntegralPower(date, el.time);
-    //   switch (el.type) {
-    //     case 'off_peak':
-    //       return acc + totalPower * bill.off_peak;
-    //     case 'regular':
-    //       return acc + totalPower * bill.regular;
-    //     default:
-    //       return acc + totalPower * bill.peak;
-    //   }
-    // }, 0);
+    
     const arrOfPromises = billOneDay.map(async (el) => {
       const totalPower = await totalIntegralPower(date, el.time);
       return { type: el.type, totalPower };
@@ -152,8 +142,8 @@ const checkMonthAndCalculateBill = async (type) => {
         ? `0${now.getMonth() + 1}`
         : `${now.getMonth() + 1}`
     }-${now.getFullYear()}`;
-    const checkDB = await ElectricBillOneMonth.findOne({ dateCreated });
-    if (!checkDB) await ElectricBillOneMonth.create({ dateCreated });
+    let checkDB = await ElectricBillOneMonth.findOne({ dateCreated });
+    if (!checkDB) checkDB = await ElectricBillOneMonth.create({ dateCreated });
     let totalBill = await calculateElectricBillInDay(now, type);
     totalBill += checkDB.totalBill;
     await ElectricBillOneMonth.findOneAndUpdate(

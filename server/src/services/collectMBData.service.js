@@ -90,26 +90,16 @@ const mainService = async (type) => {
           value: oldModBusData[index].value,
           address: oldModBusData[index].address,
         });
-        if (newDataCreated.name === 'total_integral_active_power')
-          socket.emit('calculate-electric-bill', newDataCreated);
+        if (socket.connected) {
+          if (newDataCreated.name === 'total_integral_active_power')
+            socket.emit('calculate-electric-bill');
+          socket.emit('new-data', newDataCreated);
+        }
         return newDataCreated;
       });
-      return await Promise.all(promises);
+      await Promise.all(promises);
     }
     return [];
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const getNewDataAndEmit = async () => {
-  try {
-    dataType.myAsyncForEach(async (type) => {
-      const newData = await mainService(type);
-      if (newData.length > 0) {
-        socket.emit('new-data', newData);
-      }
-    });
   } catch (err) {
     console.log(err);
   }
@@ -139,11 +129,13 @@ if (process.env.NODE_ENV === 'production') {
 
 connectDB(process.env.DATABASE)
   .then(() => {
-    socket.on('send-me-data', async () => {
-      await getAllDataAndEmit();
-      socket.on('alarm', (data) => console.log(data));
-      socket.on('update-electric-bill', (data) => console.log(data));
-      setInterval(getNewDataAndEmit, 1000);
-    });
+    setInterval(() => {
+      dataType.myAsyncForEach(async (type) => {
+        await mainService(type);
+      });
+    }, 1000);
+    socket.on('send-me-data', async () => await getAllDataAndEmit());
+    socket.on('alarm', (data) => console.log(data));
+    socket.on('update-electric-bill', (data) => console.log(data));
   })
   .catch((err) => console.log(err));

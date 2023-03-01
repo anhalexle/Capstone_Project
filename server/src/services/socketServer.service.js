@@ -22,27 +22,31 @@ class SocketServices {
     socket.on('send-all-data', async (allData) => {
       try {
         const documents = await Data.countDocuments({});
-        const filterData = allData.reduce((acc, data) => {
+        let filterData = allData.reduce((acc, data) => {
           data.forEach((dataChild) => acc.push(dataChild));
           return acc;
         }, []);
-        socket.emit('send-all-data-client', filterData);
         if (documents !== 29) {
           await checkAndCreateAllAlarm(filterData);
         }
+        filterData = filterData.map((el) => {
+          const { name, value, createdAt } = el;
+          return { name, value, createdAt };
+        });
+        console.log(filterData);
+        socket.emit('send-all-data-client', filterData);
       } catch (err) {
         console.log(err);
       }
     });
     socket.on('new-data', async (newData) => {
       try {
-        await checkAndCreateAllAlarm(newData);
-        newData.forEach((data) => {
-          if (data.name === 'total_integral_active_power') {
-            console.log(data);
-          }
-        });
-        socket.emit('new-data-client', newData);
+        const { name, value, createdAt } = newData;
+        const filterData = { name, value, createdAt };
+        console.log(filterData);
+        if (newData.type !== 'integral_power')
+          await dataFeatures.createAlarm(newData.type, newData, true);
+        socket.emit('new-data-client', filterData);
       } catch (err) {
         console.log(err);
       }
@@ -50,7 +54,7 @@ class SocketServices {
     // socket.emit('new-data-client');
     // name value createdAt
 
-    socket.on('calculate-electric-bill', async (electricBill) => {
+    socket.on('calculate-electric-bill', async () => {
       try {
         await calculateElectricBill(1);
       } catch (err) {
