@@ -112,23 +112,28 @@ const calculateElectricBillInDay = async (date, type) => {
     } else {
       billOneDay.push(ObjOfTime.OffPeak, ObjOfTime.Regular, ObjOfTime.Peak);
     }
-    
+
     const arrOfPromises = billOneDay.map(async (el) => {
       const totalPower = await totalIntegralPower(date, el.time);
       return { type: el.type, totalPower };
     });
-    const totalBill = await Promise.all(arrOfPromises);
-    console.log(totalBill);
-    return totalBill.reduce((acc, el) => {
+    const arrOfRes = await Promise.all(arrOfPromises);
+    console.log(arrOfRes);
+    return arrOfRes.map((el) => {
+      let totalBill = 0;
+      const { totalPower } = el;
       switch (el.type) {
         case 'off_peak':
-          return acc + el.totalPower * bill.off_peak;
+          totalBill = totalPower * bill.off_peak;
+          break;
         case 'regular':
-          return acc + el.totalPower * bill.regular;
+          totalBill = totalPower * bill.regular;
+          break;
         default:
-          return acc + el.totalPower * bill.peak;
+          totalBill = totalPower * bill.peak;
       }
-    }, 0);
+      return { totalBill, type: el.type };
+    });
   } catch (error) {
     console.log(error);
   }
@@ -144,17 +149,33 @@ const checkMonthAndCalculateBill = async (type) => {
     }-${now.getFullYear()}`;
     let checkDB = await ElectricBillOneMonth.findOne({ dateCreated });
     if (!checkDB) checkDB = await ElectricBillOneMonth.create({ dateCreated });
-    let totalBill = await calculateElectricBillInDay(now, type);
-    totalBill += checkDB.totalBill;
+    const totalBill = await calculateElectricBillInDay(now, type);
+    let { billPeak, billOffPeak, billRegular } = checkDB;
+    totalBill.forEach((el) => {
+      switch (el.type) {
+        case 'off_peak':
+          billOffPeak += el.totalBill;
+          break;
+        case 'regular':
+          billRegular += el.totalBill;
+          break;
+        default:
+          billPeak += el.totalBill;
+      }
+    });
     await ElectricBillOneMonth.findOneAndUpdate(
       { dateCreated },
-      { totalBill },
+      { billOffPeak, billPeak, billRegular },
       {
         new: true,
         runValidators: true,
       }
     );
-    global._io.emit('update-electric-bill', totalBill);
+    global._io.emit('update-electric-bill', {
+      billOffPeak,
+      billPeak,
+      billRegular,
+    });
   } catch (error) {
     console.log(error);
   }

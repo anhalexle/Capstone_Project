@@ -1,3 +1,8 @@
+const fs = require('fs');
+
+const ExcelJS = require('exceljs');
+const PDFDocument = require('pdfkit');
+
 const CRUDFactory = require('./factory.controller');
 const Data = require('../models/data.model');
 const catchAsync = require('../utils/catchAsync');
@@ -54,6 +59,28 @@ const createPipeLine = (date, name) => {
   return pipeline;
 };
 
+const readTemplateExcelFile = async (data, sheet = 'Sheet1') => {
+  const templateFile = `${global.__basedir}\\src\\dev-data\\data\\template.xlsx`;
+  const buffer = fs.readFileSync(templateFile);
+  // create a new workbook from the template file buffer
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.load(buffer);
+  const worksheet = workbook.getWorksheet(sheet);
+
+  worksheet.getCell('A2').value = 'Từ: 28/2 - Đến: 4/3';
+  data.forEach((el, index) => {
+    const rowNumber = index + 4;
+    worksheet.getCell(`A${rowNumber}`).value = index + 1;
+    worksheet.getCell(`B${rowNumber}`).value = el.name;
+    worksheet.getCell(`C${rowNumber}`).value = el.type;
+    worksheet.getCell(`D${rowNumber}`).value = el.value;
+    worksheet.getCell(`E${rowNumber}`).value = new Date(
+      el.createdAt
+    ).toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh', hour12: false });
+  });
+  return await workbook.xlsx.writeBuffer();
+};
+
 exports.getAllDataFromSocket = (req, res, next) => {
   global._io.emit('send-me-data');
   res.status(200).json({ status: 'Success' });
@@ -61,13 +88,13 @@ exports.getAllDataFromSocket = (req, res, next) => {
 
 exports.getAllData = new CRUDFactory(Data).getAll();
 
-exports.calcElectricBill = catchAsync(async (req, res, next) => {
-  const { month, type } = req.body;
-  const year = new Date(Date.now()).getFullYear();
-  const date = { month, year };
-  const aggPipeline = createPipeLine(date, 'integral_power');
-  const allData = await Data.aggregate(aggPipeline);
-});
+// exports.calcElectricBill = catchAsync(async (req, res, next) => {
+//   const { month, type } = req.body;
+//   const year = new Date(Date.now()).getFullYear();
+//   const date = { month, year };
+//   const aggPipeline = createPipeLine(date, 'integral_power');
+//   const allData = await Data.aggregate(aggPipeline);
+// });
 
 exports.drawChart = catchAsync(async (req, res, next) => {
   const { date, name } = req.body;
@@ -78,4 +105,35 @@ exports.drawChart = catchAsync(async (req, res, next) => {
     status: 'success',
     data: allData.length > 0 ? allData : null,
   });
+});
+
+exports.exportExcel = catchAsync(async (req, res, next) => {
+  // get the worksheet from the workbook
+  const now = new Date();
+  const data = await Data.find({ type: 'volt' }).sort({ createdAt: 1 });
+  const output = await readTemplateExcelFile(data);
+
+  res.setHeader(
+    'Content-Type',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  );
+  res.setHeader(
+    'Content-Disposition',
+    `attachment; filename=report-${now.getDate()}-${
+      now.getMonth() + 1
+    }-${now.getFullYear()}.xlsx`
+  );
+
+  // send the Excel file to the client
+  res.send(output);
+});
+
+exports.exportPDF = catchAsync(async (req, res, next) => {
+  const doc = new PDFDocument();
+  const fileName = 'firstPDF.pdf';
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', `attachment; filename = ${fileName}`);
+  doc.pipe(res);
+  doc.fontSize(16).text('Hello from the server');
+  doc.end();
 });

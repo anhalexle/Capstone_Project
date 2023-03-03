@@ -22,10 +22,7 @@ class SocketServices {
     socket.on('send-all-data', async (allData) => {
       try {
         const documents = await Data.countDocuments({});
-        let filterData = allData.reduce((acc, data) => {
-          data.forEach((dataChild) => acc.push(dataChild));
-          return acc;
-        }, []);
+        let filterData = allData.flat(2);
         if (documents !== 29) {
           await checkAndCreateAllAlarm(filterData);
         }

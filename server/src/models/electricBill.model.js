@@ -5,7 +5,15 @@ const electricBillOneMonthSchema = mongoose.Schema({
     type: 'String',
     required: true,
   },
-  totalBill: {
+  billPeak: {
+    type: Number,
+    default: 0,
+  },
+  billOffPeak: {
+    type: Number,
+    default: 0,
+  },
+  billRegular: {
     type: Number,
     default: 0,
   },

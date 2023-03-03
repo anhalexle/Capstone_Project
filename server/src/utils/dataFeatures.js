@@ -110,13 +110,13 @@ class DataType {
       value: dataCreated.value,
       alarmType,
     });
-    let alarmFilter;
     if (createAlarm) {
-      const newAlarm = await Alarm.create(alarmData);
-      alarmFilter = await Alarm.findById(newAlarm._id).select('parameter type');
+      await Alarm.create(alarmData);
+      // const alarmFilter = await Alarm.findById(newAlarm._id).select(
+      //   'parameter type'
+      // );
     }
-
-    global._io.emit('alarm', alarmFilter);
+    global._io.emit('alarm', 'Alarm Alarm !!! Check Alarm !!!');
   }
 }
 
