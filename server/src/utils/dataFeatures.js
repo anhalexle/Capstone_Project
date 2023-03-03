@@ -1,4 +1,6 @@
 const Alarm = require('../models/alarm.model');
+const Email = require('./email');
+const User = require('../models/user.model');
 
 class DataType {
   #dataType = {
@@ -111,10 +113,13 @@ class DataType {
       alarmType,
     });
     if (createAlarm) {
-      await Alarm.create(alarmData);
+      const alarmCreated = await Alarm.create(alarmData);
       // const alarmFilter = await Alarm.findById(newAlarm._id).select(
       //   'parameter type'
       // );
+      const user = await User.findOne({ role: 'user' });
+      const newAlarmEmail = new Email(user, alarmCreated);
+      await newAlarmEmail.sendAlarm();
     }
     global._io.emit('alarm', 'Alarm Alarm !!! Check Alarm !!!');
   }

@@ -1,0 +1,5 @@
+extends baseEmail 
+
+block content 
+    p The alarm name is #{alarm.name} and type #{alarm.type}
+        p The alarm problem is #{alarm.value}, which is created at #{alarm.createdAt}
