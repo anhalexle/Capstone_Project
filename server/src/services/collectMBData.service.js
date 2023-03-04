@@ -7,7 +7,7 @@ dotenv.config({ path: './config.env' });
 const connectDB = require('../db/connect');
 const Data = require('../models/data.model');
 
-const socket = socketIO('http://localhost:3000');
+const socket = socketIO('http://localhost:3001');
 
 const client = new ModBusRTU();
 const DataFeatures = require('../utils/dataFeatures');
@@ -134,8 +134,12 @@ connectDB(process.env.DATABASE)
         await mainService(type);
       });
     }, 1000);
-    socket.on('send-me-data', async () => await getAllDataAndEmit());
-    socket.on('alarm', (data) => console.log(data));
-    socket.on('update-electric-bill', (data) => console.log(data));
+    socket.on('send-me-data-service', async () => {
+      await getAllDataAndEmit();
+    });
+
+    socket.on('send-all-data-client', (data) => console.log(data));
+    // socket.on('alarm', (data) => console.log(data));
+    // socket.on('update-electric-bill', (data) => console.log(data));
   })
   .catch((err) => console.log(err));

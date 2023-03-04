@@ -22,32 +22,16 @@ const createPipeLine = (date, name) => {
     },
   ];
   if (date.day && date.month && date.year) {
-    theDate = new Date(
-      `${date.year}-${date.month < 10 ? `0${date.month}` : `${date.month}`}-
-      ${date.day < 10 ? `0${date.day}` : `${date.day}`}T00:00:00.000Z`
-    );
-    nextDate = new Date(
-      `${date.year}-${date.month < 10 ? `0${date.month}` : `${date.month}`}-
-        ${
-          date.day + 1 < 10 ? `0${date.day + 1}` : `${date.day + 1}`
-        }T00:00:00.000Z`
-    );
+    theDate = new Date(date.year, date.month - 1, date.day, 7, 0);
+    nextDate = new Date(date.year, date.month - 1, date.day + 1, 7, 0);
   } else if (date.month && date.year) {
-    theDate = new Date(
-      `${date.year}-${
-        date.month < 10 ? `0${date.month}` : `${date.month}`
-      }-01T00:00:00.000Z`
-    );
-    nextDate = new Date(
-      `${date.year}-
-        ${
-          date.month + 1 < 10 ? `0${date.month + 1}` : `${date.month + 1}`
-        }-01T00:00:00.000Z`
-    );
+    theDate = new Date(date.year, date.month - 1, 1, 7, 0);
+    nextDate = new Date(date.year, date.month, 1, 7, 0);
   } else {
-    theDate = new Date(`${date.year}-01-01T00:00:00.000Z`);
-    nextDate = new Date(`${date.year + 1}-01-01T00:00:00.000Z`);
+    theDate = new Date(date.year, 0, 1, 7, 0);
+    nextDate = new Date(date.year + 1, 0, 1, 7, 0);
   }
+  console.log(theDate, nextDate);
   pipeline.unshift({
     $match: {
       createdAt: {
@@ -82,7 +66,7 @@ const readTemplateExcelFile = async (data, sheet = 'Sheet1') => {
 };
 
 exports.getAllDataFromSocket = (req, res, next) => {
-  global._io.emit('send-me-data');
+  global._io.emit('send-me-data', 'hello');
   res.status(200).json({ status: 'Success' });
 };
 
@@ -119,8 +103,7 @@ exports.exportExcel = catchAsync(async (req, res, next) => {
   );
   res.setHeader(
     'Content-Disposition',
-    `attachment; filename=report-${now.getDate()}-${
-      now.getMonth() + 1
+    `attachment; filename=report-${now.getDate()}-${now.getMonth() + 1
     }-${now.getFullYear()}.xlsx`
   );
 

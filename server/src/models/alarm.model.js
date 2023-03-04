@@ -12,7 +12,7 @@ const alarmSchema = mongoose.Schema({
   // },
   type: {
     type: String,
-    enum: ['HI', 'LO', 'HI HI', 'LO LO'],
+    enum: ['High', 'Low', 'High High', 'Low Low'],
     required: true,
   },
   // createdAt: {
@@ -21,13 +21,21 @@ const alarmSchema = mongoose.Schema({
   // },
 });
 
-alarmSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'parameter',
-    select: 'name value createdAt',
-  });
-  next();
-});
+// alarmSchema.pre(/^find/, function (next) {
+//   this.populate({
+//     path: 'parameter',
+//     select: 'name value createdAt',
+//   });
+//   next();
+// });
+
+// alarmSchema.pre('save', function (next) {
+//   this.populate({
+//     path: 'parameter',
+//     select: 'name value createdAt',
+//   });
+//   next();
+// });
 
 const Alarm = mongoose.model('Alarm', alarmSchema);
 

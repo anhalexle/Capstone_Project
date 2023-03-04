@@ -81,47 +81,53 @@ class DataType {
     return data / this.#dataType[type].unit;
   }
 
-  async createAlarm(type, dataCreated, createAlarm = false) {
-    const { lo_lo, lo, hi, hi_hi } = this.getThreshHold(type);
-    let alarmType;
-    if (
-      (type === 'instantaneous_power' && dataCreated.value < hi) ||
-      (dataCreated.value > lo && dataCreated.value < hi)
-    )
-      return;
-    if (type !== 'instantaneous_power') {
-      if (dataCreated.value < lo_lo) {
-        alarmType = 'LO LO';
-      } else if (dataCreated.value <= lo) {
-        alarmType = 'LO';
+  async createAlarm(type, dataCreated) {
+    try {
+      const { lo_lo, lo, hi, hi_hi } = this.getThreshHold(type);
+      let alarmType;
+      if (
+        (type === 'instantaneous_power' && dataCreated.value < hi) ||
+        (dataCreated.value > lo && dataCreated.value < hi)
+      )
+        return;
+      if (type !== 'instantaneous_power') {
+        if (dataCreated.value < lo_lo) {
+          alarmType = 'Low Low';
+        } else if (dataCreated.value <= lo) {
+          alarmType = 'Low';
+        }
       }
-    }
-    if (dataCreated.value > hi_hi) {
-      alarmType = 'HI HI';
-    } else if (dataCreated.value >= hi) {
-      alarmType = 'HI';
-    }
+      if (dataCreated.value > hi_hi) {
+        alarmType = 'High High';
+      } else if (dataCreated.value >= hi) {
+        alarmType = 'High';
+      }
 
-    const alarmData = {
-      parameter: dataCreated._id,
-      type: alarmType,
-    };
+      const alarmData = {
+        parameter: dataCreated._id,
+        type: alarmType,
+      };
 
-    console.log({
-      reason: dataCreated.name,
-      value: dataCreated.value,
-      alarmType,
-    });
-    if (createAlarm) {
+      console.log({
+        reason: dataCreated.name,
+        value: dataCreated.value,
+        alarmType,
+      });
       const alarmCreated = await Alarm.create(alarmData);
+      const alarmFilter = await Alarm.findById(alarmCreated._id).populate({
+        path: 'parameter',
+        select: 'name value createdAt',
+      });
       // const alarmFilter = await Alarm.findById(newAlarm._id).select(
       //   'parameter type'
       // );
-      const user = await User.findOne({ role: 'user' });
-      const newAlarmEmail = new Email(user, alarmCreated);
-      await newAlarmEmail.sendAlarm();
+      // const user = await User.findOne({ role: 'user' });
+      // const newAlarmEmail = new Email(user, alarmCreated);
+      // await newAlarmEmail.sendAlarm();
+      global._io.emit('alarm', alarmFilter);
+    } catch (err) {
+      console.log(err);
     }
-    global._io.emit('alarm', 'Alarm Alarm !!! Check Alarm !!!');
   }
 }
 
