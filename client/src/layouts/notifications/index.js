@@ -172,14 +172,15 @@ function Notifications() {
   }, []);
   //nhấn nút để lấy dữ liệu
   const handleFindButtonClick = () => {
-    console.log(
-      `http://localhost:3001/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
-    );
+    // console.log(
+    //   `http://localhost:3001/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
+    // );
     // gửi yêu cầu fetch dữ liệu từ server với startDate và endDate đã chọn
     fetch(
       `http://localhost:3001/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
     )
-      .then((response) => console.log(response))
+      .then((response) => response.json())
+      .then(data => console.log(data))
       // .then(data => {
       //   // xử lý dữ liệu trả về từ server
       //   setDataAlarm(data);

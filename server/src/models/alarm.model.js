@@ -29,7 +29,7 @@ const alarmSchema = mongoose.Schema({
 //   next();
 // });
 
-// alarmSchema.pre('save', function (next) {
+// alarmSchema.pre('aggregate', function (next) {
 //   this.populate({
 //     path: 'parameter',
 //     select: 'name value createdAt',
