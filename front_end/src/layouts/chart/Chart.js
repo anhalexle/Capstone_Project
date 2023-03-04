@@ -3,12 +3,14 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import MDBox from "components/MDBox";
 import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
+import { useLoaderData } from "react-router-dom";
 import datasets from "../../MOCK_DATA.json";
 import Form from "./Form";
 
 function Chart() {
+  const dataChart = useLoaderData();
   const char = {
-    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    labels: dataChart.map((e) => e.createdAt.day),
     datasets: {
       label: "Voltage",
       data: datasets.map((data) => data.value),

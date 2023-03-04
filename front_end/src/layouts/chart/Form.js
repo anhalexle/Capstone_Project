@@ -19,6 +19,8 @@ export async function onHandleSubmit(data) {
   };
   const res = await Api.post("/api/v1/data/drawChart", request);
   console.log(res);
+
+  return res.data;
 }
 
 function Form() {
