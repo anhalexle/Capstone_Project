@@ -4,6 +4,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import MDBox from "components/MDBox";
 import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import datasets from "../../MOCK_DATA.json";
+import Form from "./Form";
 
 function Chart() {
   const char = {
@@ -17,6 +18,9 @@ function Chart() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
+      <MDBox py={5}>
+        <Form />
+      </MDBox>
       <MDBox py={5}>
         <MDBox mb={1.5} mt={4.5}>
           <ReportsLineChart

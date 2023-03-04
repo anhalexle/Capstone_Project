@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable react/prop-types */
+/* eslint-disable camelcase */
 /**
 =========================================================
 * Material Dashboard 2 React - v2.1.0
@@ -27,7 +30,6 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 // import imgPhase_2 from "../../../../assets/images/MyProject/2phase.png";
 
-
 function ComplexStatisticsCard({ color, title, count, icon_img }) {
   return (
     <Card>
@@ -49,7 +51,7 @@ function ComplexStatisticsCard({ color, title, count, icon_img }) {
             {icon}
           </Icon> */}
 
-          <img width="40px" height="40px" src={icon_img}></img>
+          <img width="40px" height="40px" src={icon_img} />
         </MDBox>
         <MDBox textAlign="right" lineHeight={1.25}>
           <MDTypography variant="button" fontWeight="light" color="text">
@@ -57,7 +59,6 @@ function ComplexStatisticsCard({ color, title, count, icon_img }) {
           </MDTypography>
           <MDTypography variant="h4">{count}</MDTypography>
         </MDBox>
-
       </MDBox>
       <Divider />
       {/* <MDBox pb={2} px={2}>
