@@ -53,10 +53,6 @@ import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "co
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 
-// Chart
-import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
-import datasets from "./MOCK_DATA.json";
-
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -72,14 +68,6 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
-
-  const char = {
-    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-    datasets: {
-      label: "Voltage",
-      data: datasets.map((data) => data.value),
-    },
-  };
 
   // Cache for the rtl
   useMemo(() => {
@@ -205,18 +193,6 @@ export default function App() {
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
-
-      <ReportsLineChart
-        color="success"
-        title="المبيعات اليومية"
-        description={
-          <>
-            (<strong>+15%</strong>) زيادة في مبيعات اليوم..
-          </>
-        }
-        date="تم التحديث منذ 4 دقائق"
-        chart={char}
-      />
     </ThemeProvider>
   );
 }

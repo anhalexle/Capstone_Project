@@ -42,11 +42,18 @@ import imgCosphi from "../../assets/images/MyProject/cosphi.png";
 import imgDongdien from "../../assets/images/MyProject/dongdien.png";
 import imgP from "../../assets/images/MyProject/P.png";
 import imgTanso from "../../assets/images/MyProject/tanso.png";
+import datasets from "../../MOCK_DATA.json";
 
 //
 import Divider from "@mui/material/Divider";
 function Dashboard() {
-  const { sales, tasks } = reportsLineChartData;
+  const char = {
+    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    datasets: {
+      label: "Voltage",
+      data: datasets.map((data) => data.value),
+    },
+  };
 
   return (
     <DashboardLayout>
@@ -61,7 +68,7 @@ function Dashboard() {
                 icon_img={imgPhase_3}
                 title="VOLTAGE 1 (V)"
                 count={281}
-               
+
               />
             </MDBox>
           </Grid>
@@ -71,7 +78,7 @@ function Dashboard() {
                 icon_img={imgPhase_3}
                 title="VOLTAGE 2 (V)"
                 count="2,300"
-               
+
               />
             </MDBox>
           </Grid>
@@ -93,7 +100,7 @@ function Dashboard() {
                 icon_img={imgPhase_3}
                 title="VOLTAGE AVERAGE (V)"
                 count="+91"
-                
+
               />
             </MDBox>
           </Grid>
@@ -112,7 +119,7 @@ function Dashboard() {
                 icon_img={imgPhase_2}
                 title="LINE VOLTAGE 1-2 (V)"
                 count={281}
-               
+
               />
             </MDBox>
           </Grid>
@@ -122,7 +129,7 @@ function Dashboard() {
                 icon_img={imgPhase_2}
                 title="LINE VOLTAGE 2-3 (V)"
                 count="2,300"
-               
+
               />
             </MDBox>
           </Grid>
@@ -144,7 +151,7 @@ function Dashboard() {
                 icon_img={imgPhase_2}
                 title="LINE VOLTAGE AVERAGE (V)"
                 count="+91"
-                
+
               />
             </MDBox>
           </Grid>
@@ -163,7 +170,7 @@ function Dashboard() {
                 icon_img={imgDongdien}
                 title="CURRENT 1 (A)"
                 count={281}
-               
+
               />
             </MDBox>
           </Grid>
@@ -173,7 +180,7 @@ function Dashboard() {
                 icon_img={imgDongdien}
                 title="CURRENT 2 (A)"
                 count="2,300"
-               
+
               />
             </MDBox>
           </Grid>
@@ -223,7 +230,7 @@ function Dashboard() {
                 icon_img={imgTanso}
                 title="FREQUENCY 1 (Hz)"
                 count={281}
-               
+
               />
             </MDBox>
           </Grid>
@@ -233,7 +240,7 @@ function Dashboard() {
                 icon_img={imgTanso}
                 title="FREQUENCY 2 (Hz)"
                 count="2,300"
-               
+
               />
             </MDBox>
           </Grid>
@@ -255,7 +262,7 @@ function Dashboard() {
                 icon_img={imgTanso}
                 title="FREQUENCY AVERAGE (Hz)"
                 count="+91"
-                
+
               />
             </MDBox>
           </Grid>
@@ -271,18 +278,13 @@ function Dashboard() {
                 icon_img={imgCosphi}
                 title="PF 1"
                 count={281}
-               
+
               />
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5} mt={1.5}>
-              <ComplexStatisticsCard
-                icon_img={imgCosphi}
-                title="PF 2"
-                count="2,300"
-               
-              />
+              <ComplexStatisticsCard icon_img={imgCosphi} title="PF 2" count="2,300" />
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
@@ -303,7 +305,7 @@ function Dashboard() {
                 icon_img={imgCosphi}
                 title="PF AVERAGE"
                 count="+91"
-                
+
               />
             </MDBox>
           </Grid>
@@ -319,7 +321,7 @@ function Dashboard() {
                 icon_img={imgA}
                 title="INTEGRAL ACTIVE POWER 1 (kWh)"
                 count={281}
-               
+
               />
             </MDBox>
           </Grid>
@@ -329,7 +331,7 @@ function Dashboard() {
                 icon_img={imgA}
                 title="INTEGRAL ACTIVE POWER 2 (kWh)"
                 count="2,300"
-               
+
               />
             </MDBox>
           </Grid>
@@ -351,7 +353,7 @@ function Dashboard() {
                 icon_img={imgA}
                 title="INTEGRAL ACTIVE POWER AVERAGE (kWh)"
                 count="+91"
-                
+
               />
             </MDBox>
           </Grid>
@@ -367,7 +369,7 @@ function Dashboard() {
                 icon_img={imgP}
                 title="INSTANTANEOUS ACTIVE POWER  1 (kW)"
                 count={281}
-               
+
               />
             </MDBox>
           </Grid>
@@ -377,7 +379,7 @@ function Dashboard() {
                 icon_img={imgP}
                 title="INSTANTANEOUS ACTIVE POWER  2 (kW)"
                 count="2,300"
-               
+
               />
             </MDBox>
           </Grid>
@@ -399,14 +401,26 @@ function Dashboard() {
                 icon_img={imgP}
                 title="INSTANTANEOUS ACTIVE POWER  AVERAGE (kW)"
                 count="+91"
-                
+
               />
             </MDBox>
           </Grid>
 
         </Grid>
 
-
+        <MDBox mb={1.5} mt={4.5}>
+          <ReportsLineChart
+            color="success"
+            title="المبيعات اليومية"
+            description={
+              <>
+                (<strong>+15%</strong>) زيادة في مبيعات اليوم..
+              </>
+            }
+            date="تم التحديث منذ 4 دقائق"
+            chart={char}
+          />
+        </MDBox>
 
 
 

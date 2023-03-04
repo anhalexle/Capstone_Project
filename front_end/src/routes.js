@@ -44,6 +44,7 @@ import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
+import Chart from "layouts/chart/Chart";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -56,6 +57,14 @@ const routes = [
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
     component: <Dashboard />,
+  },
+  {
+    type: "collapse",
+    name: "Chart",
+    key: "chart",
+    icon: <Icon fontSize="small">bar_chart</Icon>,
+    route: "/chart",
+    component: <Chart />,
   },
   {
     type: "collapse",
