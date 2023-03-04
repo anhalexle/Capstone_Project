@@ -8,26 +8,24 @@ import "./Form.css";
 import Api from "api/Api";
 import dataName from "../../parameters.json";
 
-export async function onHandleSubmit(data) {
-  const request = {
-    date: {
-      day: data.day,
-      month: data.month,
-      year: data.year,
-    },
-    name: data.type,
-  };
-  const res = await Api.post("/api/v1/data/drawChart", request);
-  console.log(res);
-
-  return res.data;
-}
-
-function Form() {
+function Form({ setData }) {
   const type = dataName.map((e) => ({
     id: e.id,
     name: e.name,
   }));
+
+  async function onHandleSubmit(data) {
+    const request = {
+      date: {
+        day: data.day,
+        month: data.month,
+        year: data.year,
+      },
+      name: data.type,
+    };
+    const res = await Api.post("/api/v1/data/drawChart", request);
+    setData(res.data.data);
+  }
 
   const timeUnit = ["", "Day", "Month", "Year"];
   const [timeSelect, setTimeSelect] = useState({
