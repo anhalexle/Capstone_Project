@@ -5,6 +5,8 @@ const authController = require('../controllers/auth.controller');
 
 const router = express.Router();
 
+router.route('/getSpecificAlarm').get(alarmController.getSpecificAlarm);
+
 router.use(authController.protect);
 
 router.route('/').get(alarmController.getAllAlarm);

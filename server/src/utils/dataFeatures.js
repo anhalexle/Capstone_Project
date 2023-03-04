@@ -116,14 +116,14 @@ class DataType {
       const alarmCreated = await Alarm.create(alarmData);
       const alarmFilter = await Alarm.findById(alarmCreated._id).populate({
         path: 'parameter',
-        select: 'name value createdAt',
+        select: 'name value type createdAt',
       });
       // const alarmFilter = await Alarm.findById(newAlarm._id).select(
       //   'parameter type'
       // );
-      // const user = await User.findOne({ role: 'user' });
-      // const newAlarmEmail = new Email(user, alarmCreated);
-      // await newAlarmEmail.sendAlarm();
+      const user = await User.findOne({ role: 'user' });
+      const newAlarmEmail = new Email(user, alarmFilter);
+      await newAlarmEmail.sendAlarm();
       global._io.emit('alarm', alarmFilter);
     } catch (err) {
       console.log(err);

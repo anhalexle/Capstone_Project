@@ -19,19 +19,29 @@ import { useEffect, useState } from "react";
 // import Grid from "@mui/material/Grid";
 // import Card from "@mui/material/Card";
 
-// import { 
-//   Box, 
-//   Typography, 
-//   Table, 
-//   TableHead, 
-//   TableBody, 
-//   TableCell, 
-//   TableRow 
+// import {
+//   Box,
+//   Typography,
+//   Table,
+//   TableHead,
+//   TableBody,
+//   TableCell,
+//   TableRow
 // } from '@material-ui/core';
 
 //sửa lại thư viện
-import { Grid, Card, Box, Typography, Table, TableHead, TableBody, TableCell, TableRow } from '@mui/material';
-import moment from 'moment';
+import {
+  Grid,
+  Card,
+  Box,
+  Typography,
+  Table,
+  TableHead,
+  TableBody,
+  TableCell,
+  TableRow,
+} from "@mui/material";
+import moment from "moment";
 //thêm thư viện chọn ngày chọn giờ
 // import { DatePicker, TimePicker } from '@material-ui/lab';
 
@@ -54,21 +64,18 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
 // import { DatePicker, TimePicker } from '@mui/lab';
-import { TextField, Button } from "@mui/material"
+import { TextField, Button } from "@mui/material";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { addDays, setHours, setMinutes } from 'date-fns';
-
-
-
+import { addDays, setHours, setMinutes } from "date-fns";
 
 function Notifications() {
   //data alarm
   const [dataAlarm, setDataAlarm] = useState([]);
   // pick date time
-  const [startDate, setStartDate] = useState( setHours(setMinutes(new Date(), 0), 0));
- 
+  const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), 0), 0));
+
   const [endDate, setEndDate] = useState(new Date());
 
   const [successSB, setSuccessSB] = useState(false);
@@ -149,50 +156,48 @@ function Notifications() {
     />
   );
 
-  // xử lí API 
+  // xử lí API
   useEffect(() => {
-    console.log("fetch nè con đũy")
-    fetch('http://localhost:3005/api/data')
-      .then(response => response.json())
-      .then(data => {
+    console.log("fetch nè con đũy");
+    fetch("http://localhost:3005/api/data")
+      .then((response) => response.json())
+      .then((data) => {
         console.log(data);
         // Xử lý dữ liệu trả về ở đây
         setDataAlarm(data);
-
       })
-      .catch(error => {
-        console.error('Error:', error);
+      .catch((error) => {
+        console.error("Error:", error);
       });
-
-  }, [])
+  }, []);
   //nhấn nút để lấy dữ liệu
   const handleFindButtonClick = () => {
-    console.log(`http://yourserver.com/data?startDate=${startDate}&endDate=${endDate}`)
+    console.log(
+      `http://localhost:3001/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
+    );
     // gửi yêu cầu fetch dữ liệu từ server với startDate và endDate đã chọn
-    fetch(`http://yourserver.com/data?startDate=${startDate}&endDate=${endDate}`)
-      .then(response => response.json())
-      .then(data => {
-        // xử lý dữ liệu trả về từ server
-        setDataAlarm(data);
-      })
-      .catch(error => {
-        console.error('Error fetching data from server:', error);
+    fetch(
+      `http://localhost:3001/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
+    )
+      .then((response) => console.log(response))
+      // .then(data => {
+      //   // xử lý dữ liệu trả về từ server
+      //   setDataAlarm(data);
+      // })
+      .catch((error) => {
+        console.error("Error fetching data from server:", error);
       });
-  }
-
+  };
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <Grid>
-        con cho nhác
-
-      </Grid>
+      <Grid>con cho nhác</Grid>
       <MDBox mt={6} mb={3}>
         <Grid container spacing={3} justifyContent="center">
           <Grid item xs={12} lg={8}>
             <Card>
-            {console.log("re-render",setHours(setMinutes(new Date(), 30), 20))}
+              {console.log("re-render", setHours(setMinutes(new Date(), 30), 20))}
               <Box p={2}>
                 <Typography variant="h5">
                   From&nbsp;
@@ -203,8 +208,8 @@ function Notifications() {
                     showTimeSelect
                     // maxTime={startDate.getDate() === new Date().getDate() ? setHours(setMinutes(new Date(), new Date().getMinutes()), new Date().getHours()) : null}
 
-                  //  minTime={new Date()}
-                      timeIntervals={15}
+                    //  minTime={new Date()}
+                    timeIntervals={15}
                     dateFormat="dd/MM/yyyy h:mm aa"
                   />
                   &nbsp;To&nbsp;
@@ -217,8 +222,9 @@ function Notifications() {
                     timeIntervals={15}
                     dateFormat="dd/MM/yyyy h:mm aa"
                   />
-                   <Button variant="contained" color="inherit" onClick={handleFindButtonClick}>Find</Button>
-
+                  <Button variant="contained" color="inherit" onClick={handleFindButtonClick}>
+                    Find
+                  </Button>
                   {/* <TextField type="date" 
                   variant="outlined" 
                   dateFormat='DD/MM/yyy'
@@ -236,17 +242,52 @@ function Notifications() {
               </Box>
               <Table>
                 <TableBody>
-                  <TableCell align="center" ><Typography variant="h5">Type</Typography></TableCell>
-                  <TableCell align="center" ><Typography variant="h5">Time</Typography></TableCell>
-                  <TableCell align="center" ><Typography variant="h5">Name</Typography></TableCell>
-                  <TableCell align="center" ><Typography variant="h5">Value</Typography></TableCell>
+                  <TableCell align="center">
+                    <Typography variant="h5">Type</Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography variant="h5">Time</Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography variant="h5">Name</Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography variant="h5">Value</Typography>
+                  </TableCell>
                   {dataAlarm.map((item) => (
                     <TableRow key={item.parameter.createdAt}>
-                      <TableCell align="center" style={{ color: item.type === 'HI' || item.type === 'LO' ? '#FFCC00' : 'red' }}>{item.type}</TableCell>
-                      <TableCell align="center" style={{ color: item.type === 'HI' || item.type === 'LO' ? '#FFCC00' : 'red' }}>{moment(item.parameter.createdAt).format('DD/MM/YYYY hh:mm A')}</TableCell>
-                      <TableCell align="center" style={{ color: item.type === 'HI' || item.type === 'LO' ? '#FFCC00' : 'red' }}>{item.parameter.name}</TableCell>
-                      <TableCell align="center" style={{ color: item.type === 'HI' || item.type === 'LO' ? '#FFCC00' : 'red' }}>{item.parameter.value}</TableCell>
-
+                      <TableCell
+                        align="center"
+                        style={{
+                          color: item.type === "HI" || item.type === "LO" ? "#FFCC00" : "red",
+                        }}
+                      >
+                        {item.type}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        style={{
+                          color: item.type === "HI" || item.type === "LO" ? "#FFCC00" : "red",
+                        }}
+                      >
+                        {moment(item.parameter.createdAt).format("DD/MM/YYYY hh:mm A")}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        style={{
+                          color: item.type === "HI" || item.type === "LO" ? "#FFCC00" : "red",
+                        }}
+                      >
+                        {item.parameter.name}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        style={{
+                          color: item.type === "HI" || item.type === "LO" ? "#FFCC00" : "red",
+                        }}
+                      >
+                        {item.parameter.value}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

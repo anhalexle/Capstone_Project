@@ -27,7 +27,7 @@ module.exports = class Email {
 
   async send(template, subject) {
     const html = pug.renderFile(
-      `${global.__basedir}/views/email/${template}.pug`,
+      `${global.__basedir}\\src\\views\\email\\${template}.pug`,
       {
         alarm: this.alarm.parameter,
         subject,
@@ -46,6 +46,6 @@ module.exports = class Email {
   }
 
   async sendAlarm() {
-    await this.sendAlarm('alarm', 'Report the alarm realtime');
+    await this.send('alarm', 'Report the alarm realtime');
   }
 };
