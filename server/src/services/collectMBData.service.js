@@ -6,14 +6,13 @@ dotenv.config({ path: './config.env' });
 
 const connectDB = require('../db/connect');
 const Data = require('../models/data.model');
-const Alarm = require('../models/alarm.model');
 
-const socket = socketIO('http://localhost:3000');
+const socket = socketIO('http://localhost:3001');
 
 const client = new ModBusRTU();
 const DataFeatures = require('../utils/dataFeatures');
 
-const dataFeatures = new DataFeatures(client);
+const dataFeatures = new DataFeatures();
 
 client.connectRTUBuffered('COM2', { baudRate: 9600 });
 client.setID(1);
@@ -31,7 +30,8 @@ const compareArrays = (arr1, arr2) => {
   const result = arr1.reduce((acc, el, index) => {
     // NewData must be different from oldData higher than 5 percent
     // Dead band
-    if (Math.abs(el - arr2[index]) >= arr2[index] * 0.05) {
+
+    if (Math.abs(el - arr2[index]) > arr2[index] * 0.05) {
       acc.push(index);
     }
     return acc;
@@ -39,7 +39,7 @@ const compareArrays = (arr1, arr2) => {
   return result;
 };
 
-const getLatestDataFromDB = async (type) =>
+const getLatestDataFromDB = async (type, noId = true) =>
   await Data.aggregate([
     { $match: { type } },
     { $sort: { createdAt: 1 } },
@@ -48,6 +48,8 @@ const getLatestDataFromDB = async (type) =>
         _id: { name: '$name', type: '$type' },
         newData: { $last: '$value' },
         newAddress: { $last: '$address' },
+        createdDate: { $last: '$createdAt' },
+        newId: { $last: '$_id' },
       },
     },
     {
@@ -55,93 +57,49 @@ const getLatestDataFromDB = async (type) =>
     },
     {
       $project: {
-        // ko lấy id
-        _id: 0,
+        _id: { $cond: { if: noId, then: null, else: '$newId' } },
         name: '$_id.name',
         type: '$_id.type',
         value: '$newData',
         address: '$newAddress',
+        createdAt: '$createdDate',
       },
     },
   ]);
 
-const createAlarm = async (type, dataCreated) => {
-  const threshHold = dataFeatures.getThreshHold(type);
-  if (threshHold && dataCreated.value !== threshHold.eq) {
-    setTimeout(async () => {
-      const checkData = await dataFeatures.readDataFromModBus(type);
-      if (checkData !== threshHold.eq) {
-        const alarmData = {
-          parameter: dataCreated._id,
-          type: 'NOT EQUAL',
-        };
-        await Alarm.create(alarmData);
-      }
-    }, 5000);
-  } else if (threshHold && dataCreated.value < threshHold.min) {
-    setTimeout(async () => {
-      const checkData = await dataFeatures.readDataFromModBus(type);
-      if (checkData > threshHold.max) {
-        createAlarm(type, dataCreated);
-      } else if (checkData < threshHold.min) {
-        const alarmData = {
-          parameter: dataCreated._id,
-          type: 'LOW',
-        };
-        await Alarm.create(alarmData);
-      }
-    }, 5000);
-  } else if (threshHold && dataCreated.value > threshHold.max) {
-    setTimeout(async () => {
-      const checkData = await dataFeatures.readDataFromModBus(type);
-      if (checkData < threshHold.min) {
-        createAlarm(type, dataCreated);
-      } else if (checkData > threshHold.max) {
-        const alarmData = {
-          parameter: dataCreated._id,
-          type: 'HIGH',
-        };
-        await Alarm.create(alarmData);
-      }
-    }, 5000);
-  }
-};
-
 const mainService = async (type) => {
   try {
-    let newModBusData = await dataFeatures.readDataFromModBus(type);
+    let newModBusData = await dataFeatures.readDataFromModBus(client, type);
     if (type !== 'pf' && type !== 'frequency') {
       newModBusData = newModBusData.filter((data, index) => index % 2 === 0);
     }
     const oldModBusData = await getLatestDataFromDB(type);
+
     const oldData = oldModBusData.map((el) => {
       const { value } = el;
       return value;
     });
     const res = compareArrays(newModBusData, oldData);
-    if (res) {
+
+    if (res.length > 0) {
       const promises = res.map(async (index) => {
         oldModBusData[index].value = newModBusData[index];
-        const newDataCreated = await Data.create(oldModBusData[index]);
-        createAlarm(type, newDataCreated);
+        const newDataCreated = await Data.create({
+          name: oldModBusData[index].name,
+          type: oldModBusData[index].type,
+          value: oldModBusData[index].value,
+          address: oldModBusData[index].address,
+        });
+        if (socket.connected) {
+          if (newDataCreated.name === 'total_integral_active_power')
+            socket.emit('calculate-electric-bill');
+          socket.emit('new-data', newDataCreated);
+        }
         return newDataCreated;
       });
-      return await Promise.all(promises);
+      await Promise.all(promises);
     }
     return [];
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const getNewDataAndEmit = async () => {
-  try {
-    dataType.myAsyncForEach(async (type) => {
-      const newData = await mainService(type);
-      if (newData.length > 0) {
-        socket.emit('new-data', newData);
-      }
-    });
   } catch (err) {
     console.log(err);
   }
@@ -150,7 +108,9 @@ const getNewDataAndEmit = async () => {
 const getAllDataAndEmit = async () => {
   try {
     const allData = [];
-    const promises = dataType.map(async (type) => getLatestDataFromDB(type));
+    const promises = dataType.map(async (type) =>
+      getLatestDataFromDB(type, false)
+    );
     allData.push(...(await Promise.all(promises)));
     socket.emit('send-all-data', allData);
   } catch (err) {
@@ -169,9 +129,17 @@ if (process.env.NODE_ENV === 'production') {
 
 connectDB(process.env.DATABASE)
   .then(() => {
-    socket.on('send-me-data', async () => {
+    setInterval(() => {
+      dataType.myAsyncForEach(async (type) => {
+        await mainService(type);
+      });
+    }, 1000);
+    socket.on('send-me-data-service', async () => {
       await getAllDataAndEmit();
-      setInterval(getNewDataAndEmit, 1000);
     });
+
+    socket.on('send-all-data-client', (data) => console.log(data));
+    // socket.on('alarm', (data) => console.log(data));
+    // socket.on('update-electric-bill', (data) => console.log(data));
   })
   .catch((err) => console.log(err));

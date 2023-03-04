@@ -1,7 +1,11 @@
 const dotenv = require('dotenv');
 
 const server = require('./app');
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {
+  cors: {
+    origin: '*',
+  },
+});
 
 const connectDB = require('./src/db/connect');
 const SocketServices = require('./src/services/socketServer.service');
@@ -12,7 +16,7 @@ dotenv.config({ path: './config.env' });
 global.__basedir = __dirname;
 global._io = io;
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 if (process.env.NODE_ENV === 'production') {
   process.env.DATABASE = process.env.DATABASE_ONL.replace(

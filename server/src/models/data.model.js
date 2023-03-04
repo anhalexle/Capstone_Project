@@ -1,26 +1,25 @@
 const mongoose = require('mongoose');
 
-const dataSchema = mongoose.Schema({
-  name: String,
-  value: Number,
-  address: Number,
-  type: {
-    type: String,
-    enum: [
-      'volt',
-      'current',
-      'frequency',
-      'pf',
-      'integral_power',
-      'instantaneous_power',
-    ],
-    default: 'volt',
+const dataSchema = mongoose.Schema(
+  {
+    name: String,
+    value: Number,
+    address: Number,
+    type: {
+      type: String,
+      enum: [
+        'volt',
+        'current',
+        'frequency',
+        'pf',
+        'integral_power',
+        'instantaneous_power',
+      ],
+      default: 'volt',
+    },
   },
-  createdAt: {
-    type: Date,
-    default: Date.now(),
-  },
-});
+  { timestamps: { createdAt: true, updatedAt: false } }
+);
 
 dataSchema.set('toObject', { getters: true, virtual: true });
 dataSchema.set('toJSON', { getters: true, virtual: true });
