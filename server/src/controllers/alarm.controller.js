@@ -16,7 +16,7 @@ exports.getSpecificAlarm = catchAsync(async (req, res, next) => {
     path: 'parameter',
     select: 'name value createdAt',
   });
-  console.log(allAlarm);
+
   const alarmFilter = allAlarm.filter(
     (data) =>
       data.parameter.createdAt >= ISOstartDate &&

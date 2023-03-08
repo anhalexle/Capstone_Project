@@ -103,7 +103,8 @@ exports.exportExcel = catchAsync(async (req, res, next) => {
   );
   res.setHeader(
     'Content-Disposition',
-    `attachment; filename=report-${now.getDate()}-${now.getMonth() + 1
+    `attachment; filename=report-${now.getDate()}-${
+      now.getMonth() + 1
     }-${now.getFullYear()}.xlsx`
   );
 
