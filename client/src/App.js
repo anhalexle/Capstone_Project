@@ -17,6 +17,9 @@ import { useState, useEffect, useMemo } from "react";
 
 // react-router components
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import Basic from "./layouts/authentication/sign-in";
+import PrivateRoutes from "./PrivateRoutes";
+import jwt_decode from "jwt-decode";
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
@@ -44,20 +47,14 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 
 // Material Dashboard 2 React routes
-import routes from "routes";
+import { pulicRoutes, privateRoutes } from "routes";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
-
 // Images
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
-
-
-
-
 export default function App() {
-
   const [controller, dispatch] = useMaterialUIController();
   const {
     miniSidenav,
@@ -72,8 +69,17 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
-
+  // console.log("render app");
+  // const token = localStorage.getItem("token"); // Lấy chuỗi token từ localStorage
+  // console.log("Lấy chuỗi token từ localStorage", token);
+  // const decoded = jwt_decode(token); // Giải mã chuỗi token
+  // console.log("iải mã chuỗi token", decoded);
+  // const account = decoded.id; // Lấy giá trị của thuộc tính "sub" trên payload
+  // console.log("Giải mã token", account); // 'user1'
   // Cache for the rtl
+  // kiểm tra có token thì vào trang doashborad luôn không thì vào log-in
+  const token = localStorage.getItem("token");
+
   useMemo(() => {
     const cacheRtl = createCache({
       key: "rtl",
@@ -86,6 +92,7 @@ export default function App() {
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
+      console.log("chuột vào");
       setMiniSidenav(dispatch, false);
       setOnMouseEnter(true);
     }
@@ -94,6 +101,7 @@ export default function App() {
   // Close sidenav when mouse leave mini sidenav
   const handleOnMouseLeave = () => {
     if (onMouseEnter) {
+      console.log("chuột ra");
       setMiniSidenav(dispatch, true);
       setOnMouseEnter(false);
     }
@@ -152,7 +160,6 @@ export default function App() {
 
   return direction === "rtl" ? (
     <CacheProvider value={rtlCache}>
-
       <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
         <CssBaseline />
         {layout === "dashboard" && (
@@ -160,8 +167,8 @@ export default function App() {
             <Sidenav
               color={sidenavColor}
               brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-              brandName="Material Dashboard 2"
-              routes={routes}
+              brandName="Đồ Án Tốt Nghiệp"
+              routes={pulicRoutes}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
             />
@@ -171,8 +178,8 @@ export default function App() {
         )}
         {layout === "vr" && <Configurator />}
         <Routes>
-          {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/dashboard" />} />
+          {getRoutes(pulicRoutes)}
+          <Route path="*" element={<Navigate to="dashboard" />} />
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -184,8 +191,8 @@ export default function App() {
           <Sidenav
             color={sidenavColor}
             brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName="Material Dashboard 2"
-            routes={routes}
+            brandName="Đồ Án Tốt "
+            routes={[...privateRoutes, ...pulicRoutes]}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
@@ -195,8 +202,15 @@ export default function App() {
       )}
       {layout === "vr" && <Configurator />}
       <Routes>
-        {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        <Route element={<PrivateRoutes />}>{getRoutes(privateRoutes)}</Route>
+        {getRoutes(pulicRoutes)}
+
+        {/* <Route path="*" element={<Navigate to="authentication/sign-in" />} /> */}
+
+        <Route
+          path="/"
+          element={token ? <Navigate to="/dashboard" /> : <Navigate to="authentication/sign-in" />}
+        />
       </Routes>
     </ThemeProvider>
   );

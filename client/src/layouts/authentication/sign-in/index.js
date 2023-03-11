@@ -14,9 +14,12 @@ Coded by www.creative-tim.com
 */
 
 import { useState } from "react";
+import axios from "axios";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+import { Alert } from "@mui/material";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -45,6 +48,28 @@ function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+  const navigate = useNavigate()
+
+  const [account, setAccount] = useState("");
+  const [password, setPassword] = useState("");
+  // xử lí hiện thị ra thông báo khi đăng nhập sai
+  const [errorMessage, setErrorMessage] = useState("");
+  //khi chuyển sang trang log-in thì xóa localStorage
+  localStorage.removeItem("token");
+
+  const handleSignIn = async () => {
+    try {
+      console.log("gửi nè dm");
+      const response = await axios.post("http://localhost:3005/api/login", { account, password }); 
+      console.log("nhận nè", response.data.token);
+      localStorage.setItem("token", response.data.token);
+      // Redirect to dashboard page
+      navigate("/dashboard", { replace: true });
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Tên đăng nhập hoặc mật khẩu không đúng");
+    }
+  };
 
   return (
     <BasicLayout image={bgImage}>
@@ -63,7 +88,7 @@ function Basic() {
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
             Sign in
           </MDTypography>
-          <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
+          {/* <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
             <Grid item xs={2}>
               <MDTypography component={MuiLink} href="#" variant="body1" color="white">
                 <FacebookIcon color="inherit" />
@@ -79,15 +104,25 @@ function Basic() {
                 <GoogleIcon color="inherit" />
               </MDTypography>
             </Grid>
-          </Grid>
+          </Grid> */}
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" fullWidth />
+              <MDInput
+                type="email"
+                label="Account"
+                fullWidth
+                onChange={(e) => setAccount(e.target.value)}
+              />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Password" fullWidth />
+              <MDInput
+                type="password"
+                label="Password"
+                fullWidth
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -101,10 +136,13 @@ function Basic() {
                 &nbsp;&nbsp;Remember me
               </MDTypography>
             </MDBox>
+            {/* nút nhấn sign in */}
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
+              <MDButton variant="gradient" color="info" fullWidth onClick={handleSignIn}>
                 sign in
               </MDButton>
+              {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+              {/* {errorMessage && <div>{errorMessage}</div>} */}
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">
               <MDTypography variant="button" color="text">

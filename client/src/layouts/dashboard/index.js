@@ -68,78 +68,6 @@ function Dashboard() {
 
   useEffect(() => {
     const handleServerData = (newData) => {
-      // console.log("trong callback trở lại",newData.flat());
-      console.log("trong callback đầu---------------------------------------------");
-      //   setArraydata_1(prevArray => {
-      //     console.log("giá trị preArray",prevArray);
-      //     const newArray = prevArray ? [...prevArray] : [];
-      //   // const arraydata_1 = [];
-      //   newData.flat().map(d => {
-      //     if (d.name === "Voltage_1") {
-      //       arraydata_1[0] = d.value;
-      //     } else if (d.name === "Voltage_2") {
-      //       arraydata_1[1] = d.value;
-      //     } else if (d.name === "Voltage_3") {
-      //       arraydata_1[2] = d.value;
-      //     } else if (d.name === "Volt_average") {
-      //       arraydata_1[3] = d.value;
-      //     } else if (d.name === "Line_V1_2") {
-      //       arraydata_1[4] = d.value;
-      //     } else if (d.name === "Line_V2_3") {
-      //       arraydata_1[5] = d.value;
-      //     } else if (d.name === "Line_V3_1") {
-      //       arraydata_1[6] = d.value;
-      //     } else if (d.name === "Line_Average") {
-      //       arraydata_1[7] = d.value;
-      //     } else if (d.name === "Current_1") {
-      //       arraydata_1[8] = d.value;
-      //     } else if (d.name === "Current_2") {
-      //       arraydata_1[9] = d.value;
-      //     } else if (d.name === "Current_3") {
-      //       arraydata_1[10] = d.value;
-      //     } else if (d.name === "Current_phase_N") {
-      //       arraydata_1[11] = d.value;
-      //     } else if (d.name === "Current_TB") {
-      //       arraydata_1[12] = d.value;
-      //     } else if (d.name === "f1") {
-      //       arraydata_1[13] = d.value;
-      //     } else if (d.name === "f2") {
-      //       arraydata_1[14] = d.value;
-      //     } else if (d.name === "f3") {
-      //       arraydata_1[15] = d.value;
-      //     } else if (d.name === "f_tb") {
-      //       arraydata_1[16] = d.value;
-      //     } else if (d.name === "pf1") {
-      //       arraydata_1[17] = d.value;
-      //     } else if (d.name === "pf2") {
-      //       arraydata_1[18] = d.value;
-      //     } else if (d.name === "pf3") {
-      //       arraydata_1[19] = d.value;
-      //     } else if (d.name === "pf_tb") {
-      //       arraydata_1[20] = d.value;
-      //     } else if (d.name === "integral_active_power_1") {
-      //       arraydata_1[21] = d.value;
-      //     } else if (d.name === "integral_active_power_2") {
-      //       arraydata_1[22] = d.value;
-      //     } else if (d.name === "integral_active_power_3") {
-      //       arraydata_1[23] = d.value;
-      //     } else if (d.name === "total_integral_active_power") {
-      //       arraydata_1[24] = d.value;
-      //     } else if (d.name === "instantaneous_active_power_1") {
-      //       arraydata_1[25] = d.value;
-      //     } else if (d.name === "instantaneous_active_power_2") {
-      //       arraydata_1[26] = d.value;
-      //     } else if (d.name === "instantaneous_active_power_3") {
-      //       arraydata_1[27] = d.value;
-      //     } else if (d.name === "total_instantaneous_active_power") {
-      //       arraydata_1[28] = d.value;
-      //     }
-      //   });
-      // })
-      // console.log("array ref chưa thay đổi", arraydata.current)
-      // let arraydata_1=arraydata.current;
-      // console.log("array chưa thay đổi", arraydata_1)
-      console.log(newData);
       newData.flat().map((d) => {
         if (d.name === "Voltage_1") {
           arraydata_1[0] = d.value;
@@ -201,15 +129,7 @@ function Dashboard() {
           arraydata_1[28] = d.value;
         }
       });
-
-      // arraydata.current = arraydata_1;
-      // console.log("array ref đã thay đổi", arraydata.current)
-      // console.log(dataPrint);
-      // console.log("in trong callback",arraydata_1);
-      console.log("..................bắt đầu set.............");
       setDataPrint((prevState) => ({ data: arraydata_1, timestamp: Date.now() }));
-
-      console.log("..................sau khi set.............");
       // real-time chart
 
       // setData((prevData) => {
@@ -298,7 +218,6 @@ function Dashboard() {
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5} mt={1.5}>
-              {console.log("giá trị voltage2", dataPrint[1])}
               <ComplexStatisticsCard
                 icon_img={imgPhase3}
                 title="VOLTAGE 2 (V)"
@@ -593,7 +512,6 @@ function Dashboard() {
               />
             </MDBox>
           </Grid>
-          {console.log("****************trong returen cuối*******************")};
         </Grid>
 
         {/*         

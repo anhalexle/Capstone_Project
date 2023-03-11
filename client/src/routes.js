@@ -48,7 +48,7 @@ import SignUp from "layouts/authentication/sign-up";
 // @mui icons
 import Icon from "@mui/material/Icon";
 
-const routes = [
+const privateRoutes = [
   {
     type: "collapse",
     name: "Dashboard",
@@ -99,14 +99,6 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Sign In",
-    key: "sign-in",
-    icon: <Icon fontSize="small">login</Icon>,
-    route: "/authentication/sign-in",
-    component: <SignIn />,
-  },
-  {
-    type: "collapse",
     name: "Sign Up",
     key: "sign-up",
     icon: <Icon fontSize="small">assignment</Icon>,
@@ -114,5 +106,15 @@ const routes = [
     component: <SignUp />,
   },
 ];
+const pulicRoutes = [
+  {
+    type: "collapse",
+    name: "Sign In",
+    key: "sign-in",
+    icon: <Icon fontSize="small">login</Icon>,
+    route: "/authentication/sign-in",
+    component: <SignIn />,
+  },
+];
 
-export default routes;
+export { pulicRoutes, privateRoutes };
