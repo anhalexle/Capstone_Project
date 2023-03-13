@@ -2,7 +2,7 @@ const ModBusRTU = require('modbus-serial');
 const socketIO = require('socket.io-client');
 const dotenv = require('dotenv');
 
-dotenv.config({ path: './config.env' });
+dotenv.config({ path: `${__dirname}/../../config.env` });
 
 const connectDB = require('../db/connect');
 const Data = require('../models/data.model');
