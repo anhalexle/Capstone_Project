@@ -40,6 +40,7 @@ import {
   TableBody,
   TableCell,
   TableRow,
+  Alert,
 } from "@mui/material";
 import moment from "moment";
 //thêm thư viện chọn ngày chọn giờ
@@ -159,7 +160,7 @@ function Notifications() {
   // xử lí API
   useEffect(() => {
     console.log("fetch nè con đũy");
-    fetch("http://localhost:3005/api/data")
+    fetch("http://localhost:3001/api/data")
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -172,9 +173,6 @@ function Notifications() {
   }, []);
   //nhấn nút để lấy dữ liệu
   const handleFindButtonClick = () => {
-    // console.log(
-    //   `http://localhost:3001/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
-    // );
     // gửi yêu cầu fetch dữ liệu từ server với startDate và endDate đã chọn
     fetch(
       `http://localhost:3001/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
@@ -186,7 +184,7 @@ function Notifications() {
       //   setDataAlarm(data);
       // })
       .catch((error) => {
-        console.error("Error fetching data from server:", error);
+        Alert("Error fetching data from server:", error);
       });
   };
 
@@ -226,19 +224,6 @@ function Notifications() {
                   <Button variant="contained" color="inherit" onClick={handleFindButtonClick}>
                     Find
                   </Button>
-                  {/* <TextField type="date" 
-                  variant="outlined" 
-                  dateFormat='DD/MM/yyy'
-                  maxDate={new Date()}
-                  value = {new Date()}/>
-                  <TextField type="time" variant="outlined" />
-                  &nbsp;To&nbsp;
-                  <TextField type="date" variant="outlined" />
-                  <TextField type="time" variant="outlined" />
-                  &nbsp;
-                  <Button variant="contained" color="primary">
-                    Find
-                  </Button> */}
                 </Typography>
               </Box>
               <Table>

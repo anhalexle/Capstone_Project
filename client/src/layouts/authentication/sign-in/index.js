@@ -42,7 +42,7 @@ import MDButton from "components/MDButton";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import bgImage from "assets/images/Truong_BK_CS1.jpg";
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
@@ -60,7 +60,7 @@ function Basic() {
   const handleSignIn = async () => {
     try {
       console.log("gửi nè dm");
-      const response = await axios.post("http://localhost:3005/api/login", { account, password }); 
+      const response = await axios.post("http://localhost:3001/api/login", { account, password }); 
       console.log("nhận nè", response.data.token);
       localStorage.setItem("token", response.data.token);
       // Redirect to dashboard page

@@ -50,6 +50,7 @@ import imgTanso from "../../assets/images/MyProject/tanso.png";
 //  toast
 // import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import RealtimeChart from "../dashboard/real-timeChart";
 
 const arraydata_1 = Array(29).fill(0);
 
@@ -59,13 +60,10 @@ function Dashboard() {
   const { socket, notificationsRef, arraydata } = useContext(SocketContext);
   const [dataPrint, setDataPrint] = useState({ data: arraydata_1, timestamp: Date.now() });
 
-  console.log("re-render nè dume");
-  console.log("rdataPrint", dataPrint);
-  console.log("in ngoài callback in dataprint", dataPrint);
+  const [data, setData] = useState([]); // dữ liệu chart
 
-  // const [data, setData] = useState([]); // dữ liệu chart
   const intervalRef = useRef(null); // lưu trữ reference tới interval
-
+ 
   useEffect(() => {
     const handleServerData = (newData) => {
       newData.flat().map((d) => {
@@ -130,6 +128,7 @@ function Dashboard() {
         }
       });
       setDataPrint((prevState) => ({ data: arraydata_1, timestamp: Date.now() }));
+
       // real-time chart
 
       // setData((prevData) => {
@@ -154,19 +153,21 @@ function Dashboard() {
   //     setData((prevData) => {
   //       const newTimestamp = new Date().getTime(); // lấy thời gian hiện tại
   //       // xoá dữ liệu cũ hơn 30 giây
-  //       const filteredData = prevData.filter(
-  //         (d) => d.time >= newTimestamp - 30000
-  //       );
+  //       const filteredData = prevData.filter((d) => d.time >= newTimestamp - 30000);
   //       return filteredData;
   //     });
   //   }, 1000); // update chart mỗi giây
   // }, []);
+
 
   console.log("reder ngoài callback tới trước return");
   return (
     <DashboardLayout>
       {console.log("****************trong returen*******************")}
       <DashboardNavbar />
+      <MDBox>
+        <RealtimeChart />
+      </MDBox>
       {/* <MDBox> ve real-time chart new
 
         <LineChart
@@ -201,6 +202,7 @@ function Dashboard() {
         </LineChart>
 
       </MDBox> */}
+      
       <MDBox py={5}>
         {/* //Voltage Phase */}
         <Grid container spacing={3}>
