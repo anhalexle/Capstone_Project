@@ -14,6 +14,8 @@ Coded by www.creative-tim.com
 */
 
 import { useEffect, useState } from "react";
+import axios from "axios";
+import { saveAs } from "file-saver";
 
 // @mui material components
 // import Grid from "@mui/material/Grid";
@@ -158,6 +160,7 @@ function Notifications() {
   );
 
   // xử lí API
+<<<<<<< HEAD
   useEffect(() => {
     console.log("fetch nè con đũy");
     fetch("http://localhost:3001/api/data")
@@ -171,6 +174,21 @@ function Notifications() {
         console.error("Error:", error);
       });
   }, []);
+=======
+  // useEffect(() => {
+  //   console.log("fetch nè con đũy");
+  //   fetch("http://localhost:3005/api/data")
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //       // Xử lý dữ liệu trả về ở đây
+  //       setDataAlarm(data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //     });
+  // }, []);
+>>>>>>> 5acd62b9d6477d2f46eea61fb89df4465f4ed864
   //nhấn nút để lấy dữ liệu
   const handleFindButtonClick = () => {
     // gửi yêu cầu fetch dữ liệu từ server với startDate và endDate đã chọn
@@ -178,14 +196,37 @@ function Notifications() {
       `http://localhost:3001/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
     )
       .then((response) => response.json())
-      .then(data => console.log(data))
-      // .then(data => {
-      //   // xử lý dữ liệu trả về từ server
-      //   setDataAlarm(data);
-      // })
+      // .then((data) => console.log(data))
+      .then((data) => {
+        // xử lý dữ liệu trả về từ server
+        setDataAlarm(data.alarmFilter);
+      })
       .catch((error) => {
         Alert("Error fetching data from server:", error);
       });
+  };
+
+  const handleExport = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/api/v1/data/exportExcel", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          Authorization: "Bearer token",
+        },
+      });
+
+      const blob = await response.blob(); // get the blob data from response
+      const url = window.URL.createObjectURL(blob); // create URL from blob
+      const link = document.createElement("a"); // create anchor element
+      link.href = url; // set URL as href attribute
+      link.setAttribute("download", "report.xlsx"); // set filename as download attribute
+      document.body.appendChild(link); // append anchor element to body
+      link.click(); // simulate click on anchor element to start download
+      link.remove(); // remove anchor element after download
+    } catch (error) {
+      console.log(error); // handle error here
+    }
   };
 
   return (
@@ -224,6 +265,32 @@ function Notifications() {
                   <Button variant="contained" color="inherit" onClick={handleFindButtonClick}>
                     Find
                   </Button>
+<<<<<<< HEAD
+=======
+                  <Button variant="contained" color="inherit" onClick={handleExport}>
+                    Export Excel
+                  </Button>
+                  {/* <Button
+                    variant="contained"
+                    color="inherit"
+                    onClick={handleExport("http://localhost:3001/api/v1/data/exportPDF")}
+                  >
+                    Export Pdf
+                  </Button> */}
+                  {/* <TextField type="date" 
+                  variant="outlined" 
+                  dateFormat='DD/MM/yyy'
+                  maxDate={new Date()}
+                  value = {new Date()}/>
+                  <TextField type="time" variant="outlined" />
+                  &nbsp;To&nbsp;
+                  <TextField type="date" variant="outlined" />
+                  <TextField type="time" variant="outlined" />
+                  &nbsp;
+                  <Button variant="contained" color="primary">
+                    Find
+                  </Button> */}
+>>>>>>> 5acd62b9d6477d2f46eea61fb89df4465f4ed864
                 </Typography>
               </Box>
               <Table>
@@ -245,7 +312,7 @@ function Notifications() {
                       <TableCell
                         align="center"
                         style={{
-                          color: item.type === "HI" || item.type === "LO" ? "#FFCC00" : "red",
+                          color: item.type === "High" || item.type === "Low" ? "#FFCC00" : "red",
                         }}
                       >
                         {item.type}
@@ -253,7 +320,7 @@ function Notifications() {
                       <TableCell
                         align="center"
                         style={{
-                          color: item.type === "HI" || item.type === "LO" ? "#FFCC00" : "red",
+                          color: item.type === "High" || item.type === "Low" ? "#FFCC00" : "red",
                         }}
                       >
                         {moment(item.parameter.createdAt).format("DD/MM/YYYY hh:mm A")}
@@ -261,7 +328,7 @@ function Notifications() {
                       <TableCell
                         align="center"
                         style={{
-                          color: item.type === "HI" || item.type === "LO" ? "#FFCC00" : "red",
+                          color: item.type === "High" || item.type === "Low" ? "#FFCC00" : "red",
                         }}
                       >
                         {item.parameter.name}
@@ -269,7 +336,7 @@ function Notifications() {
                       <TableCell
                         align="center"
                         style={{
-                          color: item.type === "HI" || item.type === "LO" ? "#FFCC00" : "red",
+                          color: item.type === "High" || item.type === "Low" ? "#FFCC00" : "red",
                         }}
                       >
                         {item.parameter.value}

@@ -5,7 +5,6 @@ export const SocketContext = createContext();
 
 const socket = io.connect("http://localhost:3001");
 
-
 export const SocketProvider = ({ children }) => {
   const notificationsRef = useRef([]);
   const arraydata = useRef(Array(29).fill(0));

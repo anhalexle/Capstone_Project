@@ -48,9 +48,9 @@ function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [account, setAccount] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // xử lí hiện thị ra thông báo khi đăng nhập sai
   const [errorMessage, setErrorMessage] = useState("");
@@ -60,7 +60,14 @@ function Basic() {
   const handleSignIn = async () => {
     try {
       console.log("gửi nè dm");
+<<<<<<< HEAD
       const response = await axios.post("http://localhost:3001/api/login", { account, password }); 
+=======
+      const response = await axios.post("http://localhost:3001/api/v1/users/login", {
+        email,
+        password,
+      });
+>>>>>>> 5acd62b9d6477d2f46eea61fb89df4465f4ed864
       console.log("nhận nè", response.data.token);
       localStorage.setItem("token", response.data.token);
       // Redirect to dashboard page
@@ -111,9 +118,9 @@ function Basic() {
             <MDBox mb={2}>
               <MDInput
                 type="email"
-                label="Account"
+                label="email"
                 fullWidth
-                onChange={(e) => setAccount(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </MDBox>
             <MDBox mb={2}>
@@ -146,7 +153,7 @@ function Basic() {
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">
               <MDTypography variant="button" color="text">
-                Don&apos;t have an account?{" "}
+                Don&apos;t have an email?{" "}
                 <MDTypography
                   component={Link}
                   to="/authentication/sign-up"

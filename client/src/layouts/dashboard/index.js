@@ -137,7 +137,6 @@ function Dashboard() {
       // });
     };
     socket.emit("send-me-data");
-
     socket.on("send-all-data-client", handleServerData);
     socket.on("new-data-client", handleServerData);
     console.log("useEffect lần 1");
