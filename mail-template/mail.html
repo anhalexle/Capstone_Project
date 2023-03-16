@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mail</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            background-color: #CCCCCC;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            background-color: #f7fefe;
+            width: 100%;
+            max-width: 700px;
+            text-align: center;
+            font-size: 30px;
+            font-weight: 900;
+        }
+
+        .header p {
+            margin: 0.5em 0 0.5em 0;
+        }
+
+        .background {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            height: 380px;
+        }
+
+        .background div {
+            position: absolute;
+            top: 0;
+            text-align: center;
+            color: #FFFFFF;
+            width: calc(100% - 60px);
+            height: 380px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            padding: 0 30px 0 30px;
+        }
+
+        .background p,
+        .background h1 {
+            margin: 0;
+        }
+
+        img {
+            width: 100%;
+            height: 380px;
+        }
+
+        .background button {
+            width: 150px;
+            height: 50px;
+            border: none;
+            background-color: #000000;
+            color: #FFFFFF;
+            font-weight: bold;
+            margin: 15px auto 15px auto;
+        }
+
+        .information {
+            background-color: #f7fefe;
+            width: 100%;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .information .date {
+            font-size: 12px;
+            text-align: right;
+        }
+
+        .main {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .main h1 {
+            color: #fcb644;
+            margin: 0 0 10px 0;
+        }
+
+        .main .col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 25%;
+            font-weight: bold;
+        }
+
+        .col h1, .col p {
+            text-shadow: 1px 1px 0 #CCCCCC;
+        }
+
+        .col.focus {
+            width: 100%;
+            font-size: 22px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <p>Capstone Project</p>
+        </div>
+
+        <div class="background">
+            <img src="images/data4.png" />
+            <div>
+                <h1>Control your work mean control your life</h1>
+                <p style="font-size: 20px; font-weight: bold;">Give you the solution to supervise your electrical energy
+                    use and keep your money save</p>
+                <button>GET STARTED</button>
+            </div>
+        </div>
+        
+        <div class="information">
+            <h1>Alarm Information</h1>
+
+            <div class="main">
+
+                <div class="col focus">
+                    <p>Name</p>
+                    <h1>Voltage 3</h1>
+                </div>
+
+                <div class="col focus">
+                    <p>Problem Type</p>
+                    <h1>High High</h1>
+                </div>
+
+                <div class="col focus">
+                    <p>Problem Value</p>
+                    <h1>600</h1>
+                </div>
+                <!-- <div class="col">
+                    <p>Current 3</p>
+                    <h1>20A</h1>
+                </div>
+                <div class="col">
+                    <p>Frequency 3</p>
+                    <h1>100Hz</h1>
+                </div>
+                <div class="col">
+                    <p>Power 3</p>
+                    <h1>2kWh</h1>
+                </div>
+                <div class="col">
+                    <p>PF 3</p>
+                    <h1>0.15</h1>
+                </div> -->
+            </div>
+
+            <p class="date">Created: Sun, March 5 2023 01:21:24 GMT+7 (Indochina Time) </p>
+        </div>
+    </div>
+</body>
+
+</html>
