@@ -18,6 +18,8 @@ import Grid from "@mui/material/Grid";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
+//
+import AppWidgetSummary from "./newWidget";
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -35,10 +37,11 @@ import Divider from "@mui/material/Divider";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 /// real-time chart
 // nhớ install "npm install recharts"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+// import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 //  Provider
 import { useContext } from "react";
-import { SocketContext } from "../../SocketContext";
+// import { SocketContext } from "../../multiContext";
+import useMultiContext from "useMultiContext";
 //  ảnh
 import imgPhase2 from "../../assets/images/MyProject/2phase.png";
 import imgPhase3 from "../../assets/images/MyProject/3phase.png";
@@ -52,18 +55,27 @@ import imgTanso from "../../assets/images/MyProject/tanso.png";
 import "react-toastify/dist/ReactToastify.css";
 import RealtimeChart from "../dashboard/real-timeChart";
 
+// import React from "react";
+import { Line } from "react-chartjs-2";
+import "chartjs-plugin-streaming";
+
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
 const arraydata_1 = Array(29).fill(0);
 
 function Dashboard() {
   // const [arraydata_1, setArraydata_1] = useState(Array(29).fill(0));
-
-  const { socket, notificationsRef, arraydata } = useContext(SocketContext);
+  const [chartVoltage, setChartVoltage] = useState(false);
+  const { socket, notificationsRef } = useMultiContext();
   const [dataPrint, setDataPrint] = useState({ data: arraydata_1, timestamp: Date.now() });
 
-  const [data, setData] = useState([]); // dữ liệu chart
+  // const [data, setData] = useState([]); // dữ liệu chart
 
   const intervalRef = useRef(null); // lưu trữ reference tới interval
- 
   useEffect(() => {
     const handleServerData = (newData) => {
       newData.flat().map((d) => {
@@ -128,127 +140,118 @@ function Dashboard() {
         }
       });
       setDataPrint((prevState) => ({ data: arraydata_1, timestamp: Date.now() }));
-
-      // real-time chart
-
-      // setData((prevData) => {
-      //   const timestamp = new Date().getTime(); // lấy thời gian hiện tại
-      //   return [...prevData, { time: timestamp, value: newData }];
-      // });
     };
     socket.emit("send-me-data");
     socket.on("send-all-data-client", handleServerData);
     socket.on("new-data-client", handleServerData);
-    console.log("useEffect lần 1");
     return () => {
       socket.off("new-data", handleServerData);
       clearInterval(intervalRef.current);
     };
   }, []);
 
-  // useEffect(() => {
-  //   // thiết lập interval để update chart
-  //   intervalRef.current = setInterval(() => {
-  //     setData((prevData) => {
-  //       const newTimestamp = new Date().getTime(); // lấy thời gian hiện tại
-  //       // xoá dữ liệu cũ hơn 30 giây
-  //       const filteredData = prevData.filter((d) => d.time >= newTimestamp - 30000);
-  //       return filteredData;
-  //     });
-  //   }, 1000); // update chart mỗi giây
-  // }, []);
-
-
-  console.log("reder ngoài callback tới trước return");
   return (
     <DashboardLayout>
-      {console.log("****************trong returen*******************")}
-      <DashboardNavbar />
-      <MDBox>
-        <RealtimeChart />
-      </MDBox>
-      {/* <MDBox> ve real-time chart new
+      <DashboardNavbar absolute />
 
-        <LineChart
-          width={700}
-          height={300}
-          data={data}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-        >
-          <XAxis
-            dataKey="time"
-            type="number"
-            domain={["dataMin", "dataMax"]}
-            tickCount={10}
-            tickFormatter={(time) =>
-              new Date(time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-            }
-            label={{ value: "Time", position: "insideBottomRight", offset: 0 }}
-          />
-          <YAxis
-            dataKey="value"
-            label={{ value: "Value", angle: -90, position: "insideLeft" }}
-            domain={[150, 300]}
-          />
-          <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip
-            labelFormatter={(time) =>
-              new Date(time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-            }
-          />
-          <Legend />
-          <Line type="monotone" dataKey="value" stroke="#8884d8" />
-        </LineChart>
-
-      </MDBox> */}
-      
       <MDBox py={5}>
-        {/* //Voltage Phase */}
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5} mt={1.5}>
-              {/* Có thể dùng memo để render componet ComplexStatisticsCard */}
-              {console.log("giá trị voltage1", dataPrint[0])}
-              <ComplexStatisticsCard
-                color="warning"
-                icon_img={imgPhase3}
-                title="VOLTAGE 1 (V)"
-                count={dataPrint.data[0]}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5} mt={1.5}>
-              <ComplexStatisticsCard
-                icon_img={imgPhase3}
-                title="VOLTAGE 2 (V)"
-                count={dataPrint.data[1]}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5} mt={1.5}>
-              <ComplexStatisticsCard
-                color="success"
-                icon_img={imgPhase3}
-                title="VOLTAGE 3 (V)"
-                count={dataPrint.data[2]}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5} mt={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon_img={imgPhase3}
-                title="VOLTAGE AVERAGE (V)"
-                count={dataPrint.data[3]}
-              />
-            </MDBox>
-          </Grid>
-        </Grid>
-        <Divider />
-
+        <Accordion style={{ borderRadius: "10px" }}>
+          <AccordionSummary
+            style={{ border: "3px solid #0077be", borderRadius: "7px" }}
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography style={{ fontWeight: "bold", color: "#0077be" }}>VOLTAGE</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {/* //Voltage Phase */}
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={6} lg={3}>
+                <MDBox mb={1.5} mt={1.5}>
+                  {/* Có thể dùng memo để render componet ComplexStatisticsCard */}
+                  <AppWidgetSummary
+                    title="VOLTAGE 1 (V)"
+                    icon={imgPhase3}
+                    color="error"
+                    total={dataPrint.data[0]}
+                  />
+                </MDBox>
+              </Grid>
+              <Grid item xs={12} md={6} lg={3}>
+                <MDBox mb={1.5} mt={1.5}>
+                  <AppWidgetSummary
+                    title="VOLTAGE 2 (V)"
+                    icon={imgPhase3}
+                    color="warning"
+                    total={dataPrint.data[1]}
+                  />
+                </MDBox>
+              </Grid>
+              <Grid item xs={12} md={6} lg={3}>
+                <MDBox mb={1.5} mt={1.5}>
+                  <AppWidgetSummary
+                    title="VOLTAGE 3 (V)"
+                    icon={imgPhase3}
+                    color="info"
+                    total={dataPrint.data[2]}
+                  />
+                </MDBox>
+              </Grid>
+              <Grid item xs={12} md={6} lg={3}>
+                <MDBox mb={1.5} mt={1.5}>
+                  <AppWidgetSummary
+                    title="VOLTAGE AVERAGE (V)"
+                    icon={imgPhase3}
+                    color="secondary"
+                    total={dataPrint.data[3]}
+                  />
+                </MDBox>
+              </Grid>
+            </Grid>
+            <Accordion
+              // sx={{height: 50 }}
+              style={{ borderRadius: "7px" }}
+              expanded={chartVoltage}
+              onChange={() => {
+                setChartVoltage((prevState) => !prevState);
+              }}
+            >
+              <AccordionSummary
+                style={{ border: "1.5px solid #0077be", borderRadius: "7px" }}
+                expandIcon={<ExpandMoreIcon />}
+              >
+                <Typography
+                  sx={{
+                    width: "100%",
+                    flexShrink: 0,
+                    fontStyle: "italic",
+                    color: "black",
+                  }}
+                >
+                  Real-time Chart
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                {chartVoltage && (
+                  <RealtimeChart
+                    data={[
+                      dataPrint.data[0],
+                      dataPrint.data[1],
+                      dataPrint.data[2],
+                      dataPrint.data[3],
+                    ]}
+                    nameLine1="Voltage 1"
+                    nameLine2="Voltage 2"
+                    nameLine3="Voltage 3"
+                    nameLine4="Voltage 4"
+                    title="Voltage (v)"
+                  />
+                )}
+              </AccordionDetails>
+            </Accordion>
+          </AccordionDetails>
+        </Accordion>
         {/* //Voltage Phase */}
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={3}>
@@ -515,58 +518,6 @@ function Dashboard() {
           </Grid>
         </Grid>
 
-        {/*         
-        <MDBox mt={4.5}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={1.5} mt={1.5}>
-                <ReportsBarChart
-                  color="info"
-                  title="website views"
-                  description="Last Campaign Performance"
-                  date="campaign sent 2 days ago"
-                  chart={reportsBarChartData}
-                />
-              </MDBox>
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={1.5} mt={1.5}>
-                <ReportsLineChart
-                  color="success"
-                  title="daily sales"
-                  description={
-                    <>
-                      (<strong>+15%</strong>) increase in today sales.
-                    </>
-                  }
-                  date="updated 4 min ago"
-                  chart={sales}
-                />
-              </MDBox>
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={1.5} mt={1.5}>
-                <ReportsLineChart
-                  color="dark"
-                  title="completed tasks"
-                  description="Last Campaign Performance"
-                  date="just updated"
-                  chart={tasks}
-                />
-              </MDBox>
-            </Grid>
-          </Grid>
-        </MDBox> */}
-        {/* <MDBox>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={8}>
-              <Projects />
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <OrdersOverview />
-            </Grid>
-          </Grid>
-        </MDBox> */}
         <div />
       </MDBox>
       <Footer />

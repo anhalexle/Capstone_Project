@@ -26,8 +26,7 @@ import Divider from "@mui/material/Divider";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 // import imgPhase_2 from "../../../../assets/images/MyProject/2phase.png";
-import {useState, useEffect, memo} from 'react';
-
+import { useState, useEffect, memo } from "react";
 
 function ComplexStatisticsCard({ color, title, count, icon_img }) {
   // const [countChange, setCountChange] = useState(0)
@@ -37,7 +36,6 @@ function ComplexStatisticsCard({ color, title, count, icon_img }) {
 
   return (
     <Card>
-      {console.log("vào rồi nè dcmn",count)}
       <MDBox display="flex" justifyContent="space-between" pt={1} px={2}>
         <MDBox
           variant="gradient"
@@ -64,22 +62,8 @@ function ComplexStatisticsCard({ color, title, count, icon_img }) {
           </MDTypography>
           <MDTypography variant="h4">{count}</MDTypography>
         </MDBox>
-
       </MDBox>
       <Divider />
-      {/* <MDBox pb={2} px={2}>
-        <MDTypography component="p" variant="button" color="text" display="flex">
-          <MDTypography
-            component="span"
-            variant="button"
-            fontWeight="bold"
-            color={percentage.color}
-          >
-            {percentage.amount}
-          </MDTypography>
-          &nbsp;{percentage.label}
-        </MDTypography>
-      </MDBox> */}
     </Card>
   );
 }

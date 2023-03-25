@@ -18,8 +18,10 @@ import { useState, useEffect, useMemo } from "react";
 // react-router components
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Basic from "./layouts/authentication/sign-in";
-import PrivateRoutes from "./PrivateRoutes";
+import RequireAuth from "./RequireAuth";
 import jwt_decode from "jwt-decode";
+//trang không có quyền đăng nhập
+import Unauthorized from "../src/layouts/Unauthorized/index";
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
@@ -48,6 +50,7 @@ import createCache from "@emotion/cache";
 
 // Material Dashboard 2 React routes
 import { pulicRoutes, privateRoutes } from "routes";
+import useMultiContext from "useMultiContext";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
@@ -55,6 +58,7 @@ import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "co
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 export default function App() {
+  console.log("vào appp");
   const [controller, dispatch] = useMaterialUIController();
   const {
     miniSidenav,
@@ -69,6 +73,8 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
+  const { auth } = useMultiContext();
+  console.log("auth trong app", auth);
   // console.log("render app");
   // const token = localStorage.getItem("token"); // Lấy chuỗi token từ localStorage
   // console.log("Lấy chuỗi token từ localStorage", token);
@@ -78,7 +84,7 @@ export default function App() {
   // console.log("Giải mã token", account); // 'user1'
   // Cache for the rtl
   // kiểm tra có token thì vào trang doashborad luôn không thì vào log-in
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
 
   useMemo(() => {
     const cacheRtl = createCache({
@@ -92,7 +98,6 @@ export default function App() {
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
-      console.log("chuột vào");
       setMiniSidenav(dispatch, false);
       setOnMouseEnter(true);
     }
@@ -101,7 +106,6 @@ export default function App() {
   // Close sidenav when mouse leave mini sidenav
   const handleOnMouseLeave = () => {
     if (onMouseEnter) {
-      console.log("chuột ra");
       setMiniSidenav(dispatch, true);
       setOnMouseEnter(false);
     }
@@ -191,7 +195,7 @@ export default function App() {
           <Sidenav
             color={sidenavColor}
             brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName="Đồ Án Tốt "
+            brandName="Đồ Án Tốt Nghiệp "
             routes={[...privateRoutes, ...pulicRoutes]}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
@@ -202,14 +206,45 @@ export default function App() {
       )}
       {layout === "vr" && <Configurator />}
       <Routes>
-        <Route element={<PrivateRoutes />}>{getRoutes(privateRoutes)}</Route>
+        {/* <Route element={<RequireAuth allowedRoles={"admin"} />}>{getRoutes(privateRoutes)}</Route> */}
+        {/* doashborad */}
+        <Route element={<RequireAuth allowedRoles={["admin", "user"]} />}>
+          <Route
+            exact
+            path={privateRoutes[0].route}
+            element={privateRoutes[0].component}
+            key={privateRoutes[0].key}
+          />
+          <Route
+            exact
+            path={privateRoutes[1].route}
+            element={privateRoutes[1].component}
+            key={privateRoutes[1].key}
+          />
+        </Route>
+
+        {/* Notifications */}
+        <Route element={<RequireAuth allowedRoles={["admin"]} />}>
+          <Route
+            exact
+            path={privateRoutes[2].route}
+            element={privateRoutes[2].component}
+            key={privateRoutes[2].key}
+          />
+          <Route
+            exact
+            path={privateRoutes[3].route}
+            element={privateRoutes[3].component}
+            key={privateRoutes[3].key}
+          />
+        </Route>
         {getRoutes(pulicRoutes)}
-
-        {/* <Route path="*" element={<Navigate to="authentication/sign-in" />} /> */}
-
+        <Route path="/unauthorized" element={<Unauthorized />} />
         <Route
           path="/"
-          element={token ? <Navigate to="/dashboard" /> : <Navigate to="authentication/sign-in" />}
+          element={
+            auth === null ? <Navigate to="authentication/sign-in" /> : <Navigate to="/dashboard" />
+          }
         />
       </Routes>
     </ThemeProvider>

@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 // react-router-dom components
@@ -44,9 +44,11 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 // Images
 import bgImage from "assets/images/Truong_BK_CS1.jpg";
 
+import useMultiContext from "../../../useMultiContext";
+
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
-
+  const { auth ,setAuth } = useMultiContext();
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
   const navigate = useNavigate();
 
@@ -59,25 +61,24 @@ function Basic() {
 
   const handleSignIn = async () => {
     try {
-      console.log("gửi nè dm");
-<<<<<<< HEAD
-      const response = await axios.post("http://localhost:3001/api/login", { account, password }); 
-=======
       const response = await axios.post("http://localhost:3001/api/v1/users/login", {
         email,
         password,
       });
->>>>>>> 5acd62b9d6477d2f46eea61fb89df4465f4ed864
-      console.log("nhận nè", response.data.token);
-      localStorage.setItem("token", response.data.token);
-      // Redirect to dashboard page
-      navigate("/dashboard", { replace: true });
+      console.log("nhận nè", response.data);
+      const roles = response?.data?.roles;
+      const accessToken = response?.data?.accessToken;
+      console.log("nhận nè he", roles, accessToken);
+      setAuth(response.data);
+      navigate("/", { replace: true });
     } catch (error) {
       console.error(error);
       setErrorMessage("Tên đăng nhập hoặc mật khẩu không đúng");
     }
   };
-
+ 
+  //reset auth
+  // useEffect(() => setAuth(null));
   return (
     <BasicLayout image={bgImage}>
       <Card>
@@ -95,23 +96,6 @@ function Basic() {
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
             Sign in
           </MDTypography>
-          {/* <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
-            <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
-                <FacebookIcon color="inherit" />
-              </MDTypography>
-            </Grid>
-            <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
-                <GitHubIcon color="inherit" />
-              </MDTypography>
-            </Grid>
-            <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
-                <GoogleIcon color="inherit" />
-              </MDTypography>
-            </Grid>
-          </Grid> */}
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">

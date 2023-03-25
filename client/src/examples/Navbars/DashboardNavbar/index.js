@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 import { useState, useEffect, useCallback, memo, useRef } from "react";
-import moment from 'moment';
+import moment from "moment";
 
 // react-router components
 import { useLocation, Link } from "react-router-dom";
@@ -29,7 +29,7 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import Icon from "@mui/material/Icon";
 //thêm icon
-import ExpandMore from '@mui/icons-material/ExpandMore';
+import ExpandMore from "@mui/icons-material/ExpandMore";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDInput from "components/MDInput";
@@ -56,73 +56,69 @@ import {
 } from "context";
 
 //toast
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 //context soket
 //Provider
-import { useContext } from "react"
-import { SocketContext } from "../../../SocketContext";
-
+import { useContext } from "react";
+// import { SocketContext } from "../../../multiContext";
+import useMultiContext from "../../../useMultiContext";
 //tỰ THÊM NÚT NHẤN
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 //Di chuyển tới page notification
-import NotificationsPage from "../../../layouts/notifications"
+import NotificationsPage from "../../../layouts/notifications";
 import { Route, Routes } from "react-router-dom";
 import Grid from "@mui/material/Grid";
-import MDAlert from "../../../components/MDAlert"
+import MDAlert from "../../../components/MDAlert";
 import MDTypography from "../../../components/MDTypography";
-
 
 function DashboardNavbar({ absolute, light, isMini }) {
   useEffect(() => {
-    console.log("re-render Navbar")
-    setNotifications(notificationsRef.current)
+    setNotifications(notificationsRef.current);
   }, []);
 
   // const notificationsRef = useRef([]);
   const [notifications, setNotifications] = useState([]);
-  //nút nhấn xem toàn bộ thông báo 
+  //nút nhấn xem toàn bộ thông báo
   const [showAllNotifications, setShowAllNotifications] = useState(false);
   //xóa alarm
   const [confirmClearNotifications, setConfirmClearNotifications] = useState(false);
   //đi tới trang notification
   // const history = useHistory();
 
-
-  const { socket, notificationsRef, arraydata,} = useContext(SocketContext);
+  const { socket, notificationsRef } = useMultiContext();
   const idAlarmRef = useRef(0);
-  console.log("re-render",idAlarmRef);
 
   const handleServerWarning = useCallback((myObject) => {
-    console.log(myObject)
     //cài thêm thu viện moment
-    const dateString = moment(myObject.parameter.createdAt).format('DD/MM/YYYY hh:mm A');
-    console.log(dateString);
+    const dateString = moment(myObject.parameter.createdAt).format("DD/MM/YYYY hh:mm A");
     const finalString = `${dateString} | ${myObject.parameter.name} | Value = ${myObject.parameter.value}`;
-    let type_toast = 'error';
+    let type_toast = "error";
     // setNotifications((prev => [...prev, { type: myObject.type, print: finalString }]));
-    notificationsRef.current = [{id: idAlarmRef.current++ , type: myObject.type, print: finalString }, ...notificationsRef.current];
-    setNotifications(notificationsRef.current)
-    console.log(notificationsRef.current)
-    if (myObject.type === 'High' || myObject.type === 'Low') {
-      type_toast = 'warn';
+    notificationsRef.current = [
+      { id: idAlarmRef.current++, type: myObject.type, print: finalString },
+      ...notificationsRef.current,
+    ];
+    setNotifications(notificationsRef.current);
+    if (myObject.type === "High" || myObject.type === "Low") {
+      type_toast = "warn";
     }
     toast[type_toast](finalString, {
-      position: 'bottom-right',
+      position: "bottom-right",
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      theme: 'light',
+      theme: "light",
     });
   }, []);
 
   useEffect(() => {
-    socket.on('alarm', handleServerWarning);
+    socket.on("alarm", handleServerWarning);
     return () => {
-      socket.off('alarm', handleServerWarning);
+      socket.off("alarm", handleServerWarning);
     };
   }, []);
 
@@ -164,37 +160,35 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleCloseMenu = () => setOpenMenu(false);
 
   // Render the notifications menu
-  const displayNotification = ({id, type, print }) => {
+  const displayNotification = ({ id, type, print }) => {
     let action;
 
-    type === 'High' || type === 'Low' ?  action = "warning" : action ="error"
+    type === "High" || type === "Low" ? (action = "warning") : (action = "error");
     // if (type === 'High' || type === 'Low') {
-      return (
-        // <NotificationItem
-        //   icon={<Icon>warning</Icon>}
-        //   style={{ backgroundColor: 'yellow' }}
-        //   title={`${type}: ${print}`}
-        //   dismissible 
-        //    />   
-       <MDAlert color={action} dismissible 
-       onDismiss={() => {
-        notificationsRef.current = notifications.filter(obj => obj.id !== id)
-        setNotifications(notificationsRef.current);
-        console.log("xóa rồi nè,",notifications);
-        console.log("id xóa,",id);
-      }}
-       >
+    return (
+      // <NotificationItem
+      //   icon={<Icon>warning</Icon>}
+      //   style={{ backgroundColor: 'yellow' }}
+      //   title={`${type}: ${print}`}
+      //   dismissible
+      //    />
+      <MDAlert
+        color={action}
+        dismissible
+        onDismiss={() => {
+          notificationsRef.current = notifications.filter((obj) => obj.id !== id);
+          setNotifications(notificationsRef.current);
+        }}
+      >
         <MDTypography variant="body2" color="white">
-      <MDTypography component="a" href="#" variant="body2" fontWeight="medium" color="white">
-      {type}: {" "}
-      </MDTypography>
-      {print}
-    </MDTypography>
-
-       </MDAlert>
-      );
-    } 
-  
+          <MDTypography component="a" href="#" variant="body2" fontWeight="medium" color="white">
+            {type}:{" "}
+          </MDTypography>
+          {print}
+        </MDTypography>
+      </MDAlert>
+    );
+  };
 
   // Add this function to handle the "confirm" button click
   const handleConfirmClearNotifications = () => {
@@ -213,19 +207,17 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onClose={handleCloseMenu}
       sx={{ mt: 2 }}
     >
-
       {showAllNotifications
         ? notifications.map((n) => displayNotification(n))
         : notifications.slice(0, 5).map((n) => displayNotification(n))}
-      
-        <Button onClick={() => setShowAllNotifications(!showAllNotifications)}>
-          <Icon sx={iconsStyle}>{showAllNotifications ? 'expand_less' : 'expand_more'}</Icon>
-        </Button>
-        <Button onClick={handleConfirmClearNotifications}>Confirm</Button>
-        <Link to="/notifications">
-          <Button>To Notifications</Button>
-        </Link>
-  
+
+      <Button onClick={() => setShowAllNotifications(!showAllNotifications)}>
+        <Icon sx={iconsStyle}>{showAllNotifications ? "expand_less" : "expand_more"}</Icon>
+      </Button>
+      <Button onClick={handleConfirmClearNotifications}>Confirm</Button>
+      <Link to="/notifications">
+        <Button>To Notifications</Button>
+      </Link>
     </Menu>
   );
 
@@ -243,10 +235,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
   });
 
   return (
-
-
     <AppBar
-      position={absolute ? "absolute" : navbarType}
+      position={absolute ? "static" : navbarType}
+      // position="static"
       color="inherit"
       sx={(theme) => navbar(theme, { transparentNavbar, absolute, light, darkMode })}
     >
@@ -261,13 +252,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
             </MDBox>
             <MDBox color={light ? "white" : "inherit"}>
               <Link to="/authentication/sign-in/basic">
-
-
                 <IconButton sx={navbarIconButton} size="small" disableRipple>
                   <Icon sx={iconsStyle}>account_circle</Icon>
                 </IconButton>
-
-
               </Link>
               <IconButton
                 size="small"
@@ -301,31 +288,28 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 onClick={handleOpenMenu}
               >
                 <Icon sx={iconsStyle}>notifications</Icon>
-                {
-                  notifications.length > 0 &&
-                  <div style={{
-                    width: '13px',
-                    height: '13px',
-                    backgroundColor: 'red',
-                    borderRadius: '50%',
-                    padding: '5px',
-                    fontSize: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'absolute',
-                    top: '0px',
-                    right: '4px'
-                  }}>
+                {notifications.length > 0 && (
+                  <div
+                    style={{
+                      width: "13px",
+                      height: "13px",
+                      backgroundColor: "red",
+                      borderRadius: "50%",
+                      padding: "5px",
+                      fontSize: "12px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      position: "absolute",
+                      top: "0px",
+                      right: "4px",
+                    }}
+                  >
                     {notifications.length}
                   </div>
-                }
-
+                )}
               </IconButton>
               {renderMenu()}
-
-
-
             </MDBox>
           </MDBox>
         )}
