@@ -118,13 +118,13 @@ class DataType {
         path: 'parameter',
         select: 'name value type createdAt',
       });
+      global._io.emit('alarm', alarmFilter);
       // const alarmFilter = await Alarm.findById(newAlarm._id).select(
       //   'parameter type'
       // );
       const user = await User.findOne({ role: 'user' });
       const newAlarmEmail = new Email(user, alarmFilter);
       await newAlarmEmail.sendAlarm();
-      global._io.emit('alarm', alarmFilter);
     } catch (err) {
       console.log(err);
     }

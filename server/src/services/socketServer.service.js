@@ -42,11 +42,11 @@ class SocketServices {
         const arr = [];
         const { name, value, createdAt } = newData;
         const filterData = { name, value, createdAt };
+        arr.push(filterData);
+        global._io.emit('new-data-client', arr);
         console.log(newData.type, newData);
         if (newData.type !== 'integral_power')
           await dataFeatures.createAlarm(newData.type, newData);
-        arr.push(filterData);
-        global._io.emit('new-data-client', arr);
       } catch (err) {
         console.log(err);
       }

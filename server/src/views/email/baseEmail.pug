@@ -9,34 +9,28 @@ html
     title= subject
 
     include _style
-      
+
   body
-    table.body(role='presentation', border='0', cellpadding='0', cellspacing='0')
-      tbody
-        tr
-          td
-          td.container
-            .content
-              // START CENTERED WHITE CONTAINER
-              table.main(role='presentation')
-
-                // START MAIN AREA
-                tbody
-                  tr
-                    td.wrapper
-                      table(role='presentation', border='0', cellpadding='0', cellspacing='0')
-                        tbody
-                          tr
-                            td
-                              // CONTENT
-                              block content
-
-              // START FOOTER
-              .footer
-                table(role='presentation', border='0', cellpadding='0', cellspacing='0')
-                  tbody
-                    tr
-                      td.content-block
-                        span.apple-link Capstone Project
-                        
-          //- td  
+    .header
+      p Capstone Project
+    .background
+      img(src='images/data4.png')
+      div
+        h1 Control your work mean control your life
+        p(style='font-size: 20px; font-weight: bold;')
+          | Give you the solution to supervise your electrical energy
+          | use and keep your money save
+        button GET STARTED
+    .information
+      h1 Alarm Information
+      .main
+        .col.focus
+          p Name
+          h1 Voltage 3
+        .col.focus
+          p Problem Type
+          h1 High High
+        .col.focus
+          p Problem Value
+          h1 600
+        p.date Created: Sun, March 5 2023 01:21:24 GMT+7 (Indochina Time) 

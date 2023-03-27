@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 const dotenv = require('dotenv');
 
@@ -6,7 +7,9 @@ const connectDB = require('../../db/connect');
 const Data = require('../../models/data.model');
 const Bill = require('../../models/bill.model');
 
-dotenv.config({ path: './config.env' });
+// console.log(`${path.join('./Capstone', 'server')}\\config.env`);
+
+dotenv.config({ path: `${__dirname}\\..\\..\\..\\config.env` });
 
 // const DB = process.env.DATABASE_ONL.replace(
 //   '<PASSWORD>',
@@ -24,8 +27,8 @@ const importData = async () => {
   try {
     await connectDB(process.env.DATABASE_LOCAL);
     console.log('Connected to database');
-    await Data.create(data);
-    // await Bill.create(bill);
+    // await Data.create(data);
+    await Bill.create(bill);
     console.log('Data successfully created');
     process.exit();
   } catch (err) {
@@ -39,8 +42,8 @@ const deleteData = async () => {
   try {
     await connectDB(process.env.DATABASE_LOCAL);
     console.log('Connected to database');
-    await Data.deleteMany();
-    // await Bill.deleteMany();
+    // await Data.deleteMany();
+    await Bill.deleteMany();
     console.log('Data successfully deleted');
     process.exit();
   } catch (err) {
