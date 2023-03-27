@@ -111,7 +111,7 @@ function Billing() {
     //   `http://localhost:3001/api/v1/alarms/getSpecificAlarm?startDate=${startIndexDay}&endDate=${endIndexDay}`
     // )
     ///giả lập
-    fetch("http://localhost:3001/api/indexDay")
+    fetch("http://localhost:3001/api/indexDay") //"http://localhost:3001/api/v1/data/indexDay?startDate...&endDate=..."
       .then((response) => response.json())
       .then((data) => {
         setDataIndexDay(data);
@@ -316,7 +316,7 @@ function Billing() {
                         Hệ số nhân
                       </StyledTableCell>
                       <StyledTableCell sx={{ fontWeight: "bold" }} align="center">
-                        Điện tiêu thụ  (kWh)
+                        Điện tiêu thụ (kWh)
                       </StyledTableCell>
                     </TableRow>
                     {/* {dataIndexDay.map((row) => (

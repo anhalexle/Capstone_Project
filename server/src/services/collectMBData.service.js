@@ -8,7 +8,7 @@ dotenv.config({ path: `${__dirname}\\..\\..\\config.env` });
 const connectDB = require('../db/connect');
 const Data = require('../models/data.model');
 
-const socket = socketIO('http://localhost:3001');
+const socket = socketIO('http://localhost:3001'); //www.myCapstone.dev
 
 const client = new ModBusRTU();
 const DataFeatures = require('../utils/dataFeatures');

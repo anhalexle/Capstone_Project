@@ -101,10 +101,6 @@ function Notifications() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-<<<<<<< HEAD
-      {/* <Grid>con cho nhác</Grid> */}
-=======
->>>>>>> dfcd7c56f962a58f73668512aa6e1fa58e71fbdd
       <MDBox mt={6} mb={3}>
         <Grid container spacing={3} justifyContent="center">
           <Grid item xs={12} lg={8}>

@@ -25,7 +25,9 @@ function Form({ setData }) {
       name: data.type,
     };
     const res = await Api.post("/api/v1/data/drawChart", request);
+    console.log(res.data.data);
     setData(res.data.data);
+    // setData(res.data);
   }
 
   const timeUnit = ["", "Day", "Month", "Year"];
