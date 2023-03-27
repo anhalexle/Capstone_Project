@@ -67,8 +67,8 @@ function ChartDayIndex({ data }) {
       },
     },
     legend: {
-      position: "right",
-      offsetY: 40,
+      position: "top",
+      // offsetY: 40,
     },
     fill: {
       opacity: 1,

@@ -77,6 +77,21 @@ function Billing() {
     content: () => componentRef.current,
     documentTitle: "cccc",
   });
+  // ----------------------------------------------------------------------------------------------------------------------
+  //báo cáo:
+  const arryMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const [yearReport, setYearReport] = useState(new Date().getFullYear());
+  const [monthReport, setMonthReport] = useState(new Date().getMonth() - 1);
+  const startDateReport = new Date(
+    monthReport === 1 ? `12/12/${yearReport - 1}` : `12/${monthReport - 1}/${yearReport}`
+  );
+  const endDateReport = new Date(`11/${monthReport}/${yearReport}`);
+  // Tính hiệu của hai đối tượng Date theo đơn vị mili giây
+  console.log("ngayffffffffffffff", endDateReport.getTime(), startDateReport.getTime());
+  const timeDiff = Math.abs(endDateReport.getTime() - startDateReport.getTime());
+  const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+  // ----------------------------------------------------------------------------------------------------------------
   // xử lý tra cứu điện trong ngày
   const [startIndexDay, setStartIndexDay] = useState(
     new Date(new Date().setDate(new Date().getDate() - 1))
@@ -150,8 +165,8 @@ function Billing() {
     <DashboardLayout>
       {/* <DashboardNavbar absolute isMini /> */}
       <DashboardNavbar></DashboardNavbar>
-      <MDBox mt={8}>
-        {/* <MDBox mb={3}>
+      {/* <MDBox mt={8}> */}
+      {/* <MDBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} lg={8}>
               <Grid container spacing={3}>
@@ -194,7 +209,7 @@ function Billing() {
             </Grid>
           </Grid>
         </MDBox> */}
-      </MDBox>
+      {/* </MDBox> */}
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography
@@ -210,7 +225,116 @@ function Billing() {
         </AccordionSummary>
         <button onClick={handlePrint}>dsdsd</button>
         <AccordionDetails>
-          <div>chào em anh đứng</div>
+          <Grid align="center" mt={1} mb={3} container spacing={3}>
+            {/* tháng */}
+            <Grid item xs={4} md={4} lg={4}>
+              {/* <Box sx={{ minWidth: 120 }}> */}
+              <FormControl>
+                <InputLabel color="secondary">Tháng</InputLabel>
+                <Select
+                  style={{ width: 100, height: 40 }}
+                  value={monthReport}
+                  label="Tháng"
+                  onChange={(event) => {
+                    setMonthReport(event.target.value);
+                  }}
+                >
+                  {arryMonth.map((month) => (
+                    <MenuItem key={month} value={month}>
+                      {month}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              {/* </Box> */}
+            </Grid>
+            {/* nú nhấn năm với tra cứu */}
+            <Grid item xs={4} md={4} lg={4}>
+              {/* <Box sx={{ minWidth: 120 }}> */}
+              <FormControl>
+                <InputLabel color="secondary">Năm</InputLabel>
+                <Select
+                  style={{ width: 100, height: 40 }}
+                  value={yearReport}
+                  label="Năm"
+                  onChange={(event) => {
+                    setYearReport(event.target.value);
+                  }}
+                >
+                  {Array.from(
+                    { length: new Date().getFullYear() - 2017 + 1 },
+                    (_, index) => new Date().getFullYear() - index
+                  ).map((year) => (
+                    <MenuItem key={year} value={year}>
+                      {year}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              {/* </Box> */}
+            </Grid>
+            {/* nút tra cứu */}
+            <Grid item xs={4} md={4} lg={4}>
+              <Button variant="contained" style={{ color: "white" }} onClick={handleFindIndexYear}>
+                Tra Cứu
+              </Button>
+            </Grid>
+          </Grid>
+
+          <Box style={{ border: "2px solid #0077be", borderRadius: "4px", padding: "15px" }}>
+            <Grid>
+              <Typography
+                sx={{
+                  width: "100%",
+                  color: "black",
+                  textDecoration: "underline",
+                }}
+                variant="h5"
+              >
+                TÌNH HÌNH SỬ DỤNG ĐIỆN
+              </Typography>
+
+              <Typography variant="subtitle1">
+                Kỳ hóa đơn: Tháng {monthReport}/{yearReport} ({dayDiff} ngày từ{" "}
+                {startDateReport.toLocaleDateString()} đến {endDateReport.toLocaleDateString()})
+              </Typography>
+              {/* Bảng */}
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableBody>
+                    <TableRow sx={{ backgroundColor: "#bf68e68a" }}>
+                      <StyledTableCell sx={{ fontWeight: "bold" }} align="center">
+                        Bộ chỉ số
+                      </StyledTableCell>
+                      <StyledTableCell sx={{ fontWeight: "bold" }} align="center">
+                        Chỉ số mới
+                      </StyledTableCell>
+                      <StyledTableCell sx={{ fontWeight: "bold" }} align="center">
+                        Chỉ số cũ
+                      </StyledTableCell>
+                      <StyledTableCell sx={{ fontWeight: "bold" }} align="center">
+                        Hệ số nhân
+                      </StyledTableCell>
+                      <StyledTableCell sx={{ fontWeight: "bold" }} align="center">
+                        Điện tiêu thụ  (kWh)
+                      </StyledTableCell>
+                    </TableRow>
+                    {/* {dataIndexDay.map((row) => (
+                      <StyledTableRow key={row.Date}>
+                        <StyledTableCell align="center">{row.Date}</StyledTableCell>
+                        <StyledTableCell align="center">{row.OffPeak}</StyledTableCell>
+                        <StyledTableCell align="center">{row.Normal}</StyledTableCell>
+                        <StyledTableCell align="center">{row.Peak}</StyledTableCell>
+                        <StyledTableCell align="center">
+                          {row.OffPeak + row.Normal + row.Peak}
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))} */}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Grid>
+          </Box>
         </AccordionDetails>
       </Accordion>
 
@@ -258,6 +382,14 @@ function Billing() {
                     onChange={(date) => setEndIndexDay(date)}
                     maxDate={new Date()}
                     dateFormat="dd/MM/yyyy"
+                    style={{
+                      border: "2px solid #00bfff",
+                      borderRadius: "5px",
+                      padding: "10px",
+                    }}
+                    className="custom-datepicker"
+                    calendarClassName="custom-datepicker-calendar"
+                    dayClassName="custom-datepicker-day"
                   ></DatePicker>
                 </Grid>
               </Grid>

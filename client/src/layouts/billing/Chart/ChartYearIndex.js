@@ -111,29 +111,6 @@ function ChartYearIndex({ data }) {
         },
       },
     },
-    // xaxis: {
-    //   // type: "datetime",
-    //   categories: ["T1", "T2", "T3"],
-    //   group: {
-    //     style: {
-    //       fontSize: "10px",
-    //       fontWeight: 700,
-    //     },
-    //     groups: [
-    //       { title: "T1", cols: 2 },
-    //       { title: "T2", cols: 2 },
-    //       { title: "T3", cols: 2 },
-    //       { title: "T4", cols: 2 },
-    //       { title: "T5", cols: 2 },
-    //       { title: "T6", cols: 2 },
-    //       { title: "T7", cols: 2 },
-    //       { title: "T8", cols: 2 },
-    //       { title: "T10", cols: 2 },
-    //       { title: "T11", cols: 2 },
-    //       { title: "T12", cols: 2 },
-    //     ],
-    //   },
-    // },
 
     yaxis: {
       title: {
@@ -141,8 +118,8 @@ function ChartYearIndex({ data }) {
       },
     },
     legend: {
-      position: "right",
-      offsetY: 40,
+      position: "top",
+      // offsetY: 40,
     },
     fill: {
       opacity: 1,

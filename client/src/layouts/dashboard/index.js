@@ -64,6 +64,8 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Button from "@mui/material/Button";
+import Icon from "@mui/material/Icon";
 
 const arraydata_1 = Array(29).fill(0);
 
@@ -72,6 +74,8 @@ function Dashboard() {
   const [chartVoltage, setChartVoltage] = useState(false);
   const { socket, notificationsRef } = useMultiContext();
   const [dataPrint, setDataPrint] = useState({ data: arraydata_1, timestamp: Date.now() });
+
+  const [showAllNotifications, setShowAllNotifications] = useState(false);
 
   // const [data, setData] = useState([]); // dữ liệu chart
 
@@ -209,7 +213,7 @@ function Dashboard() {
                 </MDBox>
               </Grid>
             </Grid>
-            <Accordion
+            {/* <Accordion
               // sx={{height: 50 }}
               style={{ borderRadius: "7px" }}
               expanded={chartVoltage}
@@ -249,7 +253,33 @@ function Dashboard() {
                   />
                 )}
               </AccordionDetails>
-            </Accordion>
+            </Accordion> */}
+
+            <Button
+              sx={{
+                width: "100%",
+              }}
+              onClick={() => setChartVoltage(!chartVoltage)}
+            >
+              <Icon>{chartVoltage ? "expand_less" : "expand_more"}</Icon>
+            </Button>
+            {chartVoltage && (
+              <Grid>
+                <RealtimeChart
+                  data={[
+                    dataPrint.data[0],
+                    dataPrint.data[1],
+                    dataPrint.data[2],
+                    dataPrint.data[3],
+                  ]}
+                  nameLine1="Voltage 1"
+                  nameLine2="Voltage 2"
+                  nameLine3="Voltage 3"
+                  nameLine4="Voltage 4"
+                  title="Voltage (v)"
+                />
+              </Grid>
+            )}
           </AccordionDetails>
         </Accordion>
         {/* //Voltage Phase */}
