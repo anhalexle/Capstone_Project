@@ -44,6 +44,7 @@ import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
+import Chart from "layouts/chart/Chart";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -59,11 +60,19 @@ const privateRoutes = [
   },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
-    component: <Tables />,
+    name: "Chart",
+    key: "chart",
+    icon: <Icon fontSize="small">bar_chart</Icon>,
+    route: "/chart",
+    component: <Chart />,
+  },
+  {
+    type: "collapse",
+    name: "Notifications",
+    key: "notifications",
+    icon: <Icon fontSize="small">notifications</Icon>,
+    route: "/notifications",
+    component: <Notifications />,
   },
   {
     type: "collapse",
@@ -75,19 +84,11 @@ const privateRoutes = [
   },
   {
     type: "collapse",
-    name: "RTL",
-    key: "rtl",
-    icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
-    route: "/rtl",
-    component: <RTL />,
-  },
-  {
-    type: "collapse",
-    name: "Notifications",
-    key: "notifications",
-    icon: <Icon fontSize="small">notifications</Icon>,
-    route: "/notifications",
-    component: <Notifications />,
+    name: "Tables",
+    key: "tables",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/tables",
+    component: <Tables />,
   },
   {
     type: "collapse",
@@ -106,6 +107,7 @@ const privateRoutes = [
     component: <SignUp />,
   },
 ];
+
 const pulicRoutes = [
   {
     type: "collapse",

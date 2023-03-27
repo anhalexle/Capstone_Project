@@ -17,20 +17,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { saveAs } from "file-saver";
 
-// @mui material components
-// import Grid from "@mui/material/Grid";
-// import Card from "@mui/material/Card";
-
-// import {
-//   Box,
-//   Typography,
-//   Table,
-//   TableHead,
-//   TableBody,
-//   TableCell,
-//   TableRow
-// } from '@material-ui/core';
-
 //sửa lại thư viện
 import {
   Grid,
@@ -42,16 +28,9 @@ import {
   TableBody,
   TableCell,
   TableRow,
+  Alert,
 } from "@mui/material";
 import moment from "moment";
-//thêm thư viện chọn ngày chọn giờ
-// import { DatePicker, TimePicker } from '@material-ui/lab';
-
-// cài thêm thư viện "npm install @mui/lab"
-// import AdapterDateFns from '@mui/lab/AdapterDateFns';
-// import LocalizationProvider from '@mui/lab/LocalizationProvider';
-// import { DatePicker } from '@mui/x-date-pickers';
-// import TimePicker from '@mui/lab/TimePicker';
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -80,99 +59,6 @@ function Notifications() {
 
   const [endDate, setEndDate] = useState(new Date());
 
-  const [successSB, setSuccessSB] = useState(false);
-  const [infoSB, setInfoSB] = useState(false);
-  const [warningSB, setWarningSB] = useState(false);
-  const [errorSB, setErrorSB] = useState(false);
-
-  const openSuccessSB = () => setSuccessSB(true);
-  const closeSuccessSB = () => setSuccessSB(false);
-  const openInfoSB = () => setInfoSB(true);
-  const closeInfoSB = () => setInfoSB(false);
-  const openWarningSB = () => setWarningSB(true);
-  const closeWarningSB = () => setWarningSB(false);
-  const openErrorSB = () => setErrorSB(true);
-  const closeErrorSB = () => setErrorSB(false);
-
-  const alertContent = (name) => (
-    <MDTypography variant="body2" color="white">
-      A simple {name} alert with{" "}
-      <MDTypography component="a" href="#" variant="body2" fontWeight="medium" color="white">
-        an example link
-      </MDTypography>
-      . Give it a click if you like.
-    </MDTypography>
-  );
-
-  const renderSuccessSB = (
-    <MDSnackbar
-      color="success"
-      icon="check"
-      title="Material Dashboard"
-      content="Hello, world! This is a notification message"
-      dateTime="11 mins ago"
-      open={successSB}
-      onClose={closeSuccessSB}
-      close={closeSuccessSB}
-      bgWhite
-    />
-  );
-
-  const renderInfoSB = (
-    <MDSnackbar
-      icon="notifications"
-      title="Material Dashboard"
-      content="Hello, world! This is a notification message"
-      dateTime="11 mins ago"
-      open={infoSB}
-      onClose={closeInfoSB}
-      close={closeInfoSB}
-    />
-  );
-
-  const renderWarningSB = (
-    <MDSnackbar
-      color="warning"
-      icon="star"
-      title="Material Dashboard"
-      content="Hello, world! This is a notification message"
-      dateTime="11 mins ago"
-      open={warningSB}
-      onClose={closeWarningSB}
-      close={closeWarningSB}
-      bgWhite
-    />
-  );
-
-  const renderErrorSB = (
-    <MDSnackbar
-      color="error"
-      icon="warning"
-      title="Material Dashboard"
-      content="Hello, world! This is a notification message"
-      dateTime="11 mins ago"
-      open={errorSB}
-      onClose={closeErrorSB}
-      close={closeErrorSB}
-      bgWhite
-    />
-  );
-
-  // xử lí API
-  // useEffect(() => {
-  //   console.log("fetch nè con đũy");
-  //   fetch("http://localhost:3005/api/data")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       // Xử lý dữ liệu trả về ở đây
-  //       setDataAlarm(data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //     });
-  // }, []);
-  //nhấn nút để lấy dữ liệu
   const handleFindButtonClick = () => {
     // gửi yêu cầu fetch dữ liệu từ server với startDate và endDate đã chọn
     fetch(
@@ -185,7 +71,7 @@ function Notifications() {
         setDataAlarm(data.alarmFilter);
       })
       .catch((error) => {
-        console.error("Error fetching data from server:", error);
+        Alert("Error fetching data from server:", error);
       });
   };
 
@@ -215,14 +101,72 @@ function Notifications() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
+<<<<<<< HEAD
       {/* <Grid>con cho nhác</Grid> */}
+=======
+>>>>>>> dfcd7c56f962a58f73668512aa6e1fa58e71fbdd
       <MDBox mt={6} mb={3}>
         <Grid container spacing={3} justifyContent="center">
           <Grid item xs={12} lg={8}>
             <Card>
               {console.log("re-render", setHours(setMinutes(new Date(), 30), 20))}
               <Box p={2}>
-                <Typography variant="h5">
+                <Grid align="center" mt={1} mb={3} container spacing={3}>
+                  <Grid item xs={12} md={4} lg={4}>
+                    <Grid>
+                      <Typography>Ngày bắt đầu:</Typography>
+                    </Grid>
+                    <Grid>
+                      <DatePicker
+                        selected={startDate}
+                        onChange={(date) => setStartDate(date)}
+                        maxDate={new Date()}
+                        showTimeSelect
+                        // maxTime={startDate.getDate() === new Date().getDate() ? setHours(setMinutes(new Date(), new Date().getMinutes()), new Date().getHours()) : null}
+
+                        //  minTime={new Date()}
+                        timeIntervals={15}
+                        dateFormat="dd/MM/yyyy h:mm aa"
+                      />
+                    </Grid>
+                  </Grid>
+                  {/* // */}
+                  <Grid item xs={12} md={4} lg={4}>
+                    <Grid>
+                      <Typography>Ngày kết thúc:</Typography>
+                    </Grid>
+                    <Grid>
+                      <DatePicker
+                        selected={endDate}
+                        onChange={(date) => setEndDate(date)}
+                        maxDate={new Date()}
+                        minDate={startDate}
+                        showTimeSelect
+                        timeIntervals={15}
+                        dateFormat="dd/MM/yyyy h:mm aa"
+                      />
+                    </Grid>
+                  </Grid>
+                  {/* // */}
+                  <Grid item xs={12} md={4} lg={4} style={{ paddingTop: "40px" }}>
+                    <Grid>
+                      <Button
+                        variant="contained"
+                        style={{ color: "white" }}
+                        onClick={handleFindButtonClick}
+                      >
+                        Tra Cứu
+                      </Button>
+                    </Grid>
+                    <Grid>
+                      <Button variant="contained" style={{ color: "white" }} onClick={handleExport}>
+                        Xuất excel
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Grid>
+
+                {/* <Typography variant="h5">
                   From&nbsp;
                   <DatePicker
                     selected={startDate}
@@ -251,27 +195,7 @@ function Notifications() {
                   <Button variant="contained" color="inherit" onClick={handleExport}>
                     Export Excel
                   </Button>
-                  {/* <Button
-                    variant="contained"
-                    color="inherit"
-                    onClick={handleExport("http://localhost:3001/api/v1/data/exportPDF")}
-                  >
-                    Export Pdf
-                  </Button> */}
-                  {/* <TextField type="date" 
-                  variant="outlined" 
-                  dateFormat='DD/MM/yyy'
-                  maxDate={new Date()}
-                  value = {new Date()}/>
-                  <TextField type="time" variant="outlined" />
-                  &nbsp;To&nbsp;
-                  <TextField type="date" variant="outlined" />
-                  <TextField type="time" variant="outlined" />
-                  &nbsp;
-                  <Button variant="contained" color="primary">
-                    Find
-                  </Button> */}
-                </Typography>
+                </Typography> */}
               </Box>
               <Table>
                 <TableBody>
@@ -327,48 +251,8 @@ function Notifications() {
               </Table>
             </Card>
           </Grid>
-
-          <Grid item xs={12} lg={8}>
-            <Card>
-              <MDBox p={2} lineHeight={0}>
-                <MDTypography variant="h5">Notifications</MDTypography>
-                <MDTypography variant="button" color="text" fontWeight="regular">
-                  Notifications on this page use Toasts from Bootstrap. Read more details here.
-                </MDTypography>
-              </MDBox>
-              <MDBox p={2}>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} sm={6} lg={3}>
-                    <MDButton variant="gradient" color="success" onClick={openSuccessSB} fullWidth>
-                      success notification
-                    </MDButton>
-                    {renderSuccessSB}
-                  </Grid>
-                  <Grid item xs={12} sm={6} lg={3}>
-                    <MDButton variant="gradient" color="info" onClick={openInfoSB} fullWidth>
-                      info notification
-                    </MDButton>
-                    {renderInfoSB}
-                  </Grid>
-                  <Grid item xs={12} sm={6} lg={3}>
-                    <MDButton variant="gradient" color="warning" onClick={openWarningSB} fullWidth>
-                      warning notification
-                    </MDButton>
-                    {renderWarningSB}
-                  </Grid>
-                  <Grid item xs={12} sm={6} lg={3}>
-                    <MDButton variant="gradient" color="error" onClick={openErrorSB} fullWidth>
-                      error notification
-                    </MDButton>
-                    {renderErrorSB}
-                  </Grid>
-                </Grid>
-              </MDBox>
-            </Card>
-          </Grid>
         </Grid>
       </MDBox>
-      <Footer />
     </DashboardLayout>
   );
 }

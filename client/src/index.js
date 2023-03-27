@@ -22,14 +22,14 @@ import App from "App";
 import { MaterialUIControllerProvider } from "context";
 
 //  provider socket
-import { SocketProvider, SocketContext } from "./SocketContext";
+import { MultiProvider, SocketContext } from "./multiContext";
 
 ReactDOM.render(
   <BrowserRouter>
     <MaterialUIControllerProvider>
-      <SocketProvider>
+      <MultiProvider>
         <App />
-      </SocketProvider>
+      </MultiProvider>
     </MaterialUIControllerProvider>
   </BrowserRouter>,
   document.getElementById("root")
