@@ -1,7 +1,7 @@
 const path = require('path');
 
 const ModBusRTU = require('modbus-serial');
-const socketIO = require('socket.io-client');
+
 const dotenv = require('dotenv');
 
 const features = require('../utils/features.util');
@@ -13,7 +13,7 @@ const totalPowerOneMonth = require('./integralOneDay.services');
 dotenv.config({ path: path.resolve(__dirname, '..', '..', 'config.env') });
 
 const client = new ModBusRTU();
-const socket = socketIO(process.env.SOCKET);
+
 
 client.connectRTUBuffered(process.env.PORT, {
   baudRate: process.env.BAUDRATE * 1,
@@ -50,8 +50,8 @@ const mainService = async (type) => {
         value: oldModBusData[index].value,
         address: oldModBusData[index].address,
       });
-      if (socket.connected) {
-        socket.emit('new-data', newDataCreated);
+      if (global.socket.connected) {
+        global.socket.emit('new-data', newDataCreated);
       }
       return newDataCreated;
     });
@@ -68,7 +68,7 @@ const getAllDataAndEmit = async () => {
       getLatestDataFromDB(type, false)
     );
     allData.push(...(await Promise.all(promises)));
-    socket.emit('send-all-data', allData);
+    global.socket.emit('send-all-data', allData);
   } catch (err) {
     console.log(err);
   }
