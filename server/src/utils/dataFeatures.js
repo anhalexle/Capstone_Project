@@ -122,6 +122,7 @@ class DataType {
       // const alarmFilter = await Alarm.findById(newAlarm._id).select(
       //   'parameter type'
       // );
+      console.log(alarmFilter);
       const user = await User.findOne({ role: 'user' });
       const newAlarmEmail = new Email(user, alarmFilter);
       await newAlarmEmail.sendAlarm();
