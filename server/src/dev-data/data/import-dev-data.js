@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 
 const connectDB = require('../../db/connect');
 const Data = require('../../models/data.model');
-const Bill = require('../../models/bill.model');
+// const Bill = require('../../models/bill.model');
 
 // console.log(`${path.join('./Capstone', 'server')}\\config.env`);
 
@@ -27,8 +27,8 @@ const importData = async () => {
   try {
     await connectDB(process.env.DATABASE_LOCAL);
     console.log('Connected to database');
-    // await Data.create(data);
-    await Bill.create(bill);
+    await Data.create(data);
+    // await Bill.create(bill);
     console.log('Data successfully created');
     process.exit();
   } catch (err) {
@@ -42,8 +42,8 @@ const deleteData = async () => {
   try {
     await connectDB(process.env.DATABASE_LOCAL);
     console.log('Connected to database');
-    // await Data.deleteMany();
-    await Bill.deleteMany();
+    await Data.deleteMany();
+    // await Bill.deleteMany();
     console.log('Data successfully deleted');
     process.exit();
   } catch (err) {

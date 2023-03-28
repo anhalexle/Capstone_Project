@@ -142,7 +142,9 @@ const calculateElectricBillInDay = async (date, type) => {
 const checkMonthAndCalculateBill = async (type) => {
   try {
     const now = new Date();
-    const dateCreated = `${
+    // 03/2023-04/2023 -> 03-2023
+    // 12/02/2023 - 11/03/2023 -> 03-2023
+    const dateCreated = `${now.getDate()}${
       now.getMonth() + 1 < 10
         ? `0${now.getMonth() + 1}`
         : `${now.getMonth() + 1}`
