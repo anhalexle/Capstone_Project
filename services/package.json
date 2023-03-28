@@ -6,6 +6,7 @@
   "dependencies": {
     "dotenv": "^16.0.3",
     "modbus-serial": "^8.0.10",
+    "mongoose": "^7.0.3",
     "socket.io-client": "^4.6.1"
   },
   "devDependencies": {
@@ -18,8 +19,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "prettier": "^2.8.4"
-  }
-  ,
+  },
   "engines": {
     "node": "^18"
   }
