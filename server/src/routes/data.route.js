@@ -12,6 +12,7 @@ router.route('/drawChart').post(dataController.drawChart);
 router.use(authController.protect);
 router.route('/').get(dataController.getAllDataFromSocket);
 router.route('/getDataFromDay').get(dataController.getDataFromDay);
+router.route('/getDataFromYear').get(dataController.getDataFromYear);
 
 router.use(authController.restrictTo('admin', 'manager'));
 
