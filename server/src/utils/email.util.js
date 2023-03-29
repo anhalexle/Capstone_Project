@@ -29,7 +29,10 @@ module.exports = class Email {
     const html = pug.renderFile(
       `${global.__basedir}\\src\\views\\email\\${template}.pug`,
       {
-        alarm: this.alarm.parameter,
+        name: this.alarm.parameter.name.replace('_', ' '),
+        value: this.alarm.parameter.value,
+        type: this.alarm.type,
+        createdAt: this.alarm.parameter.createdAt,
         subject,
       }
     );
