@@ -147,21 +147,22 @@ exports.getDataFromDay = catchAsync(async (req, res, next) => {
 
 exports.getDataFromYear = catchAsync(async (req, res, next) => {
   const { year, monthRequired } = req.query;
-  const now = new Date();
-  const prev = new Date(now.getFullYear(), now.getMonth() - 1, 12, 7, 0, 0);
-  const future = new Date(now.getFullYear(), now.getMonth(), 11, 7, 0, 0);
-  let month = now.getMonth();
-  if (prev <= now <= future) {
-    month += 1;
-  }
-  month = month < 10 ? `0${month}` : `${month}`;
-  let checkMonth;
+  let month;
   if (monthRequired) {
-    checkMonth = monthRequired < 10 ? `0${monthRequired}` : `${monthRequired}`;
+    month = monthRequired < 10 ? `0${monthRequired}` : `${monthRequired}`;
+  } else {
+    const now = new Date();
+    const prev = new Date(now.getFullYear(), now.getMonth() - 1, 12, 7, 0, 0);
+    const future = new Date(now.getFullYear(), now.getMonth(), 11, 7, 0, 0);
+    month = now.getMonth();
+    if (prev <= now <= future) {
+      month += 1;
+    }
+    month = month < 10 ? `0${month}` : `${month}`;
   }
   const dataLastYear = await getDataFromYearFunc(new Date('2022-12-01'));
   const dataThisYear = await getDataFromYearFunc(
-    new Date(`${year}-${monthRequired ? checkMonth : month}-01`),
+    new Date(`${year}-${month}-01`),
     new Date(`${year}-01-01`)
   );
   const result = dataLastYear.map((el) => {
