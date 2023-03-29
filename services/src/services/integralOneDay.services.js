@@ -8,17 +8,17 @@ const totalPowerOneMonth = async () => {
     const next = new Date(now.getFullYear(), now.getMonth(), 11, 7, 0, 0);
     let dateCreated;
     if (prev <= now && now <= next) {
-      dateCreated = `${
+      dateCreated = `${now.getFullYear()}-${
         now.getMonth() + 1 < 10
           ? `0${now.getMonth() + 1}`
           : `${now.getMonth() + 1}`
-      }-${now.getFullYear()}`;
+      }`;
     } else {
-      dateCreated = `${
+      dateCreated = `${now.getFullYear()}-${
         now.getMonth() + 2 < 10
           ? `0${now.getMonth() + 2}`
           : `${now.getMonth() + 2}`
-      }-${now.getFullYear()}`;
+      }`;
     }
     let checkDB = await TotalIntegralOneMonth.findOne({ dateCreated });
     if (!checkDB) checkDB = await TotalIntegralOneMonth.create({ dateCreated });

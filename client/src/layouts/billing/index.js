@@ -125,17 +125,19 @@ function Billing() {
   const handleFindIndexDay = () => {
     // gửi yêu cầu fetch dữ liệu từ server với startDate và endDate đã chọn
     console.log(
-      `http://localhost:3001/api/v1/data/indexDay?startIndexDay=${startIndexDay}&endIndexDay=${endIndexDay}`
+      `http://localhost:3001/api/v1/data/getDataFromDay?startDate=${startIndexDay}&endDate=${endIndexDay}`
     );
     ///
     // fetch(
     //   `http://localhost:3001/api/v1/alarms/getSpecificAlarm?startDate=${startIndexDay}&endDate=${endIndexDay}`
     // )
     ///giả lập
-    fetch("http://localhost:3001/api/indexDay") //"http://localhost:3001/api/v1/data/indexDay?startDate...&endDate=..."
+    fetch(
+      `http://localhost:3001/api/v1/data/getDataFromDay?startDate=${startIndexDay}&endDate=${endIndexDay}`
+    ) //"http://localhost:3001/api/v1/data/indexDay?startDate...&endDate=..."
       .then((response) => response.json())
       .then((data) => {
-        setDataIndexDay(data);
+        setDataIndexDay(data.data.data);
         console.log("data nè", data);
       })
       .catch((error) => {
@@ -152,10 +154,11 @@ function Billing() {
     //   `http://localhost:3001/api/v1/alarms/getSpecificAlarm?year=${yearIndex}`
     // )
     ///giả lập
-    fetch("http://localhost:3001/api/indexYear")
+    console.log("tìm năm", `http://localhost:3001/api/v1/data/getDataFromYear?year=${yearIndex}`);
+    fetch(`http://localhost:3001/api/v1/data/getDataFromYear?year=${yearIndex}`)
       .then((response) => response.json())
       .then((data) => {
-        setDataIndexYear(data);
+        setDataIndexYear(data.data.result);
         console.log("data year nè", data);
       })
       .catch((error) => {
@@ -268,7 +271,7 @@ function Billing() {
               >
                 <Box>
                   <Typography variant="subtitle1">
-                     Tháng {monthReport}/{yearReport} ( Từ ngày{" "}
+                    Tháng {monthReport}/{yearReport} ( Từ ngày{" "}
                     {startDateReport.toLocaleDateString()} đến {endDateReport.toLocaleDateString()})
                   </Typography>
                 </Box>
@@ -372,10 +375,10 @@ function Billing() {
                       </TableBody>
                     </Table>
                   </TableContainer>
-                   {/* Chart */}
-                <Box mt={2}>
-                  <ChartReport data={dataReport}></ChartReport>
-                </Box>
+                  {/* Chart */}
+                  <Box mt={2}>
+                    <ChartReport data={dataReport}></ChartReport>
+                  </Box>
                 </Box>
                 {/* tổng số tiền thanh toán */}
                 <Box mt={3} mb={3}>
@@ -539,7 +542,6 @@ function Billing() {
                     </Table>
                   </TableContainer>
                 </Box>
-               
               </Box>
             )}
           </AccordionDetails>

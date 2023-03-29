@@ -2,7 +2,7 @@
 import React from "react";
 
 import { Bar } from "react-chartjs-2";
-import ChartDataLabels from "chartjs-plugin-datalabels";
+// import ChartDataLabels from "chartjs-plugin-datalabels";
 
 const labels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
 
