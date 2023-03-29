@@ -4,8 +4,8 @@ const TotalIntegralOneMonth = require('../models/totalIntegral.model');
 const totalPowerOneMonth = async () => {
   try {
     const now = new Date();
-    const prev = new Date(now.getFullYear(), now.getMonth() - 1, 12);
-    const next = new Date(now.getFullYear(), now.getMonth(), 11);
+    const prev = new Date(now.getFullYear(), now.getMonth() - 1, 12, 7, 0, 0);
+    const next = new Date(now.getFullYear(), now.getMonth(), 11, 7, 0, 0);
     let dateCreated;
     if (prev <= now && now <= next) {
       dateCreated = `${
