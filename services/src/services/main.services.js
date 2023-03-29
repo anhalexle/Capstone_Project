@@ -14,7 +14,6 @@ dotenv.config({ path: path.resolve(__dirname, '..', '..', 'config.env') });
 
 const client = new ModBusRTU();
 
-
 client.connectRTUBuffered(process.env.PORT, {
   baudRate: process.env.BAUDRATE * 1,
 });

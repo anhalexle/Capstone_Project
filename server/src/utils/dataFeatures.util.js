@@ -1,5 +1,5 @@
 const Alarm = require('../models/alarm.model');
-const Email = require('./email');
+const Email = require('./email.util');
 const User = require('../models/user.model');
 
 class DataType {
@@ -49,36 +49,8 @@ class DataType {
     return this.#dataType[type].threshHold;
   }
 
-  async readDataFromModBus(client, type) {
-    if (type === 'integral_power' || type === 'instantaneous_power') {
-      const res = [];
-      const mbData1 = await client.readHoldingRegisters(
-        this.#dataType[type].address[0][0],
-        this.#dataType[type].address[0][1]
-      );
-      res.push(...mbData1.data);
-      const mbData2 = await client.readHoldingRegisters(
-        this.#dataType[type].address[1][0],
-        this.#dataType[type].address[1][1]
-      );
-      res.push(...mbData2.data);
-      return res.map((el) => el / this.#dataType[type].unit);
-    }
-    const mbData = await client.readHoldingRegisters(
-      this.#dataType[type].address[0],
-      this.#dataType[type].address[1]
-    );
-    return mbData.data.map((el) => el / this.#dataType[type].unit);
-  }
-
   getAllDataType() {
     return Object.keys(this.#dataType);
-  }
-
-  async readSpecificOne(type, startAdd, length) {
-    const mbData = await this.client.readHoldingRegisters(startAdd, length);
-    const [data] = mbData.data;
-    return data / this.#dataType[type].unit;
   }
 
   async createAlarm(type, dataCreated) {
