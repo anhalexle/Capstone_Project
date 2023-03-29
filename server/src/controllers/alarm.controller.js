@@ -1,6 +1,6 @@
 const Alarm = require('../models/alarm.model');
 const CRUDFactory = require('./factory.controller');
-const catchAsync = require('../utils/catchAsync');
+const catchAsync = require('../utils/catchAsync.util');
 
 const factoryController = new CRUDFactory(Alarm);
 
