@@ -1,27 +1,28 @@
 const mongoose = require('mongoose');
 
-const electricBillOneMonthSchema = mongoose.Schema({
+const totalIntegralSchema = mongoose.Schema({
   dateCreated: {
     type: 'String',
     required: true,
   },
-  billPeak: {
+  totalIntegralPeak: {
     type: Number,
     default: 0,
   },
-  billOffPeak: {
+  totalIntegralOffPeak: {
     type: Number,
     default: 0,
   },
-  billRegular: {
+  totalIntegralRegular: {
     type: Number,
     default: 0,
   },
 });
 
-const ElectricBillOneMonth = mongoose.model(
+const TotalIntegralOneMonth = mongoose.model(
   'ElectricBillOneMonth',
-  electricBillOneMonthSchema
+  totalIntegralSchema,
+  'TotalIntegral'
 );
 
-module.exports = ElectricBillOneMonth;
+module.exports = TotalIntegralOneMonth;

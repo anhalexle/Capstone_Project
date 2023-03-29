@@ -1,6 +1,6 @@
-const DataType = require('../utils/dataFeatures');
+const DataType = require('../utils/dataFeatures.util');
 const Data = require('../models/data.model');
-const calculateElectricBill = require('../utils/billCalculate');
+const calculateElectricBill = require('../utils/billCalculate.util');
 
 const dataFeatures = new DataType();
 
@@ -20,7 +20,6 @@ class SocketServices {
     });
 
     socket.on('send-me-data', (data) => {
-      console.log('vao day chua');
       global._io.emit('send-me-data-service');
     });
 
@@ -43,6 +42,7 @@ class SocketServices {
         const { name, value, createdAt } = newData;
         const filterData = { name, value, createdAt };
         arr.push(filterData);
+        console.log(arr);
         global._io.emit('new-data-client', arr);
         console.log(newData.type, newData);
         if (newData.type !== 'integral_power')

@@ -5,8 +5,10 @@ const PDFDocument = require('pdfkit');
 
 const CRUDFactory = require('./factory.controller');
 const Data = require('../models/data.model');
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
+const catchAsync = require('../utils/catchAsync.util');
+const AppError = require('../utils/appError.util');
+const getDatesBetween = require('../utils/getDates.util');
+const totalPowerOneDay = require('../utils/totalOneDay.util');
 
 const createPipeLine = (date, name) => {
   let theDate;
@@ -103,7 +105,8 @@ exports.exportExcel = catchAsync(async (req, res, next) => {
   );
   res.setHeader(
     'Content-Disposition',
-    `attachment; filename=report-${now.getDate()}-${now.getMonth() + 1
+    `attachment; filename=report-${now.getDate()}-${
+      now.getMonth() + 1
     }-${now.getFullYear()}.xlsx`
   );
 
@@ -119,4 +122,22 @@ exports.exportPDF = catchAsync(async (req, res, next) => {
   doc.pipe(res);
   doc.fontSize(16).text('Hello from the server');
   doc.end();
+});
+
+exports.getDataFromDay = catchAsync(async (req, res, next) => {
+  const { startDate, endDate } = req.query;
+  const ISOstartDate = new Date(startDate);
+  const ISOendDate = new Date(endDate);
+  const dates = getDatesBetween(ISOstartDate, ISOendDate);
+  const promises = dates.map(async (date) => {
+    const data = await totalPowerOneDay(date);
+    return {
+      Date: date.toLocaleString().split(',')[0],
+      Peak: data[2] ? data[2].totalPower : 0,
+      Normal: data[1] ? data[1].totalPower : 0,
+      OffPeak: data[0] ? data[0].totalPower : 0,
+    };
+  });
+  const result = await Promise.all(promises);
+  res.status(200).json({ status: 'success', data: { result } });
 });
