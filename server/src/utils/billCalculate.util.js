@@ -1,6 +1,6 @@
 const Bill = require('../models/bill.model');
 const Data = require('../models/data.model');
-const ElectricBillOneMonth = require('../models/electricBill.model');
+// const ElectricBillOneMonth = require('../models/electricBill.model');
 
 const ObjOfTime = {
   OffPeak: {
@@ -139,46 +139,48 @@ const calculateElectricBillInDay = async (date, type) => {
   }
 };
 
-const checkMonthAndCalculateBill = async (type) => {
-  try {
-    const now = new Date();
-    const dateCreated = `${
-      now.getMonth() + 1 < 10
-        ? `0${now.getMonth() + 1}`
-        : `${now.getMonth() + 1}`
-    }-${now.getFullYear()}`;
-    let checkDB = await ElectricBillOneMonth.findOne({ dateCreated });
-    if (!checkDB) checkDB = await ElectricBillOneMonth.create({ dateCreated });
-    const totalBill = await calculateElectricBillInDay(now, type);
-    let { billPeak, billOffPeak, billRegular } = checkDB;
-    totalBill.forEach((el) => {
-      switch (el.type) {
-        case 'off_peak':
-          billOffPeak += el.totalBill;
-          break;
-        case 'regular':
-          billRegular += el.totalBill;
-          break;
-        default:
-          billPeak += el.totalBill;
-      }
-    });
-    await ElectricBillOneMonth.findOneAndUpdate(
-      { dateCreated },
-      { billOffPeak, billPeak, billRegular },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-    global._io.emit('update-electric-bill', {
-      billOffPeak,
-      billPeak,
-      billRegular,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+// const checkMonthAndCalculateBill = async (type) => {
+//   try {
+//     const now = new Date();
+//     // 03/2023-04/2023 -> 03-2023
+//     // 12/02/2023 - 11/03/2023 -> 03-2023
+//     const dateCreated = `${now.getDate()}${
+//       now.getMonth() + 1 < 10
+//         ? `0${now.getMonth() + 1}`
+//         : `${now.getMonth() + 1}`
+//     }-${now.getFullYear()}`;
+//     let checkDB = await ElectricBillOneMonth.findOne({ dateCreated });
+//     if (!checkDB) checkDB = await ElectricBillOneMonth.create({ dateCreated });
+//     const totalBill = await calculateElectricBillInDay(now, type);
+//     let { billPeak, billOffPeak, billRegular } = checkDB;
+//     totalBill.forEach((el) => {
+//       switch (el.type) {
+//         case 'off_peak':
+//           billOffPeak += el.totalBill;
+//           break;
+//         case 'regular':
+//           billRegular += el.totalBill;
+//           break;
+//         default:
+//           billPeak += el.totalBill;
+//       }
+//     });
+//     await ElectricBillOneMonth.findOneAndUpdate(
+//       { dateCreated },
+//       { billOffPeak, billPeak, billRegular },
+//       {
+//         new: true,
+//         runValidators: true,
+//       }
+//     );
+//     global._io.emit('update-electric-bill', {
+//       billOffPeak,
+//       billPeak,
+//       billRegular,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
-module.exports = checkMonthAndCalculateBill;
+// module.exports = checkMonthAndCalculateBill;

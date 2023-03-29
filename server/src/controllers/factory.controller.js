@@ -1,6 +1,6 @@
-const catchAsync = require('../utils/catchAsync');
-const APIFeature = require('../utils/apiFeatures');
-const AppError = require('../utils/appError');
+const catchAsync = require('../utils/catchAsync.util');
+const APIFeature = require('../utils/apiFeatures.util');
+const AppError = require('../utils/appError.util');
 
 class CRUDFactory {
   constructor(Model) {

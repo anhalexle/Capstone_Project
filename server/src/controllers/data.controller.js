@@ -5,8 +5,13 @@ const PDFDocument = require('pdfkit');
 
 const CRUDFactory = require('./factory.controller');
 const Data = require('../models/data.model');
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
+
+const catchAsync = require('../utils/catchAsync.util');
+const getDataFromYearFunc = require('../utils/getDataFromYear.util');
+const convertTotalIntegralToMoney = require('../utils/bill.util');
+const AppError = require('../utils/appError.util');
+const getDatesBetween = require('../utils/getDates.util');
+const totalPowerOneDay = require('../utils/totalOneDay.util');
 
 const createPipeLine = (date, name) => {
   let theDate;
@@ -103,7 +108,8 @@ exports.exportExcel = catchAsync(async (req, res, next) => {
   );
   res.setHeader(
     'Content-Disposition',
-    `attachment; filename=report-${now.getDate()}-${now.getMonth() + 1
+    `attachment; filename=report-${now.getDate()}-${
+      now.getMonth() + 1
     }-${now.getFullYear()}.xlsx`
   );
 
@@ -119,4 +125,78 @@ exports.exportPDF = catchAsync(async (req, res, next) => {
   doc.pipe(res);
   doc.fontSize(16).text('Hello from the server');
   doc.end();
+});
+
+exports.getDataFromDay = catchAsync(async (req, res, next) => {
+  const { startDate, endDate } = req.query;
+  const ISOstartDate = new Date(startDate);
+  const ISOendDate = new Date(endDate);
+  const dates = getDatesBetween(ISOstartDate, ISOendDate);
+  const promises = dates.map(async (date) => {
+    const data = await totalPowerOneDay(date);
+    return {
+      Date: date.toLocaleDateString().split(',')[0],
+      Peak: data[2] ? data[2].totalPower : 0,
+      Normal: data[1] ? data[1].totalPower : 0,
+      OffPeak: data[0] ? data[0].totalPower : 0,
+    };
+  });
+  const data = await Promise.all(promises);
+  res.status(200).json({ status: 'success', data: { data } });
+});
+
+exports.getDataFromYear = catchAsync(async (req, res, next) => {
+  const { year, monthRequired } = req.query;
+  let month;
+  if (monthRequired) {
+    month = monthRequired < 10 ? `0${monthRequired}` : `${monthRequired}`;
+  } else {
+    const now = new Date();
+    const prev = new Date(now.getFullYear(), now.getMonth() - 1, 12, 7, 0, 0);
+    const future = new Date(now.getFullYear(), now.getMonth(), 11, 7, 0, 0);
+    month = now.getMonth();
+    if (prev <= now <= future) {
+      month += 1;
+    }
+    month = month < 10 ? `0${month}` : `${month}`;
+  }
+  const dataLastYear = await getDataFromYearFunc(new Date('2022-12-01'));
+  const dataThisYear = await getDataFromYearFunc(
+    new Date(`${year}-${month}-01`),
+    new Date(`${year}-01-01`)
+  );
+  const result = dataLastYear.map((el) => {
+    let ThisYear;
+    const data = dataThisYear.find((value) => value.Month === el.Month);
+    if (!data) ThisYear = 0;
+    else ThisYear = data.TotalPower;
+    el.ThisYear = ThisYear;
+    el.LastYear = el.TotalPower;
+    el.Year = 2023;
+    delete el.TotalPower;
+    return el;
+  });
+  const totalMoney = JSON.parse(JSON.stringify(result));
+  convertTotalIntegralToMoney(totalMoney, 1);
+  if (monthRequired) {
+    result.map((el) => {
+      el.LastYear = Object.values(el.LastYear).reduce(
+        (acc, val) => acc + val,
+        0
+      );
+      return el;
+    });
+    totalMoney.map((el) => {
+      el.LastYear = Object.values(el.LastYear).reduce(
+        (acc, val) => acc + val,
+        0
+      );
+      return el;
+    });
+  }
+  res.status(200).json({
+    status: 'success',
+    type: 1,
+    data: { result, totalMoney },
+  });
 });
