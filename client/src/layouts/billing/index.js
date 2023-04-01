@@ -52,6 +52,7 @@ import ChartReport from "../billing/Chart/ChartReport";
 //excel
 import ExcelYearIndex from "./excel/ExcelYearIndex";
 import ExcelYearPrice from "./excel/ExcelYearPrice";
+import ExcelDayIndex from "./excel/ExcelDayIndex";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -111,14 +112,22 @@ function Billing() {
     //   `http://localhost:3001/api/v1/alarms/getSpecificAlarm?startDate=${startIndexDay}&endDate=${endIndexDay}`
     // )
     ///giả lập
-    fetch("http://localhost:3001/api/Report") //"http://localhost:3001/api/v1/data/indexDay?startDate...&endDate=..."
+    fetch(
+      `http://localhost:3001/api/v1/data/getDataFromYear?year=${yearReport}&monthRequired=${monthReport}`
+    ) //"http://localhost:3001/api/v1/data/indexDay?startDate...&endDate=..."
       .then((response) => response.json())
       .then((data) => {
         console.log("data report nè he", titleReport);
         setTitleReport(
-          `Tháng ${monthReport}/${yearReport} ( Từ ngày ${startDateReport.toLocaleDateString(
-            "en-GB"
-          )} đến ${endDateReport.toLocaleDateString("en-GB")})`
+          `Tháng ${monthReport}/${yearReport} ( Từ ngày ${startDateReport.toLocaleString("en-GB", {
+            day: "numeric",
+            month: "numeric",
+            year: "numeric",
+          })} đến ${endDateReport.toLocaleString("en-GB", {
+            day: "numeric",
+            month: "numeric",
+            year: "numeric",
+          })})`
         );
 
         setMonthReportInTable(monthReport);
@@ -153,7 +162,7 @@ function Billing() {
       .then((data) => {
         // setDataIndexDay(data.data.data);
         setDataIndexDay(data.data.data);
-        // console.log("data ngày nè", data.data);
+        console.log("--------------------", data.data.data);
       })
       .catch((error) => {
         Alert("Error fetching data from server:", error);
@@ -167,8 +176,8 @@ function Billing() {
   const handleFindIndexYear = () => {
     ///giả lập
     console.log("tìm năm", `http://localhost:3001/api/v1/data/getDataFromYear?year=${yearIndex}`);
-    // fetch(`http://localhost:3001/api/v1/data/getDataFromYear?year=${yearIndex}`)
-    fetch("http://localhost:3001/api/v1/data")
+    fetch(`http://localhost:3001/api/v1/data/getDataFromYear?year=${yearIndex}`)
+      // fetch("http://localhost:3001/api/v1/data")
       .then((response) => response.json())
       .then((data) => {
         setDataIndexYear(data.data.result);
@@ -186,8 +195,8 @@ function Billing() {
   const handleFindPriceYear = () => {
     ///giả lập
     console.log("tìm năm", `http://localhost:3001/api/v1/data/getDataFromYear?year=${yearPrice}`);
-    // fetch(`http://localhost:3001/api/v1/data/getDataFromYear?year=${yearPrice}`)
-    fetch("http://localhost:3001/api/v1/data")
+    fetch(`http://localhost:3001/api/v1/data/getDataFromYear?year=${yearPrice}`)
+      // fetch("http://localhost:3001/api/v1/data")
       .then((response) => response.json())
       .then((data) => {
         setDataPriceYear(data.data.totalMoney);
@@ -580,10 +589,21 @@ function Billing() {
                 </Grid>
               </Grid>
               {/* // */}
-              <Grid item xs={12} md={4} lg={4} style={{ paddingTop: "40px" }}>
-                <Button variant="contained" style={{ color: "white" }} onClick={handleFindIndexDay}>
-                  Tra Cứu
-                </Button>
+              <Grid item xs={12} md={4} lg={4} container style={{ paddingTop: "40px" }}>
+                <Grid item xs={12} md={6} lg={6}>
+                  <Button
+                    variant="contained"
+                    style={{ color: "white" }}
+                    onClick={handleFindIndexDay}
+                  >
+                    Tra Cứu
+                  </Button>
+                </Grid>
+                {dataIndexDay && (
+                  <Grid item xs={12} md={6} lg={6}>
+                    <ExcelDayIndex data={dataIndexDay} year={yearIndex}></ExcelDayIndex>
+                  </Grid>
+                )}
               </Grid>
             </Grid>
             {dataIndexDay && (

@@ -2,10 +2,10 @@ import { CSVLink } from "react-csv";
 import { Button } from "@mui/material";
 
 // eslint-disable-next-line react/prop-types
-function ExcelYearIndex({ data, year }) {
+function ExcelDayIndex({ data, year }) {
+  console.log(`data ${data}`);
   const headers = [
-    { label: "Tháng", key: "Month" },
-    { label: "Năm", key: "Year" },
+    { label: "Thời gian", key: "Date" },
     { label: "Giờ Thấp Điểm (kWh)", key: "OffPeak" },
     { label: "Giờ Bình Thường (kWh)", key: "Normal" },
     { label: "Giờ Cao Điểm (kWh)", key: "Peak" },
@@ -17,19 +17,18 @@ function ExcelYearIndex({ data, year }) {
     .map((item) => {
       return (
         item.ThisYear !== 0 && {
-          Month: item.Month,
-          Year: item.Year,
-          OffPeak: item.ThisYear.OffPeak,
-          Normal: item.ThisYear.Normal,
-          Peak: item.ThisYear.Peak,
-          Total: item.ThisYear.Peak + item.ThisYear.Normal + item.ThisYear.OffPeak,
+          Date: item.Date,
+          OffPeak: item.OffPeak,
+          Normal: item.Normal,
+          Peak: item.Peak,
+          Total: item.Peak + item.Normal + item.OffPeak,
         }
       );
     })
     .filter((item) => item !== false);
 
   return (
-    <CSVLink data={dataFormatted} headers={headers} filename={`Chỉ số ${year}.csv`}>
+    <CSVLink data={dataFormatted} headers={headers} filename={`Sản lượng tiêu thụ trong ngày.csv`}>
       <Button variant="contained" style={{ color: "white" }}>
         Xuất Excel
       </Button>
@@ -37,4 +36,4 @@ function ExcelYearIndex({ data, year }) {
   );
 }
 
-export default ExcelYearIndex;
+export default ExcelDayIndex;
