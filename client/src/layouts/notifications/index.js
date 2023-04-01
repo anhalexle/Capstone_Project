@@ -193,6 +193,7 @@ function Notifications() {
                   </Button>
                 </Typography> */}
               </Box>
+              
               <Table>
                 <TableBody>
                   <TableCell align="center">
@@ -245,6 +246,7 @@ function Notifications() {
                   ))}
                 </TableBody>
               </Table>
+              
             </Card>
           </Grid>
         </Grid>

@@ -29,7 +29,7 @@ const legend = {
 };
 
 function ChartReport({ data }) {
-  console.log("in trong chart report", data, legend);
+  console.log("cccccccccccccccccccccccccccccccccccccccc", data);
 
   const chartData = {
     labels,
@@ -38,8 +38,7 @@ function ChartReport({ data }) {
         label: "Mức tiêu thụ giờ thấp điểm năm hiện tại",
         backgroundColor: "rgb(75, 192, 192)",
         // eslint-disable-next-line react/prop-types
-        data: data.chart.map((data) => (data.ThisYear?.offPeak ? data.ThisYear.offPeak : 0)),
-
+        data: data.data.result.map((data) => (data.ThisYear?.OffPeak ? data.ThisYear.OffPeak : 0)),
         borderColor: "white",
         type: "bar",
         stack: "Stack 0",
@@ -48,7 +47,7 @@ function ChartReport({ data }) {
         label: "Mức tiêu thụ giờ bình thường năm hiện tại",
         backgroundColor: "rgb(53, 162, 235)",
         // data: data.chart.map((data) => data.ThisYear.normal),
-        data: data.chart.map((data) => (data.ThisYear?.normal ? data.ThisYear.normal : 0)),
+        data: data.data.result.map((data) => (data.ThisYear?.Normal ? data.ThisYear.Normal : 0)),
         type: "bar",
         stack: "Stack 0",
       },
@@ -56,7 +55,7 @@ function ChartReport({ data }) {
         label: "Mức tiêu thụ giờ cao điểm năm hiện tại",
         backgroundColor: "red",
         // data: data.chart.map((data) => data.ThisYear.peak),
-        data: data.chart.map((data) => (data.ThisYear?.peak ? data.ThisYear.peak : 0)),
+        data: data.data.result.map((data) => (data.ThisYear?.Peak ? data.ThisYear.Peak : 0)),
         type: "bar",
         stack: "Stack 0",
       },
@@ -67,7 +66,7 @@ function ChartReport({ data }) {
         fill: false,
         // eslint-disable-next-line react/prop-types
         // data: data.chart.map((data) => data.LastYearTotal),
-        data: data.chart.map((data) => (data?.LastYearTotal ? data.LastYearTotal : 0)),
+        data: data.data.result.map((data) => (data?.LastYear ? data.LastYear : 0)),
         type: "line",
       },
     ],
@@ -75,7 +74,7 @@ function ChartReport({ data }) {
 
   return (
     <div>
-      {console.log("return", data, legend)}
+
       <Bar data={chartData} options={options} />
     </div>
   );
