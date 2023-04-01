@@ -72,7 +72,7 @@ const arraydata_1 = Array(29).fill(0);
 
 function Dashboard() {
   // const [arraydata_1, setArraydata_1] = useState(Array(29).fill(0));
-   const [chartCurrent, setChartCurrent] = useState(false);
+  const [chartCurrent, setChartCurrent] = useState(false);
   const [chartVoltage, setChartVoltage] = useState(false);
   const [chartLineVoltage, setChartLineVoltage] = useState(false);
   const [chartFrequency, setChartFrequency] = useState(false);
@@ -89,69 +89,8 @@ function Dashboard() {
   const intervalRef = useRef(null); // lưu trữ reference tới interval
   useEffect(() => {
     const handleServerData = (newData) => {
-      // newData.flat().map((d) => {
-      //   if (d.name === "Voltage_1") {
-      //     arraydata_1[0] = d.value;
-      //   } else if (d.name === "Voltage_2") {
-      //     arraydata_1[1] = d.value;
-      //   } else if (d.name === "Voltage_3") {
-      //     arraydata_1[2] = d.value;
-      //   } else if (d.name === "Volt_average") {
-      //     arraydata_1[3] = d.value;
-      //   } else if (d.name === "Line_V1_2") {
-      //     arraydata_1[4] = d.value;
-      //   } else if (d.name === "Line_V2_3") {
-      //     arraydata_1[5] = d.value;
-      //   } else if (d.name === "Line_V3_1") {
-      //     arraydata_1[6] = d.value;
-      //   } else if (d.name === "Line_Average") {
-      //     arraydata_1[7] = d.value;
-      //   } else if (d.name === "Current_1") {
-      //     arraydata_1[8] = d.value;
-      //   } else if (d.name === "Current_2") {
-      //     arraydata_1[9] = d.value;
-      //   } else if (d.name === "Current_3") {
-      //     arraydata_1[10] = d.value;
-      //   } else if (d.name === "Current_phase_N") {
-      //     arraydata_1[11] = d.value;
-      //   } else if (d.name === "Current_TB") {
-      //     arraydata_1[12] = d.value;
-      //   } else if (d.name === "f1") {
-      //     arraydata_1[13] = d.value;
-      //   } else if (d.name === "f2") {
-      //     arraydata_1[14] = d.value;
-      //   } else if (d.name === "f3") {
-      //     arraydata_1[15] = d.value;
-      //   } else if (d.name === "f_tb") {
-      //     arraydata_1[16] = d.value;
-      //   } else if (d.name === "pf1") {
-      //     arraydata_1[17] = d.value;
-      //   } else if (d.name === "pf2") {
-      //     arraydata_1[18] = d.value;
-      //   } else if (d.name === "pf3") {
-      //     arraydata_1[19] = d.value;
-      //   } else if (d.name === "pf_tb") {
-      //     arraydata_1[20] = d.value;
-      //   } else if (d.name === "integral_active_power_1") {
-      //     arraydata_1[21] = d.value;
-      //   } else if (d.name === "integral_active_power_2") {
-      //     arraydata_1[22] = d.value;
-      //   } else if (d.name === "integral_active_power_3") {
-      //     arraydata_1[23] = d.value;
-      //   } else if (d.name === "total_integral_active_power") {
-      //     arraydata_1[24] = d.value;
-      //   } else if (d.name === "instantaneous_active_power_1") {
-      //     arraydata_1[25] = d.value;
-      //   } else if (d.name === "instantaneous_active_power_2") {
-      //     arraydata_1[26] = d.value;
-      //   } else if (d.name === "instantaneous_active_power_3") {
-      //     arraydata_1[27] = d.value;
-      //   } else if (d.name === "total_instantaneous_active_power") {
-      //     arraydata_1[28] = d.value;
-      //   }
-      // });
       newData.flat().map((d) => {
-        switch(d.name) {
+        switch (d.name) {
           case "Voltage_1":
             arraydata_1[0] = d.value;
             break;
@@ -248,7 +187,7 @@ function Dashboard() {
     socket.on("new-data-client", handleServerData);
     return () => {
       socket.off("new-data", handleServerData);
-      clearInterval(intervalRef.current);
+      socket.off("new-data-client", handleServerData);
     };
   }, []);
 
@@ -257,9 +196,8 @@ function Dashboard() {
       <DashboardNavbar absolute />
 
       <MDBox py={5}>
-
-{/* -----------------Current----------------- */}
-          <Grid mb={1}>
+        {/* -----------------Current----------------- */}
+        <Grid mb={1}>
           <Accordion style={{ borderRadius: "10px" }}>
             <AccordionSummary
               style={{ border: "3px solid #0077be", borderRadius: "7px" }}
@@ -270,7 +208,7 @@ function Dashboard() {
             <AccordionDetails>
               {/* //Voltage Phase */}
               {/* <Grid container spacing={3}> */}
-                <Grid container spacing={3}>
+              <Grid container spacing={3}>
                 <Grid item xs={12} md={4} lg={4}>
                   <MDBox mb={1.5} mt={1.5}>
                     {/* Có thể dùng memo để render componet ComplexStatisticsCard */}
@@ -302,10 +240,9 @@ function Dashboard() {
                     />
                   </MDBox>
                 </Grid>
-                </Grid>
+              </Grid>
 
-
-                <Grid container spacing={3}>
+              <Grid container spacing={3}>
                 <Grid item xs={12} md={6} lg={6}>
                   <MDBox mb={1.5} mt={1.5}>
                     <AppWidgetSummary
@@ -326,7 +263,7 @@ function Dashboard() {
                     />
                   </MDBox>
                 </Grid>
-                </Grid>
+              </Grid>
               {/* </Grid> */}
 
               <Button
@@ -784,15 +721,15 @@ function Dashboard() {
           </Accordion>
         </Grid>
         {/* ----------------------------------------------------------- */}
-{/* -----------------INSTANTANEOUS ACTIVE POWER ----------------- */}
-<Grid mb={1}>
+        {/* -----------------INSTANTANEOUS ACTIVE POWER ----------------- */}
+        <Grid mb={1}>
           <Accordion style={{ borderRadius: "10px" }}>
             <AccordionSummary
               style={{ border: "3px solid #0077be", borderRadius: "7px" }}
               expandIcon={<ExpandMoreIcon />}
             >
               <Typography style={{ fontWeight: "bold", color: "#0077be" }}>
-              INSTANTANEOUS ACTIVE POWER
+                INSTANTANEOUS ACTIVE POWER
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -872,7 +809,6 @@ function Dashboard() {
 
         {/* //Voltage Phase */}
 
-       
         {/* <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5} mt={1.5}>
@@ -1137,9 +1073,6 @@ function Dashboard() {
             </MDBox>
           </Grid>
         </Grid> */}
-
-        
-        
       </MDBox>
     </DashboardLayout>
   );

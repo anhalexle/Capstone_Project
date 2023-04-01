@@ -12,10 +12,9 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
   const [line3, setLine3] = useState(false);
   const [line4, setLine4] = useState(false);
   // Tạo một ref cho biểu đồ
-  console.log("------vào------", data);
   const lineRef = useRef([line1, line2, line3, line4]);
   const nameRef = useRef([nameLine1, nameLine2, nameLine3, nameLine4, title]);
-  console.log("------name------", nameRef.current);
+
   const dataRef = useRef(null);
   const dataUpdateSeries = useRef([]);
   useEffect(() => {
@@ -81,7 +80,6 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
       y_3: dataRef.current[2],
       y_4: dataRef.current[3],
     });
-    console.log("current data", dataUpdateSeries.current);
     // Xóa phần tử đầu tiên của mảng nếu quá dài
     if (dataUpdateSeries.current.length > 50) {
       dataUpdateSeries.current.shift();

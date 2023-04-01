@@ -86,7 +86,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   //đi tới trang notification
   // const history = useHistory();
 
-  const { socket, notificationsRef } = useMultiContext();
+  const { socket, notificationsRef, setAuth } = useMultiContext();
   const idAlarmRef = useRef(0);
 
   const handleServerWarning = useCallback((myObject) => {
@@ -251,11 +251,16 @@ function DashboardNavbar({ absolute, light, isMini }) {
               <MDInput label="Search here" />
             </MDBox>
             <MDBox color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in/basic">
-                <IconButton sx={navbarIconButton} size="small" disableRipple>
-                  <Icon sx={iconsStyle}>account_circle</Icon>
-                </IconButton>
-              </Link>
+              {/* <Link to="/authentication/sign-in"> */}
+              <IconButton
+                sx={navbarIconButton}
+                size="small"
+                disableRipple
+                onClick={() => setAuth(null)}
+              >
+                <Icon sx={iconsStyle}>account_circle</Icon>
+              </IconButton>
+              {/* </Link> */}
               <IconButton
                 size="small"
                 disableRipple
