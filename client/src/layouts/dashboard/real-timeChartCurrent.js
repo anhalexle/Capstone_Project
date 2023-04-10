@@ -6,15 +6,18 @@ import Checkbox from "@mui/material/Checkbox";
 import { Typography, Grid } from "@mui/material";
 
 // eslint-disable-next-line react/prop-types
-function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title }) {
+function RealtimeChartCurrent({ data, nameLine1, nameLine2, nameLine3, nameLine4, nameLine5, title }) {
   const [line1, setLine1] = useState(false);
   const [line2, setLine2] = useState(false);
   const [line3, setLine3] = useState(false);
   const [line4, setLine4] = useState(false);
+  const [line5, setLine5] = useState(false);
   // Tạo một ref cho biểu đồ
-  const lineRef = useRef([line1, line2, line3, line4]);
-  const nameRef = useRef([nameLine1, nameLine2, nameLine3, nameLine4, title]);
-
+  console.log("------vào currrrr------", data);
+  const lineRef = useRef([line1, line2, line3, line4, line5]);
+  console.log("------vào lineeeeeee------", lineRef.current);
+  const nameRef = useRef([nameLine1, nameLine2, nameLine3, nameLine4, nameLine5, title]);
+  console.log("------name------", nameRef.current);
   const dataRef = useRef(null);
   const dataUpdateSeries = useRef([]);
   useEffect(() => {
@@ -26,7 +29,7 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
 
   const [options, setOptions] = React.useState({
     chart: {
-      id: `${nameRef.current[4]}`,
+      id: `${nameRef.current[5]}`,
       animations: {
         enabled: true,
         easing: "linear",
@@ -56,7 +59,7 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
     },
     yaxis: {
       title: {
-        text: nameRef.current[4],
+        text: nameRef.current[5],
       },
     },
     legend: {
@@ -79,14 +82,17 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
       y_2: dataRef.current[1],
       y_3: dataRef.current[2],
       y_4: dataRef.current[3],
+      y_5: dataRef.current[4],
+
     });
+    console.log("current data", dataUpdateSeries.current);
     // Xóa phần tử đầu tiên của mảng nếu quá dài
     if (dataUpdateSeries.current.length > 50) {
       dataUpdateSeries.current.shift();
     }
     // Gọi hàm ApexCharts.exec với ref của biểu đồ và dữ liệu mới
     ApexCharts.exec(
-      `${nameRef.current[4]}`,
+      `${nameRef.current[5]}`,
       "updateSeries",
       [
         lineRef.current[0]
@@ -114,13 +120,20 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
           ? {
               name: nameRef.current[3],
               data: dataUpdateSeries.current.map((value) => value.y_4),
+              color: "#00FF00", // Màu sắc đường thẳng 4
+            }
+          : null,
+          lineRef.current[4]
+          ? {
+              name: nameRef.current[4],
+              data: dataUpdateSeries.current.map((value) => value.y_5),
               color: "#495361", // Màu sắc đường thẳng 4
             }
           : null,
       ].filter(Boolean)
     );
     ApexCharts.exec(
-      `${nameRef.current[4]}`,
+      `${nameRef.current[5]}`,
       "updateOptions",
       {
         xaxis: {
@@ -154,11 +167,11 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
       <Grid container>
         <Grid
           item
-          xs={3}
-          sm={3}
-          md={3}
-          lg={3}
-          xl={3}
+          xs={2.4}
+          sm={2.4}
+          md={2.4}
+          lg={2.4}
+          xl={2.4}
           style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
         >
           <Checkbox
@@ -178,11 +191,11 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
         </Grid>
         <Grid
           item
-          xs={3}
-          sm={3}
-          md={3}
-          lg={3}
-          xl={3}
+          xs={2.4}
+          sm={2.4}
+          md={2.4}
+          lg={2.4}
+          xl={2.4}
           style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
         >
           <Checkbox
@@ -202,11 +215,11 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
         </Grid>
         <Grid
           item
-          xs={3}
-          sm={3}
-          md={3}
-          lg={3}
-          xl={3}
+          xs={2.4}
+          sm={2.4}
+          md={2.4}
+          lg={2.4}
+          xl={2.4}
           style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
         >
           <Checkbox
@@ -226,11 +239,11 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
         </Grid>
         <Grid
           item
-          xs={3}
-          sm={3}
-          md={3}
-          lg={3}
-          xl={3}
+          xs={2.4}
+          sm={2.4}
+          md={2.4}
+          lg={2.4}
+          xl={2.4}
           style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
         >
           <Checkbox
@@ -242,10 +255,36 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
             }}
           ></Checkbox>
           <Typography
-            style={{ textDecoration: line4 ? "" : "line-through", color: "#495361" }}
+            style={{ textDecoration: line4 ? "" : "line-through", color: "#00FF00" }}
             variant="h6"
           >
             {nameRef.current[3]}
+          </Typography>
+        </Grid>
+
+
+        <Grid
+          item
+          xs={2.4}
+          sm={2.4}
+          md={2.4}
+          lg={2.4}
+          xl={2.4}
+          style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+        >
+          <Checkbox
+            size="small"
+            checked={line5}
+            onChange={() => {
+              lineRef.current[4] = !line5;
+              setLine5((prevState) => !prevState);
+            }}
+          ></Checkbox>
+          <Typography
+            style={{ textDecoration: line5 ? "" : "line-through", color: "#495361" }}
+            variant="h6"
+          >
+            {nameRef.current[4]}
           </Typography>
         </Grid>
       </Grid>
@@ -253,4 +292,4 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
     </div>
   );
 }
-export default RealtimeChart;
+export default RealtimeChartCurrent;

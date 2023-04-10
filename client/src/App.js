@@ -58,7 +58,6 @@ import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "co
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 export default function App() {
-  console.log("vào appp");
   const [controller, dispatch] = useMaterialUIController();
   const {
     miniSidenav,
@@ -74,7 +73,7 @@ export default function App() {
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
   const { auth } = useMultiContext();
-  console.log("auth trong app", auth);
+
   // console.log("render app");
   // const token = localStorage.getItem("token"); // Lấy chuỗi token từ localStorage
   // console.log("Lấy chuỗi token từ localStorage", token);

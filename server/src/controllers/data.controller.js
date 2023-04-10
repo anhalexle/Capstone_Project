@@ -135,7 +135,13 @@ exports.getDataFromDay = catchAsync(async (req, res, next) => {
   const promises = dates.map(async (date) => {
     const data = await totalPowerOneDay(date);
     return {
-      Date: date.toLocaleDateString().split(',')[0],
+      Date: date
+        .toLocaleString('en-GB', {
+          day: 'numeric',
+          month: 'numeric',
+          year: 'numeric',
+        })
+        .split(',')[0],
       Peak: data[2] ? data[2].totalPower : 0,
       Normal: data[1] ? data[1].totalPower : 0,
       OffPeak: data[0] ? data[0].totalPower : 0,

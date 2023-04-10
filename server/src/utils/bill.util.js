@@ -1,27 +1,27 @@
 const bill = [
   {
     type: 1,
-    Peak: 2570,
-    OffPeak: 884,
-    Normal: 1434,
+    Peak: 2759,
+    OffPeak: 970,
+    Normal: 1536,
   },
   {
     type: 2,
-    Peak: 2673,
-    OffPeak: 918,
-    Normal: 1452,
+    Peak: 2871,
+    OffPeak: 1007,
+    Normal: 1555,
   },
   {
     type: 3,
-    Peak: 2759,
-    OffPeak: 953,
-    Normal: 1503,
+    Peak: 2964,
+    OffPeak: 1044,
+    Normal: 1611,
   },
   {
     type: 4,
-    Peak: 2862,
-    OffPeak: 1004,
-    Normal: 1572,
+    Peak: 3076,
+    OffPeak: 1100,
+    Normal: 1685,
   },
 ];
 

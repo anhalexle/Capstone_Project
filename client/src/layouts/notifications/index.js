@@ -53,7 +53,7 @@ import { addDays, setHours, setMinutes } from "date-fns";
 
 function Notifications() {
   //data alarm
-  const [dataAlarm, setDataAlarm] = useState([]);
+  const [dataAlarm, setDataAlarm] = useState(null);
   // pick date time
   const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), 0), 0));
 
@@ -144,8 +144,8 @@ function Notifications() {
                     </Grid>
                   </Grid>
                   {/* // */}
-                  <Grid item xs={12} md={4} lg={4} style={{ paddingTop: "40px" }}>
-                    <Grid>
+                  <Grid item xs={12} md={4} lg={4} container style={{ paddingTop: "40px" }}>
+                    <Grid item xs={12} md={12} lg={12}>
                       <Button
                         variant="contained"
                         style={{ color: "white" }}
@@ -154,11 +154,17 @@ function Notifications() {
                         Tra Cứu
                       </Button>
                     </Grid>
-                    <Grid>
-                      <Button variant="contained" style={{ color: "white" }} onClick={handleExport}>
-                        Xuất excel
-                      </Button>
-                    </Grid>
+                    {dataAlarm && (
+                      <Grid item xs={12} md={12} lg={12} mt={2}>
+                        <Button
+                          variant="contained"
+                          style={{ color: "white" }}
+                          onClick={handleExport}
+                        >
+                          Xuất excel
+                        </Button>
+                      </Grid>
+                    )}
                   </Grid>
                 </Grid>
 
@@ -193,58 +199,60 @@ function Notifications() {
                   </Button>
                 </Typography> */}
               </Box>
-              <Table>
-                <TableBody>
-                  <TableCell align="center">
-                    <Typography variant="h5">Type</Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography variant="h5">Time</Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography variant="h5">Name</Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography variant="h5">Value</Typography>
-                  </TableCell>
-                  {dataAlarm.map((item) => (
-                    <TableRow key={item.parameter.createdAt}>
-                      <TableCell
-                        align="center"
-                        style={{
-                          color: item.type === "High" || item.type === "Low" ? "#FFCC00" : "red",
-                        }}
-                      >
-                        {item.type}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        style={{
-                          color: item.type === "High" || item.type === "Low" ? "#FFCC00" : "red",
-                        }}
-                      >
-                        {moment(item.parameter.createdAt).format("DD/MM/YYYY hh:mm A")}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        style={{
-                          color: item.type === "High" || item.type === "Low" ? "#FFCC00" : "red",
-                        }}
-                      >
-                        {item.parameter.name}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        style={{
-                          color: item.type === "High" || item.type === "Low" ? "#FFCC00" : "red",
-                        }}
-                      >
-                        {item.parameter.value}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              {dataAlarm && (
+                <Table>
+                  <TableBody>
+                    <TableCell align="center">
+                      <Typography variant="h5">Type</Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography variant="h5">Time</Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography variant="h5">Name</Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography variant="h5">Value</Typography>
+                    </TableCell>
+                    {dataAlarm.map((item) => (
+                      <TableRow key={item.parameter.createdAt}>
+                        <TableCell
+                          align="center"
+                          style={{
+                            color: item.type === "High" || item.type === "Low" ? "#FFCC00" : "red",
+                          }}
+                        >
+                          {item.type}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          style={{
+                            color: item.type === "High" || item.type === "Low" ? "#FFCC00" : "red",
+                          }}
+                        >
+                          {moment(item.parameter.createdAt).format("DD/MM/YYYY hh:mm A")}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          style={{
+                            color: item.type === "High" || item.type === "Low" ? "#FFCC00" : "red",
+                          }}
+                        >
+                          {item.parameter.name}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          style={{
+                            color: item.type === "High" || item.type === "Low" ? "#FFCC00" : "red",
+                          }}
+                        >
+                          {item.parameter.value}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
             </Card>
           </Grid>
         </Grid>
