@@ -31,7 +31,9 @@
     "prettier/prettier": [
       "warn",
       { "semi": true, "singleQuote": true, "endOfLine": "auto", "tabWidth": 2 }
-    ]
+    ],
+    "no-plusplus": "off",
+    "no-bitwise": "off"
   },
   "parserOptions": {
     "ecmaVersion": 13
