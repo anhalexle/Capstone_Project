@@ -81,7 +81,7 @@ const sendStateToClient = async () => {
     const runAndReverse = await readRunAndReverse();
     const output = await readOutPut();
     const data = { ...state, ...runAndReverse, ...output };
-    console.log(data);
+    return data;
   } catch (err) {
     console.log(err);
   }

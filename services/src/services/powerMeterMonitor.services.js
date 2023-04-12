@@ -23,7 +23,6 @@ const mainService = async (type) => {
   try {
     global.client.setID(process.env.ID_POWERMETER);
     let newModBusData = await features.readDataFromModBus(global.client, type);
-    console.log(newModBusData);
     if (type !== 'pf' && type !== 'frequency' && type !== 'integral_power') {
       newModBusData = newModBusData.filter((data, index) => index % 2 === 0);
     }
@@ -82,7 +81,6 @@ const getAllDataAndEmit = async () => {
 
 const main = () => {
   dataType.myAsyncForEach(async (type) => {
-    console.log(type);
     const allValue = await mainService(type);
     if (allValue && allValue.length > 0) {
       const totalIntegralValue = allValue.find(
