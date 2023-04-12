@@ -1,7 +1,5 @@
 const path = require('path');
 
-const ModBusRTU = require('modbus-serial');
-
 const dotenv = require('dotenv');
 
 const features = require('../utils/features.util');
@@ -13,13 +11,6 @@ const convertFromNumToBinary = require('../utils/convertFromNumToBinary.util');
 
 dotenv.config({ path: path.resolve(__dirname, '..', '..', 'config.env') });
 
-const client = new ModBusRTU();
-
-client.connectRTUBuffered(process.env.PORT, {
-  baudRate: process.env.BAUDRATE * 1,
-});
-client.setID(process.env.ID);
-
 const dataType = features.getAllDataType();
 
 Array.prototype.myAsyncForEach = async function (callback, thisArg) {
@@ -30,7 +21,9 @@ Array.prototype.myAsyncForEach = async function (callback, thisArg) {
 
 const mainService = async (type) => {
   try {
-    let newModBusData = await features.readDataFromModBus(client, type);
+    global.client.setID(process.env.ID_POWERMETER);
+    let newModBusData = await features.readDataFromModBus(global.client, type);
+    console.log(newModBusData);
     if (type !== 'pf' && type !== 'frequency' && type !== 'integral_power') {
       newModBusData = newModBusData.filter((data, index) => index % 2 === 0);
     }
@@ -45,7 +38,6 @@ const mainService = async (type) => {
         left += 2;
         right += 2;
       }
-      console.log(res);
       newModBusData = res.map((el) => el / features.getThreshHold(type));
     }
     const oldModBusData = await getLatestDataFromDB(type);
@@ -90,6 +82,7 @@ const getAllDataAndEmit = async () => {
 
 const main = () => {
   dataType.myAsyncForEach(async (type) => {
+    console.log(type);
     const allValue = await mainService(type);
     if (allValue && allValue.length > 0) {
       const totalIntegralValue = allValue.find(

@@ -61,6 +61,28 @@ class SocketServices {
         console.log(err);
       }
     });
+
+    socket.on('sendState', () => {
+      global._io.emit('sendState');
+    });
+    socket.on('stopSendState', () => {
+      global._io.emit('stopSendState');
+    });
+    socket.on('receiveState', (data) => {
+      global._io.emit('receiveState', data);
+    });
+    socket.on('changeState', (data) => {
+      global._io.emit('changeState', data);
+    });
+    socket.on('frequency', (data) => {
+      global._io.emit('frequency', data);
+    });
+    socket.on('run', (data) => {
+      global._io.emit('run', data);
+    });
+    socket.on('reverse', (data) => {
+      global._io.emit('reverse', data);
+    });
   }
 }
 
