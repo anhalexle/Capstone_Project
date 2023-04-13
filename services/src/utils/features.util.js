@@ -58,6 +58,7 @@ class DataType {
         this.#dataType[type].address[1][1]
       );
       res.push(...mbData2.data);
+      if (type === 'integral_power') return res;
       return res.map((el) => el / this.#dataType[type].unit);
     }
     const mbData = await client.readHoldingRegisters(

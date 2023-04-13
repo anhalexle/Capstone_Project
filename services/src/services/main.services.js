@@ -9,6 +9,7 @@ const Data = require('../models/data.model');
 const { getLatestDataFromDB } = require('../utils/database.util');
 const compareArrays = require('../utils/compare.util');
 const totalPowerOneMonth = require('./integralOneDay.services');
+const convertFromNumToBinary = require('../utils/convertFromNumToBinary.util');
 
 dotenv.config({ path: path.resolve(__dirname, '..', '..', 'config.env') });
 
@@ -30,8 +31,22 @@ Array.prototype.myAsyncForEach = async function (callback, thisArg) {
 const mainService = async (type) => {
   try {
     let newModBusData = await features.readDataFromModBus(client, type);
-    if (type !== 'pf' && type !== 'frequency') {
+    if (type !== 'pf' && type !== 'frequency' && type !== 'integral_power') {
       newModBusData = newModBusData.filter((data, index) => index % 2 === 0);
+    }
+    if (type === 'integral_power') {
+      newModBusData = newModBusData.map((el) => convertFromNumToBinary(el));
+      let left = 0;
+      let right = 1;
+      const res = [];
+      while (right < newModBusData.length) {
+        const binary = newModBusData[right].concat(newModBusData[left]);
+        res.push(parseInt(binary, 2));
+        left += 2;
+        right += 2;
+      }
+      console.log(res);
+      newModBusData = res.map((el) => el / features.getThreshHold(type));
     }
     const oldModBusData = await getLatestDataFromDB(type);
     const oldData = oldModBusData.map((el) => {
