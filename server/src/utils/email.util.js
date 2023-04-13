@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+// eslint-disable-next-line node/no-extraneous-require
 const { OAuth2Client } = require('google-auth-library');
 const pug = require('pug');
 const { htmlToText } = require('html-to-text');
