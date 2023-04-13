@@ -684,7 +684,7 @@ function Dashboard() {
                 <Grid item xs={12} md={6} lg={3}>
                   <MDBox mb={1.5} mt={1.5}>
                     <AppWidgetSummary
-                      title="INTEGRAL ACTIVE POWER 4 (kWh)"
+                      title="TOTAL INTEGRAL ACTIVE POWER (kWh)"
                       icon={imgA}
                       color="secondary"
                       total={dataPrint.data[24]}
@@ -712,7 +712,7 @@ function Dashboard() {
                     nameLine1="INTEGRAL ACTIVE POWER 1"
                     nameLine2="INTEGRAL ACTIVE POWER 2"
                     nameLine3="INTEGRAL ACTIVE POWER 3"
-                    nameLine4="INTEGRAL ACTIVE POWER 4"
+                    nameLine4="TOTAL INTEGRAL ACTIVE POWER"
                     title="INTEGRAL ACTIVE POWER"
                   />
                 </Grid>
@@ -769,7 +769,7 @@ function Dashboard() {
                 <Grid item xs={12} md={6} lg={3}>
                   <MDBox mb={1.5} mt={1.5}>
                     <AppWidgetSummary
-                      title="INSTANTANEOUS ACTIVE POWER  AVERAGE (kW)"
+                      title="TOTAL INSTANTANEOUS ACTIVE POWER (kW)"
                       icon={imgP}
                       color="secondary"
                       total={dataPrint.data[28]}
@@ -797,7 +797,7 @@ function Dashboard() {
                     nameLine1="INSTANTANEOUS ACTIVE POWER 1"
                     nameLine2="INSTANTANEOUS ACTIVE POWER 2"
                     nameLine3="INSTANTANEOUS ACTIVE POWER 3"
-                    nameLine4="INSTANTANEOUS ACTIVE POWER 4"
+                    nameLine4="TOTAL INSTANTANEOUS ACTIVE POWER"
                     title="INSTANTANEOUS ACTIVE POWER"
                   />
                 </Grid>

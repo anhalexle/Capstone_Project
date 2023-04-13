@@ -37,7 +37,7 @@ Coded by www.creative-tim.com
 
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
+import Devices from "layouts/devices";
 import Billing from "layouts/billing";
 import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
@@ -45,6 +45,7 @@ import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import Chart from "layouts/chart/Chart";
+import Data from "layouts/data/data";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -84,28 +85,36 @@ const privateRoutes = [
   },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
-    component: <Tables />,
-  },
-  {
-    type: "collapse",
-    name: "Profile",
-    key: "profile",
-    icon: <Icon fontSize="small">person</Icon>,
-    route: "/profile",
-    component: <Profile />,
-  },
-  {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
+    name: "Data",
+    key: "Data",
     icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/authentication/sign-up",
-    component: <SignUp />,
+    route: "/data",
+    component: <Data />,
   },
+  {
+    type: "collapse",
+    name: "Devices",
+    key: "Devices",
+    icon: <Icon fontSize="small">construction</Icon>,
+    route: "/devices",
+    component: <Devices />,
+  },
+    // {
+    //   type: "collapse",
+    //   name: "Profile",
+    //   key: "profile",
+    //   icon: <Icon fontSize="small">person</Icon>,
+    //   route: "/profile",
+    //   component: <Profile />,
+    // },
+  // {
+  //   type: "collapse",
+  //   name: "Sign Up",
+  //   key: "sign-up",
+  //   icon: <Icon fontSize="small">assignment</Icon>,
+  //   route: "/authentication/sign-up",
+  //   component: <SignUp />,
+  // },
 ];
 
 const pulicRoutes = [

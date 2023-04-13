@@ -5,7 +5,7 @@ const multiContext = createContext();
 
 // eslint-disable-next-line react/prop-types
 export const MultiProvider = ({ children }) => {
-  const socket = io.connect("http://192.168.0.103:3001");
+  const socket = io.connect("http://localhost:3001");
   const notificationsRef = useRef([]);
   const [auth, setAuth] = useState({
     roles: "admin",

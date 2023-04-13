@@ -211,6 +211,18 @@ export default function App() {
             element={privateRoutes[3].component}
             key={privateRoutes[3].key}
           />
+          <Route
+            exact
+            path={privateRoutes[4].route}
+            element={privateRoutes[4].component}
+            key={privateRoutes[4].key}
+          />
+          <Route
+            exact
+            path={privateRoutes[5].route}
+            element={privateRoutes[5].component}
+            key={privateRoutes[5].key}
+          />
         </Route>
         {getRoutes(pulicRoutes)}
         <Route path="/unauthorized" element={<Unauthorized />} />
