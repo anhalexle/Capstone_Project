@@ -92,14 +92,15 @@ function Devices() {
       
       setDataPrint((prevState) => ({ data: arrayDataPrint, timestamp: Date.now() }));
     };
-    socket.emit("/sendState");
-    socket.on("/receiveState", handleData);
-    socket.on("/updateState", handleData);
+    socket.emit("sendState");
+    socket.on("receiveState", handleData);
+    socket.on("changeState", handleData);
     // socket.on("alarm", handleServerWarning);
     return () => {
       // socket.off("alarm", handleServerWarning);
-      socket.off("/receiveState");
-      socket.off("/updateState");
+      socket.off("receiveState");
+      socket.emit('stopSendState')
+      socket.off("changeState");
     };
   }, []);
 
@@ -142,6 +143,7 @@ function Devices() {
               <PrettoSlider
                 value={frequency}
                 onChange={(event: Event, newValue: number | number[]) => {
+                  socket.emit('frequency', newValue);
                   setFrequency(newValue);
                 } } />
             </Grid>
@@ -150,6 +152,7 @@ function Devices() {
                 value={frequency}
                 // size="small"
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  socket.emit('frequency', event.target.value);
                   setFrequency(event.target.value === '' ? '' : Number(event.target.value));
                 } }
                 onBlur={handleBlur}
