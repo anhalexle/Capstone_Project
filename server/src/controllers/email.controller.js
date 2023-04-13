@@ -1,3 +1,4 @@
+// eslint-disable-next-line node/no-extraneous-require
 const { OAuth2Client } = require('google-auth-library');
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
