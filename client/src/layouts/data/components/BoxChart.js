@@ -35,33 +35,31 @@ function BoxChart() {
     "INTEGRAL ACTIVE POWER",
     "INSTANTANEOUS ACTIVE POWER",
   ];
-  const voltageList = ["VOLTAGE 1", "VOLTAGE 2", "VOLTAGE 3", "VOLTAGE AVERAGE"];
-  const lineVoltageList = [
-    "LINE VOLTAGE 1-2",
-    "LINE VOLTAGE 2-3 ",
-    "LINE VOLTAGE 3-1",
-    "LINE VOLTAGE AVERAGE",
-  ];
-  const currentList = ["CURRENT 1", "CURRENT 2", "CURRENT 3", "CURRENT PHASEN", "CURRENT AVERAGE"];
-  const frequencyList = ["FREQUENCY 1", "FREQUENCY 2", "FREQUENCY 3", "FREQUENCY AVERAGE"];
-  const PFList = ["PF 1", "PF 2", "PF 3", "PF AVERAGE"];
+  const voltageList = ["Voltage_1", "Voltage_2", "Voltage_3", "Volt_average"];
+  const lineVoltageList = ["Line_V1_2", "Line_V2_3", "Line_V3_1", "Line_Average"];
+  const currentList = ["Current_1", "Current_2", "Current_3", "Current_phase_N", "Current_TB"];
+  const frequencyList = ["f1", "f2", "f3", "f_tb"];
+  const PFList = ["pf1", "pf2", "pf3", "pf_tb"];
   const integralList = [
-    "INTEGRAL ACTIVE POWER 1",
-    "INTEGRAL ACTIVE POWER 2",
-    "INTEGRAL ACTIVE POWER 3",
-    "TOTAL INTEGRAL ACTIVE POWER",
+    "integral_active_power_1",
+    "integral_active_power_2",
+    "integral_active_power_3",
+    "total_integral_active_power",
   ];
   const instantaneousList = [
-    "INSTANTANEOUS ACTIVE POWER 1",
-    "INSTANTANEOUS ACTIVE POWER 2",
-    "INSTANTANEOUS ACTIVE POWER 3",
-    "TOTAL INSTANTANEOUS ACTIVE POWER",
+    "instantaneous_active_power_1",
+    "instantaneous_active_power_2",
+    "instantaneous_active_power_3",
+    "total_instantaneous_active_power",
   ];
 
   async function onHandleSubmit() {
     const request = {
-      date: "chào",
+      startDate,
+      endDate,
+      name: typeSpecific,
     };
+    console.log(request);
 
     const response = await fetch("http://localhost:3001/api/v1/data/drawChart", {
       method: "POST",

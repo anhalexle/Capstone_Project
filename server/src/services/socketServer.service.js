@@ -45,8 +45,8 @@ class SocketServices {
         console.log(arr);
         global._io.emit('new-data-client', arr);
         console.log(newData.type, newData);
-        if (newData.type !== 'integral_power')
-          await dataFeatures.createAlarm(newData.type, newData);
+        // if (newData.type !== 'integral_power')
+        //   await dataFeatures.createAlarm(newData.type, newData);
       } catch (err) {
         console.log(err);
       }
@@ -62,11 +62,8 @@ class SocketServices {
       }
     });
 
-    socket.on('sendState', () => {
-      global._io.emit('sendState');
-    });
-    socket.on('stopSendState', () => {
-      global._io.emit('stopSendState');
+    socket.on('sendState', (data) => {
+      global._io.emit('sendState', data);
     });
     socket.on('receiveState', (data) => {
       global._io.emit('receiveState', data);

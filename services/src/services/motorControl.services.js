@@ -17,8 +17,10 @@ const readRunAndReverse = async () => {
   try {
     global.client.setID(process.env.ID_MOTOR);
     const mbDataOutput = await global.client.readCoils(8160, 2);
+    // console.log('runAndReverseoutput', mbDataOutput);
     mbDataOutput.data.splice(2);
     const mbDataSettings = await global.client.readCoils(8064, 2);
+    // console.log('runandreversesettings', mbDataSettings);
     mbDataSettings.data.splice(2);
     return {
       runStatus: mbDataOutput.data[0],
@@ -35,6 +37,7 @@ const readState = async () => {
   try {
     global.client.setID(process.env.ID_MOTOR);
     const mbData = await global.client.readHoldingRegisters(3, 1);
+    // console.log('mbData', mbData);
     return { state: mbData.data[0] };
   } catch (e) {
     console.log(e);
@@ -63,7 +66,9 @@ const readOutPut = async () => {
   try {
     global.client.setID(process.env.ID_MOTOR);
     const mbDataSettings = await global.client.readHoldingRegisters(507, 1);
+    // console.log('mbDataSetting', mbDataSettings);
     const mbDataOutput = await global.client.readHoldingRegisters(451, 4);
+    // console.log('mbDataOutput', mbDataOutput);
     return {
       frequencySetting: mbDataSettings.data[0],
       frequencyOutput: mbDataOutput.data[0],
@@ -78,9 +83,13 @@ const readOutPut = async () => {
 const sendStateToClient = async () => {
   try {
     const state = await readState();
+    // console.log(state);
     const runAndReverse = await readRunAndReverse();
+    // console.log(runAndReverse);
     const output = await readOutPut();
+    // console.log(output);
     const data = { ...state, ...runAndReverse, ...output };
+    console.log(data);
     return data;
   } catch (err) {
     console.log(err);

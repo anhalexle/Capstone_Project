@@ -5,9 +5,14 @@ const User = require('../models/user.model');
 class DataType {
   #dataType = {
     volt: {
-      address: [164, 16],
+      address: [164, 8],
       unit: 10,
-      threshHold: { hi_hi: 500, hi: 300, lo: 50, lo_lo: 0 },
+      threshHold: { hi_hi: 300, hi: 230, lo: 50, lo_lo: 0 },
+    },
+    volt_line: {
+      address: [172, 8],
+      unit: 10,
+      threshHold: { hi_hi: 500, hi: 400, lo: 50, lo_lo: 0 },
     },
     current: {
       address: [180, 10],
@@ -22,12 +27,12 @@ class DataType {
     pf: {
       address: [194, 4],
       unit: 1000,
-      threshHold: { hi_hi: 1, hi: 0.95, lo: 0.92, lo_lo: 0.9 },
+      threshHold: { lo: 0.9, lo_lo: 0.85 },
     },
     integral_power: {
       address: [
         [198, 2],
-        [202, 6],
+        [200, 6],
       ],
       unit: 1000,
     },
@@ -37,7 +42,7 @@ class DataType {
         [242, 6],
       ],
       unit: 1000,
-      threshHold: { hi_hi: 30 * 1 * 0.9, hi: 30 * 1 * 0.8 },
+      threshHold: { hi_hi: 2000, hi: 1000 },
     },
   };
 
@@ -69,9 +74,9 @@ class DataType {
           alarmType = 'Low';
         }
       }
-      if (dataCreated.value > hi_hi) {
+      if (type !== 'pf' && dataCreated.value > hi_hi) {
         alarmType = 'High High';
-      } else if (dataCreated.value >= hi) {
+      } else if (type !== 'pf' && dataCreated.value >= hi) {
         alarmType = 'High';
       }
 
@@ -95,9 +100,9 @@ class DataType {
       //   'parameter type'
       // );
       console.log(alarmFilter);
-      const user = await User.findOne({ role: 'user' });
-      const newAlarmEmail = new Email(user, alarmFilter);
-      await newAlarmEmail.sendAlarm();
+      // const user = await User.findOne({ role: 'user' });
+      // const newAlarmEmail = new Email(user, alarmFilter);
+      // await newAlarmEmail.sendAlarm();
     } catch (err) {
       console.log(err);
     }

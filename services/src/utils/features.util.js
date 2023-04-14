@@ -1,9 +1,14 @@
 class DataType {
   #dataType = {
     volt: {
-      address: [164, 16],
+      address: [164, 8],
       unit: 10,
-      threshHold: { hi_hi: 500, hi: 300, lo: 50, lo_lo: 0 },
+      threshHold: { hi_hi: 300, hi: 230, lo: 50, lo_lo: 0 },
+    },
+    volt_line: {
+      address: [172, 8],
+      unit: 10,
+      threshHold: { hi_hi: 500, hi: 400, lo: 50, lo_lo: 0 },
     },
     current: {
       address: [180, 10],
@@ -23,7 +28,7 @@ class DataType {
     integral_power: {
       address: [
         [198, 2],
-        [202, 6],
+        [200, 6],
       ],
       unit: 1000,
     },

@@ -13,40 +13,40 @@ const AppError = require('../utils/appError.util');
 const getDatesBetween = require('../utils/getDates.util');
 const totalPowerOneDay = require('../utils/totalOneDay.util');
 
-const createPipeLine = (date, name) => {
-  let theDate;
-  let nextDate;
-  const pipeline = [
-    { $match: { name } },
-    {
-      $project: {
-        _id: 0,
-        value: 1,
-        createdAt: 1,
-      },
-    },
-  ];
-  if (date.day && date.month && date.year) {
-    theDate = new Date(date.year, date.month - 1, date.day, 7, 0);
-    nextDate = new Date(date.year, date.month - 1, date.day + 1, 7, 0);
-  } else if (date.month && date.year) {
-    theDate = new Date(date.year, date.month - 1, 1, 7, 0);
-    nextDate = new Date(date.year, date.month, 1, 7, 0);
-  } else {
-    theDate = new Date(date.year, 0, 1, 7, 0);
-    nextDate = new Date(date.year + 1, 0, 1, 7, 0);
-  }
-  console.log(theDate, nextDate);
-  pipeline.unshift({
-    $match: {
-      createdAt: {
-        $gte: theDate,
-        $lt: nextDate,
-      },
-    },
-  });
-  return pipeline;
-};
+// const createPipeLine = (date, name) => {
+//   let theDate;
+//   let nextDate;
+//   const pipeline = [
+//     { $match: { name } },
+//     {
+//       $project: {
+//         _id: 0,
+//         value: 1,
+//         createdAt: 1,
+//       },
+//     },
+//   ];
+//   if (date.day && date.month && date.year) {
+//     theDate = new Date(date.year, date.month - 1, date.day, 7, 0);
+//     nextDate = new Date(date.year, date.month - 1, date.day + 1, 7, 0);
+//   } else if (date.month && date.year) {
+//     theDate = new Date(date.year, date.month - 1, 1, 7, 0);
+//     nextDate = new Date(date.year, date.month, 1, 7, 0);
+//   } else {
+//     theDate = new Date(date.year, 0, 1, 7, 0);
+//     nextDate = new Date(date.year + 1, 0, 1, 7, 0);
+//   }
+//   console.log(theDate, nextDate);
+//   pipeline.unshift({
+//     $match: {
+//       createdAt: {
+//         $gte: theDate,
+//         $lt: nextDate,
+//       },
+//     },
+//   });
+//   return pipeline;
+// };
 
 const readTemplateExcelFile = async (data, sheet = 'Sheet1') => {
   const templateFile = `${global.__basedir}\\src\\dev-data\\data\\template.xlsx`;
@@ -85,10 +85,40 @@ exports.getAllData = new CRUDFactory(Data).getAll();
 //   const allData = await Data.aggregate(aggPipeline);
 // });
 
+// exports.drawChart = catchAsync(async (req, res, next) => {
+//   const { date, name } = req.body;
+//   console.log(date, name);
+//   if (!date) return next(new AppError('Please provide date', 404));
+//   const aggPipeline = createPipeLine(date, name);
+//   const allData = await Data.aggregate(aggPipeline);
+//   return res.status(201).json({
+//     status: 'success',
+//     data: allData.length > 0 ? allData : null,
+//   });
+// });
+
+const createPipeLine = (startDate, endDate, name) => {
+  const pipeline = [
+    {
+      $match: { name },
+    },
+    {
+      $match: {
+        createdAt: {
+          $gte: new Date(startDate),
+          $lte: new Date(endDate),
+        },
+      },
+    },
+  ];
+  return pipeline;
+};
 exports.drawChart = catchAsync(async (req, res, next) => {
-  const { date, name } = req.body;
-  if (!date) return next(new AppError('Please provide date', 404));
-  const aggPipeline = createPipeLine(date, name);
+  const { startDate, endDate, name } = req.body;
+  if (!startDate || !endDate)
+    return next(new AppError('Please provide date', 404));
+  if (!name) return next(new AppError('Please provide name', 404));
+  const aggPipeline = createPipeLine(startDate, endDate, name);
   const allData = await Data.aggregate(aggPipeline);
   return res.status(201).json({
     status: 'success',

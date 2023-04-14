@@ -25,25 +25,25 @@
     },
     {
         "name": "Line_V1_2",
-        "type": "volt",
+        "type": "volt_line",
         "value": 0,
         "address": 172
     },
     {
         "name": "Line_V2_3",
-        "type": "volt",
+        "type": "volt_line",
         "value": 0,
         "address": 174
     },
     {
         "name": "Line_V3_1",
-        "type": "volt",
+        "type": "volt_line",
         "value": 0,
         "address": 176
     },
     {
         "name": "Line_Average",
-        "type": "volt",
+        "type": "volt_line",
         "value": 0,
         "address": 178
     },
@@ -135,19 +135,19 @@
         "name": "integral_active_power_2",
         "type": "integral_power",
         "value": 0,
-        "address": 202
+        "address": 200
     },
     {
         "name": "integral_active_power_3",
         "type": "integral_power",
         "value": 0,
-        "address": 204
+        "address": 202
     },
     {
         "name": "total_integral_active_power",
         "type": "integral_power",
         "value": 0,
-        "address": 206
+        "address": 204
     },
     {
         "name": "instantaneous_active_power_1",

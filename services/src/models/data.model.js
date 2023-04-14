@@ -9,6 +9,7 @@ const dataSchema = mongoose.Schema(
       type: String,
       enum: [
         'volt',
+        'volt_line',
         'current',
         'frequency',
         'pf',

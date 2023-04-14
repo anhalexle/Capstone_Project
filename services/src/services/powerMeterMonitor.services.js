@@ -28,6 +28,7 @@ const mainService = async (type) => {
     }
     if (type === 'integral_power') {
       newModBusData = newModBusData.map((el) => convertFromNumToBinary(el));
+      // console.log(newModBusData);
       let left = 0;
       let right = 1;
       const res = [];
@@ -37,7 +38,8 @@ const mainService = async (type) => {
         left += 2;
         right += 2;
       }
-      newModBusData = res.map((el) => el / features.getThreshHold(type));
+      // console.log(res, features.getUnit(type));
+      newModBusData = res.map((el) => el / features.getUnit(type));
     }
     const oldModBusData = await getLatestDataFromDB(type);
     const oldData = oldModBusData.map((el) => {
@@ -79,14 +81,17 @@ const getAllDataAndEmit = async () => {
   }
 };
 
-const main = () => {
-  dataType.myAsyncForEach(async (type) => {
+const main = async () => {
+  await dataType.myAsyncForEach(async (type) => {
     const allValue = await mainService(type);
     if (allValue && allValue.length > 0) {
       const totalIntegralValue = allValue.find(
         (el) => el.name === 'total_integral_active_power'
       );
       if (totalIntegralValue) await totalPowerOneMonth();
+      // if (totalIntegralValue && global.socket.connected) {
+      //   global.socket.emit('calculate-total-power')
+      // }
     }
   });
 };
