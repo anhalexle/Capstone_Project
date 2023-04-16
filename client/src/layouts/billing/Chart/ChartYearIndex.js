@@ -1,18 +1,18 @@
-import React, { useRef, useEffect, useState } from "react";
-import ApexCharts from "apexcharts";
-import ReactApexChart from "react-apexcharts";
-import moment from "moment";
-import Checkbox from "@mui/material/Checkbox";
-import { Typography, Grid } from "@mui/material";
+import React, { useRef, useEffect, useState } from 'react';
+import ApexCharts from 'apexcharts';
+import ReactApexChart from 'react-apexcharts';
+import moment from 'moment';
+import Checkbox from '@mui/material/Checkbox';
+import { Typography, Grid } from '@mui/material';
 
 // eslint-disable-next-line react/prop-types
 function ChartYearIndex({ data, titleChart }) {
   // Tạo một ref cho biểu đồ
   // const dataRef = useRef(data);
-  console.log("dfsdfsfsdf", titleChart);
+  console.log('dfsdfsfsdf', titleChart);
   const [series, setSeries] = React.useState([
     {
-      name: "Giờ thấp điểm",
+      name: 'Giờ thấp điểm',
       // eslint-disable-next-line react/prop-types
       data: data
         .map((value) => [
@@ -22,7 +22,7 @@ function ChartYearIndex({ data, titleChart }) {
         .flat(),
     },
     {
-      name: "Giờ bình thường",
+      name: 'Giờ bình thường',
       data: data
         .map((value) => [
           value.ThisYear?.Normal ? value.ThisYear.Normal : 0,
@@ -31,7 +31,7 @@ function ChartYearIndex({ data, titleChart }) {
         .flat(),
     },
     {
-      name: "Giờ cao điểm",
+      name: 'Giờ cao điểm',
       data: data
         .map((value) => [
           value.ThisYear?.Peak ? value.ThisYear.Peak : 0,
@@ -42,8 +42,8 @@ function ChartYearIndex({ data, titleChart }) {
   ]);
   const [options, setOptions] = React.useState({
     chart: {
-      id: "ChartYearIndex",
-      type: "bar",
+      id: 'ChartYearIndex',
+      type: 'bar',
       height: 350,
       stacked: true,
       toolbar: {
@@ -58,7 +58,7 @@ function ChartYearIndex({ data, titleChart }) {
         breakpoint: 480,
         options: {
           legend: {
-            position: "bottom",
+            position: 'bottom',
             offsetX: -10,
             offsetY: 0,
           },
@@ -87,8 +87,8 @@ function ChartYearIndex({ data, titleChart }) {
       categories: data.map((value) => [value.Year, value.Year - 1]).flat(),
       group: {
         style: {
-          fontSize: "20px",
-          fontWeight: "20px",
+          fontSize: '20px',
+          fontWeight: '20px',
         },
         groups: data.map((value) => {
           return { title: `T${value.Month}`, cols: 2 };
@@ -101,7 +101,7 @@ function ChartYearIndex({ data, titleChart }) {
       },
     },
     legend: {
-      position: "bottom",
+      position: 'bottom',
       // offsetY: 40,
     },
     fill: {
@@ -110,8 +110,13 @@ function ChartYearIndex({ data, titleChart }) {
   });
   return (
     <div>
-      {console.log("fsdfsdf", options)}
-      <ReactApexChart options={options} series={series} type="bar" height={500}></ReactApexChart>
+      {console.log('fsdfsdf', options)}
+      <ReactApexChart
+        options={options}
+        series={series}
+        type="bar"
+        height={500}
+      ></ReactApexChart>
     </div>
   );
 }

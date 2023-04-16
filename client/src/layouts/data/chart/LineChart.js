@@ -1,13 +1,13 @@
-import React, { useRef, useEffect, useState } from "react";
-import ApexCharts from "apexcharts";
-import ReactApexChart from "react-apexcharts";
-import moment from "moment";
-import Checkbox from "@mui/material/Checkbox";
-import { Typography, Grid } from "@mui/material";
+import React, { useRef, useEffect, useState } from 'react';
+import ApexCharts from 'apexcharts';
+import ReactApexChart from 'react-apexcharts';
+import moment from 'moment';
+import Checkbox from '@mui/material/Checkbox';
+import { Typography, Grid } from '@mui/material';
 
 // eslint-disable-next-line react/prop-types
 function LineChart({ data }) {
-  console.log("------", data);
+  console.log('------', data);
 
   const categories = [];
   const data_y = [];
@@ -17,7 +17,7 @@ function LineChart({ data }) {
   // eslint-disable-next-line react/prop-types
   const end = moment(data[data.length - 1].createdAt);
 
-  for (let m = start; m <= end; m.add(15, "minutes")) {
+  for (let m = start; m <= end; m.add(15, 'minutes')) {
     const currentCreatedAt = m.toISOString();
     let valueToAdd = null;
 
@@ -31,15 +31,15 @@ function LineChart({ data }) {
       }
     }
 
-    categories.push(m.format("YYYY-MM-DD HH:mm:ss"));
+    categories.push(m.format('YYYY-MM-DD HH:mm:ss'));
     data_y.push(valueToAdd);
   }
 
-  console.log("chào 1", categories);
-  console.log("chào 2", data_y);
+  console.log('chào 1', categories);
+  console.log('chào 2', data_y);
   const [series, setSeries] = React.useState([
     {
-      name: "Giờ thấp điểm",
+      name: 'Giờ thấp điểm',
       // eslint-disable-next-line react/prop-types
       // data: data
       //   .map((value) => [
@@ -53,18 +53,18 @@ function LineChart({ data }) {
   const [options, setOptions] = React.useState({
     chart: {
       height: 350,
-      type: "line",
+      type: 'line',
     },
     dataLabels: {
       enabled: false,
     },
     stroke: {
       width: 5,
-      curve: "smooth",
+      curve: 'smooth',
     },
     grid: {
       row: {
-        colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
         opacity: 0.5,
       },
     },
@@ -75,8 +75,13 @@ function LineChart({ data }) {
   });
   return (
     <div>
-      {console.log("fsdfsdf", options)}
-      <ReactApexChart options={options} series={series} type="line" height={500}></ReactApexChart>
+      {console.log('fsdfsdf', options)}
+      <ReactApexChart
+        options={options}
+        series={series}
+        type="line"
+        height={500}
+      ></ReactApexChart>
     </div>
   );
 }

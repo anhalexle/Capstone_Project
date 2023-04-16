@@ -14,59 +14,59 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
-import Grid from "@mui/material/Grid";
+import Grid from '@mui/material/Grid';
 
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
+import MDBox from 'components/MDBox';
 //
-import AppWidgetSummary from "./newWidget";
+import AppWidgetSummary from './newWidget';
 
 // Material Dashboard 2 React example components
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
+import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
+import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
+import Footer from 'examples/Footer';
 // import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
 // import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
-import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
+import ComplexStatisticsCard from 'examples/Cards/StatisticsCards/ComplexStatisticsCard';
 // Data
 // import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 // import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 //
-import Divider from "@mui/material/Divider";
+import Divider from '@mui/material/Divider';
 // render dữ liệu nhận được từ server
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 /// real-time chart
 // nhớ install "npm install recharts"
 // import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 //  Provider
-import { useContext } from "react";
+import { useContext } from 'react';
 // import { SocketContext } from "../../multiContext";
-import useMultiContext from "useMultiContext";
+import useMultiContext from 'useMultiContext';
 //  ảnh
-import imgPhase2 from "../../assets/images/MyProject/2phase.png";
-import imgPhase3 from "../../assets/images/MyProject/3phase.png";
-import imgA from "../../assets/images/MyProject/A.png";
-import imgCosphi from "../../assets/images/MyProject/cosphi.png";
-import imgDongdien from "../../assets/images/MyProject/dongdien.png";
-import imgP from "../../assets/images/MyProject/P.png";
-import imgTanso from "../../assets/images/MyProject/tanso.png";
+import imgPhase2 from '../../assets/images/MyProject/2phase.png';
+import imgPhase3 from '../../assets/images/MyProject/3phase.png';
+import imgA from '../../assets/images/MyProject/A.png';
+import imgCosphi from '../../assets/images/MyProject/cosphi.png';
+import imgDongdien from '../../assets/images/MyProject/dongdien.png';
+import imgP from '../../assets/images/MyProject/P.png';
+import imgTanso from '../../assets/images/MyProject/tanso.png';
 //  toast
 // import { ToastContainer, toast } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
-import RealtimeChart from "../dashboard/real-timeChart";
-import RealtimeChartCurrent from "./real-timeChartCurrent";
+import 'react-toastify/dist/ReactToastify.css';
+import RealtimeChart from '../dashboard/real-timeChart';
+import RealtimeChartCurrent from './real-timeChartCurrent';
 
 // import React from "react";
-import { Line } from "react-chartjs-2";
-import "chartjs-plugin-streaming";
+import { Line } from 'react-chartjs-2';
+import 'chartjs-plugin-streaming';
 
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Button from "@mui/material/Button";
-import Icon from "@mui/material/Icon";
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Button from '@mui/material/Button';
+import Icon from '@mui/material/Icon';
 
 const arraydata_1 = Array(29).fill(0);
 
@@ -80,7 +80,10 @@ function Dashboard() {
   const [chartA, setChartA] = useState(false);
   const [chartP, setChartP] = useState(false);
   const { socket, notificationsRef } = useMultiContext();
-  const [dataPrint, setDataPrint] = useState({ data: arraydata_1, timestamp: Date.now() });
+  const [dataPrint, setDataPrint] = useState({
+    data: arraydata_1,
+    timestamp: Date.now(),
+  });
 
   const [showAllNotifications, setShowAllNotifications] = useState(false);
 
@@ -91,103 +94,106 @@ function Dashboard() {
     const handleServerData = (newData) => {
       newData.flat().map((d) => {
         switch (d.name) {
-          case "Voltage_1":
+          case 'Voltage_1':
             arraydata_1[0] = d.value;
             break;
-          case "Voltage_2":
+          case 'Voltage_2':
             arraydata_1[1] = d.value;
             break;
-          case "Voltage_3":
+          case 'Voltage_3':
             arraydata_1[2] = d.value;
             break;
-          case "Volt_average":
+          case 'Volt_average':
             arraydata_1[3] = d.value;
             break;
-          case "Line_V1_2":
+          case 'Line_V1_2':
             arraydata_1[4] = d.value;
             break;
-          case "Line_V2_3":
+          case 'Line_V2_3':
             arraydata_1[5] = d.value;
             break;
-          case "Line_V3_1":
+          case 'Line_V3_1':
             arraydata_1[6] = d.value;
             break;
-          case "Line_Average":
+          case 'Line_Average':
             arraydata_1[7] = d.value;
             break;
-          case "Current_1":
+          case 'Current_1':
             arraydata_1[8] = d.value;
             break;
-          case "Current_2":
+          case 'Current_2':
             arraydata_1[9] = d.value;
             break;
-          case "Current_3":
+          case 'Current_3':
             arraydata_1[10] = d.value;
             break;
-          case "Current_phase_N":
+          case 'Current_phase_N':
             arraydata_1[11] = d.value;
             break;
-          case "Current_TB":
+          case 'Current_TB':
             arraydata_1[12] = d.value;
             break;
-          case "f1":
+          case 'f1':
             arraydata_1[13] = d.value;
             break;
-          case "f2":
+          case 'f2':
             arraydata_1[14] = d.value;
             break;
-          case "f3":
+          case 'f3':
             arraydata_1[15] = d.value;
             break;
-          case "f_tb":
+          case 'f_tb':
             arraydata_1[16] = d.value;
             break;
-          case "pf1":
+          case 'pf1':
             arraydata_1[17] = d.value;
             break;
-          case "pf2":
+          case 'pf2':
             arraydata_1[18] = d.value;
             break;
-          case "pf3":
+          case 'pf3':
             arraydata_1[19] = d.value;
             break;
-          case "pf_tb":
+          case 'pf_tb':
             arraydata_1[20] = d.value;
             break;
-          case "integral_active_power_1":
+          case 'integral_active_power_1':
             arraydata_1[21] = d.value;
             break;
-          case "integral_active_power_2":
+          case 'integral_active_power_2':
             arraydata_1[22] = d.value;
             break;
-          case "integral_active_power_3":
+          case 'integral_active_power_3':
             arraydata_1[23] = d.value;
             break;
-          case "total_integral_active_power":
+          case 'total_integral_active_power':
             arraydata_1[24] = d.value;
             break;
-          case "instantaneous_active_power_1":
+          case 'instantaneous_active_power_1':
             arraydata_1[25] = d.value;
             break;
-          case "instantaneous_active_power_2":
+          case 'instantaneous_active_power_2':
             arraydata_1[26] = d.value;
             break;
-          case "instantaneous_active_power_3":
+          case 'instantaneous_active_power_3':
             arraydata_1[27] = d.value;
             break;
-          case "total_instantaneous_active_power":
+          case 'total_instantaneous_active_power':
             arraydata_1[28] = d.value;
             break;
         }
       });
-      setDataPrint((prevState) => ({ data: arraydata_1, timestamp: Date.now() }));
+      setDataPrint((prevState) => ({
+        data: arraydata_1,
+        timestamp: Date.now(),
+      }));
     };
-    socket.emit("send-me-data");
-    socket.on("send-all-data-client", handleServerData);
-    socket.on("new-data-client", handleServerData);
+    socket.emit('send-me-data');
+    socket.on('send-all-data-client', handleServerData);
+    socket.on('new-data-client', handleServerData);
     return () => {
-      socket.off("new-data", handleServerData);
-      socket.off("new-data-client", handleServerData);
+      socket.off('new-data', handleServerData);
+      socket.off('new-data-client', handleServerData);
     };
   }, []);
 
@@ -196,14 +202,187 @@ function Dashboard() {
       <DashboardNavbar absolute />
 
       <MDBox py={5}>
-        {/* -----------------Current----------------- */}
+        {/* -----------------INTEGRAL ACTIVE POWER ----------------- */}
         <Grid mb={1}>
-          <Accordion style={{ borderRadius: "10px" }}>
+          <Accordion style={{ borderRadius: '10px' }}>
             <AccordionSummary
-              style={{ border: "3px solid #0077be", borderRadius: "7px" }}
+              style={{ border: '3px solid #0077be', borderRadius: '7px' }}
               expandIcon={<ExpandMoreIcon />}
             >
-              <Typography style={{ fontWeight: "bold", color: "#0077be" }}>CURRENT</Typography>
+              <Typography style={{ fontWeight: 'bold', color: '#0077be' }}>
+                INTEGRAL ACTIVE POWER
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              {/* //Voltage Phase */}
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} mt={1.5}>
+                    {/* Có thể dùng memo để render componet ComplexStatisticsCard */}
+                    <AppWidgetSummary
+                      title="INTEGRAL ACTIVE POWER 1 (kWh)"
+                      icon={imgA}
+                      color="error"
+                      total={dataPrint.data[21]}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} mt={1.5}>
+                    <AppWidgetSummary
+                      title="INTEGRAL ACTIVE POWER 2 (kWh)"
+                      icon={imgA}
+                      color="warning"
+                      total={dataPrint.data[22]}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} mt={1.5}>
+                    <AppWidgetSummary
+                      title="INTEGRAL ACTIVE POWER 3 (kWh)"
+                      icon={imgA}
+                      color="info"
+                      total={dataPrint.data[23]}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} mt={1.5}>
+                    <AppWidgetSummary
+                      title="TOTAL INTEGRAL ACTIVE POWER (kWh)"
+                      icon={imgA}
+                      color="secondary"
+                      total={dataPrint.data[24]}
+                    />
+                  </MDBox>
+                </Grid>
+              </Grid>
+              <Button
+                sx={{
+                  width: '100%',
+                }}
+                onClick={() => setChartA(!chartA)}
+              >
+                <Icon>{chartA ? 'expand_less' : 'expand_more'}</Icon>
+              </Button>
+              {chartA && (
+                <Grid>
+                  <RealtimeChart
+                    data={[
+                      dataPrint.data[21],
+                      dataPrint.data[22],
+                      dataPrint.data[23],
+                      dataPrint.data[24],
+                    ]}
+                    nameLine1="INTEGRAL ACTIVE POWER 1"
+                    nameLine2="INTEGRAL ACTIVE POWER 2"
+                    nameLine3="INTEGRAL ACTIVE POWER 3"
+                    nameLine4="TOTAL INTEGRAL ACTIVE POWER"
+                    title="INTEGRAL ACTIVE POWER"
+                  />
+                </Grid>
+              )}
+            </AccordionDetails>
+          </Accordion>
+        </Grid>
+        {/* ----------------------------------------------------------- */}
+        {/* -----------------INSTANTANEOUS ACTIVE POWER ----------------- */}
+        <Grid mb={1}>
+          <Accordion style={{ borderRadius: '10px' }}>
+            <AccordionSummary
+              style={{ border: '3px solid #0077be', borderRadius: '7px' }}
+              expandIcon={<ExpandMoreIcon />}
+            >
+              <Typography style={{ fontWeight: 'bold', color: '#0077be' }}>
+                INSTANTANEOUS ACTIVE POWER
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              {/* //Voltage Phase */}
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} mt={1.5}>
+                    {/* Có thể dùng memo để render componet ComplexStatisticsCard */}
+                    <AppWidgetSummary
+                      title="INSTANTANEOUS ACTIVE POWER  1 (kW)"
+                      icon={imgP}
+                      color="error"
+                      total={dataPrint.data[25]}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} mt={1.5}>
+                    <AppWidgetSummary
+                      title="INSTANTANEOUS ACTIVE POWER  2 (kW)"
+                      icon={imgP}
+                      color="warning"
+                      total={dataPrint.data[26]}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} mt={1.5}>
+                    <AppWidgetSummary
+                      title="INSTANTANEOUS ACTIVE POWER  3 (kW)"
+                      icon={imgP}
+                      color="info"
+                      total={dataPrint.data[27]}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid item xs={12} md={6} lg={3}>
+                  <MDBox mb={1.5} mt={1.5}>
+                    <AppWidgetSummary
+                      title="TOTAL INSTANTANEOUS ACTIVE POWER (kW)"
+                      icon={imgP}
+                      color="secondary"
+                      total={dataPrint.data[28]}
+                    />
+                  </MDBox>
+                </Grid>
+              </Grid>
+              <Button
+                sx={{
+                  width: '100%',
+                }}
+                onClick={() => setChartP(!chartP)}
+              >
+                <Icon>{chartP ? 'expand_less' : 'expand_more'}</Icon>
+              </Button>
+              {chartP && (
+                <Grid>
+                  <RealtimeChart
+                    data={[
+                      dataPrint.data[25],
+                      dataPrint.data[26],
+                      dataPrint.data[27],
+                      dataPrint.data[28],
+                    ]}
+                    nameLine1="INSTANTANEOUS ACTIVE POWER 1"
+                    nameLine2="INSTANTANEOUS ACTIVE POWER 2"
+                    nameLine3="INSTANTANEOUS ACTIVE POWER 3"
+                    nameLine4="TOTAL INSTANTANEOUS ACTIVE POWER"
+                    title="INSTANTANEOUS ACTIVE POWER"
+                  />
+                </Grid>
+              )}
+            </AccordionDetails>
+          </Accordion>
+        </Grid>
+        {/* ----------------------------------------------------------- */}
+
+        {/* -----------------Current----------------- */}
+        <Grid mb={1}>
+          <Accordion style={{ borderRadius: '10px' }}>
+            <AccordionSummary
+              style={{ border: '3px solid #0077be', borderRadius: '7px' }}
+              expandIcon={<ExpandMoreIcon />}
+            >
+              <Typography style={{ fontWeight: 'bold', color: '#0077be' }}>
+                CURRENT
+              </Typography>
             </AccordionSummary>
             <AccordionDetails>
               {/* //Voltage Phase */}
@@ -268,11 +447,11 @@ function Dashboard() {
 
               <Button
                 sx={{
-                  width: "100%",
+                  width: '100%',
                 }}
                 onClick={() => setChartCurrent(!chartCurrent)}
               >
-                <Icon>{chartCurrent ? "expand_less" : "expand_more"}</Icon>
+                <Icon>{chartCurrent ? 'expand_less' : 'expand_more'}</Icon>
               </Button>
               {chartCurrent && (
                 <Grid>
@@ -301,12 +480,14 @@ function Dashboard() {
 
         {/* -----------------Voltage----------------- */}
         <Grid mb={1}>
-          <Accordion style={{ borderRadius: "10px" }}>
+          <Accordion style={{ borderRadius: '10px' }}>
             <AccordionSummary
-              style={{ border: "3px solid #0077be", borderRadius: "7px" }}
+              style={{ border: '3px solid #0077be', borderRadius: '7px' }}
               expandIcon={<ExpandMoreIcon />}
             >
-              <Typography style={{ fontWeight: "bold", color: "#0077be" }}>VOLTAGE</Typography>
+              <Typography style={{ fontWeight: 'bold', color: '#0077be' }}>
+                VOLTAGE
+              </Typography>
             </AccordionSummary>
             <AccordionDetails>
               {/* //Voltage Phase */}
@@ -356,11 +537,11 @@ function Dashboard() {
 
               <Button
                 sx={{
-                  width: "100%",
+                  width: '100%',
                 }}
                 onClick={() => setChartVoltage(!chartVoltage)}
               >
-                <Icon>{chartVoltage ? "expand_less" : "expand_more"}</Icon>
+                <Icon>{chartVoltage ? 'expand_less' : 'expand_more'}</Icon>
               </Button>
               {chartVoltage && (
                 <Grid>
@@ -386,12 +567,14 @@ function Dashboard() {
 
         {/* -----------------Voltage Line----------------- */}
         <Grid mb={1}>
-          <Accordion style={{ borderRadius: "10px" }}>
+          <Accordion style={{ borderRadius: '10px' }}>
             <AccordionSummary
-              style={{ border: "3px solid #0077be", borderRadius: "7px" }}
+              style={{ border: '3px solid #0077be', borderRadius: '7px' }}
               expandIcon={<ExpandMoreIcon />}
             >
-              <Typography style={{ fontWeight: "bold", color: "#0077be" }}>LINE VOLTAGE</Typography>
+              <Typography style={{ fontWeight: 'bold', color: '#0077be' }}>
+                LINE VOLTAGE
+              </Typography>
             </AccordionSummary>
             <AccordionDetails>
               {/* //Voltage Phase */}
@@ -440,11 +623,11 @@ function Dashboard() {
               </Grid>
               <Button
                 sx={{
-                  width: "100%",
+                  width: '100%',
                 }}
                 onClick={() => setChartLineVoltage(!chartLineVoltage)}
               >
-                <Icon>{chartLineVoltage ? "expand_less" : "expand_more"}</Icon>
+                <Icon>{chartLineVoltage ? 'expand_less' : 'expand_more'}</Icon>
               </Button>
               {chartLineVoltage && (
                 <Grid>
@@ -470,12 +653,14 @@ function Dashboard() {
 
         {/* -----------------FREQUENCY ----------------- */}
         <Grid mb={1}>
-          <Accordion style={{ borderRadius: "10px" }}>
+          <Accordion style={{ borderRadius: '10px' }}>
             <AccordionSummary
-              style={{ border: "3px solid #0077be", borderRadius: "7px" }}
+              style={{ border: '3px solid #0077be', borderRadius: '7px' }}
               expandIcon={<ExpandMoreIcon />}
             >
-              <Typography style={{ fontWeight: "bold", color: "#0077be" }}>FREQUENCY</Typography>
+              <Typography style={{ fontWeight: 'bold', color: '#0077be' }}>
+                FREQUENCY
+              </Typography>
             </AccordionSummary>
             <AccordionDetails>
               {/* //Voltage Phase */}
@@ -524,11 +709,11 @@ function Dashboard() {
               </Grid>
               <Button
                 sx={{
-                  width: "100%",
+                  width: '100%',
                 }}
                 onClick={() => setChartFrequency(!chartFrequency)}
               >
-                <Icon>{chartFrequency ? "expand_less" : "expand_more"}</Icon>
+                <Icon>{chartFrequency ? 'expand_less' : 'expand_more'}</Icon>
               </Button>
               {chartFrequency && (
                 <Grid>
@@ -554,12 +739,14 @@ function Dashboard() {
 
         {/* -----------------PF ----------------- */}
         <Grid mb={1}>
-          <Accordion style={{ borderRadius: "10px" }}>
+          <Accordion style={{ borderRadius: '10px' }}>
             <AccordionSummary
-              style={{ border: "3px solid #0077be", borderRadius: "7px" }}
+              style={{ border: '3px solid #0077be', borderRadius: '7px' }}
               expandIcon={<ExpandMoreIcon />}
             >
-              <Typography style={{ fontWeight: "bold", color: "#0077be" }}>PF</Typography>
+              <Typography style={{ fontWeight: 'bold', color: '#0077be' }}>
+                PF
+              </Typography>
             </AccordionSummary>
             <AccordionDetails>
               {/* //Voltage Phase */}
@@ -608,11 +795,11 @@ function Dashboard() {
               </Grid>
               <Button
                 sx={{
-                  width: "100%",
+                  width: '100%',
                 }}
                 onClick={() => setChartPF(!chartPF)}
               >
-                <Icon>{chartPF ? "expand_less" : "expand_more"}</Icon>
+                <Icon>{chartPF ? 'expand_less' : 'expand_more'}</Icon>
               </Button>
               {chartPF && (
                 <Grid>
@@ -628,177 +815,6 @@ function Dashboard() {
                     nameLine3="PF 3"
                     nameLine4="PF 4"
                     title="PF"
-                  />
-                </Grid>
-              )}
-            </AccordionDetails>
-          </Accordion>
-        </Grid>
-        {/* ----------------------------------------------------------- */}
-
-        {/* -----------------INTEGRAL ACTIVE POWER ----------------- */}
-        <Grid mb={1}>
-          <Accordion style={{ borderRadius: "10px" }}>
-            <AccordionSummary
-              style={{ border: "3px solid #0077be", borderRadius: "7px" }}
-              expandIcon={<ExpandMoreIcon />}
-            >
-              <Typography style={{ fontWeight: "bold", color: "#0077be" }}>
-                INTEGRAL ACTIVE POWER
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              {/* //Voltage Phase */}
-              <Grid container spacing={3}>
-                <Grid item xs={12} md={6} lg={3}>
-                  <MDBox mb={1.5} mt={1.5}>
-                    {/* Có thể dùng memo để render componet ComplexStatisticsCard */}
-                    <AppWidgetSummary
-                      title="INTEGRAL ACTIVE POWER 1 (kWh)"
-                      icon={imgA}
-                      color="error"
-                      total={dataPrint.data[21]}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid item xs={12} md={6} lg={3}>
-                  <MDBox mb={1.5} mt={1.5}>
-                    <AppWidgetSummary
-                      title="INTEGRAL ACTIVE POWER 2 (kWh)"
-                      icon={imgA}
-                      color="warning"
-                      total={dataPrint.data[22]}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid item xs={12} md={6} lg={3}>
-                  <MDBox mb={1.5} mt={1.5}>
-                    <AppWidgetSummary
-                      title="INTEGRAL ACTIVE POWER 3 (kWh)"
-                      icon={imgA}
-                      color="info"
-                      total={dataPrint.data[23]}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid item xs={12} md={6} lg={3}>
-                  <MDBox mb={1.5} mt={1.5}>
-                    <AppWidgetSummary
-                      title="TOTAL INTEGRAL ACTIVE POWER (kWh)"
-                      icon={imgA}
-                      color="secondary"
-                      total={dataPrint.data[24]}
-                    />
-                  </MDBox>
-                </Grid>
-              </Grid>
-              <Button
-                sx={{
-                  width: "100%",
-                }}
-                onClick={() => setChartA(!chartA)}
-              >
-                <Icon>{chartA ? "expand_less" : "expand_more"}</Icon>
-              </Button>
-              {chartA && (
-                <Grid>
-                  <RealtimeChart
-                    data={[
-                      dataPrint.data[21],
-                      dataPrint.data[22],
-                      dataPrint.data[23],
-                      dataPrint.data[24],
-                    ]}
-                    nameLine1="INTEGRAL ACTIVE POWER 1"
-                    nameLine2="INTEGRAL ACTIVE POWER 2"
-                    nameLine3="INTEGRAL ACTIVE POWER 3"
-                    nameLine4="TOTAL INTEGRAL ACTIVE POWER"
-                    title="INTEGRAL ACTIVE POWER"
-                  />
-                </Grid>
-              )}
-            </AccordionDetails>
-          </Accordion>
-        </Grid>
-        {/* ----------------------------------------------------------- */}
-        {/* -----------------INSTANTANEOUS ACTIVE POWER ----------------- */}
-        <Grid mb={1}>
-          <Accordion style={{ borderRadius: "10px" }}>
-            <AccordionSummary
-              style={{ border: "3px solid #0077be", borderRadius: "7px" }}
-              expandIcon={<ExpandMoreIcon />}
-            >
-              <Typography style={{ fontWeight: "bold", color: "#0077be" }}>
-                INSTANTANEOUS ACTIVE POWER
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              {/* //Voltage Phase */}
-              <Grid container spacing={3}>
-                <Grid item xs={12} md={6} lg={3}>
-                  <MDBox mb={1.5} mt={1.5}>
-                    {/* Có thể dùng memo để render componet ComplexStatisticsCard */}
-                    <AppWidgetSummary
-                      title="INSTANTANEOUS ACTIVE POWER  1 (kW)"
-                      icon={imgP}
-                      color="error"
-                      total={dataPrint.data[25]}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid item xs={12} md={6} lg={3}>
-                  <MDBox mb={1.5} mt={1.5}>
-                    <AppWidgetSummary
-                      title="INSTANTANEOUS ACTIVE POWER  2 (kW)"
-                      icon={imgP}
-                      color="warning"
-                      total={dataPrint.data[26]}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid item xs={12} md={6} lg={3}>
-                  <MDBox mb={1.5} mt={1.5}>
-                    <AppWidgetSummary
-                      title="INSTANTANEOUS ACTIVE POWER  3 (kW)"
-                      icon={imgP}
-                      color="info"
-                      total={dataPrint.data[27]}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid item xs={12} md={6} lg={3}>
-                  <MDBox mb={1.5} mt={1.5}>
-                    <AppWidgetSummary
-                      title="TOTAL INSTANTANEOUS ACTIVE POWER (kW)"
-                      icon={imgP}
-                      color="secondary"
-                      total={dataPrint.data[28]}
-                    />
-                  </MDBox>
-                </Grid>
-              </Grid>
-              <Button
-                sx={{
-                  width: "100%",
-                }}
-                onClick={() => setChartP(!chartP)}
-              >
-                <Icon>{chartP ? "expand_less" : "expand_more"}</Icon>
-              </Button>
-              {chartP && (
-                <Grid>
-                  <RealtimeChart
-                    data={[
-                      dataPrint.data[25],
-                      dataPrint.data[26],
-                      dataPrint.data[27],
-                      dataPrint.data[28],
-                    ]}
-                    nameLine1="INSTANTANEOUS ACTIVE POWER 1"
-                    nameLine2="INSTANTANEOUS ACTIVE POWER 2"
-                    nameLine3="INSTANTANEOUS ACTIVE POWER 3"
-                    nameLine4="TOTAL INSTANTANEOUS ACTIVE POWER"
-                    title="INSTANTANEOUS ACTIVE POWER"
                   />
                 </Grid>
               )}

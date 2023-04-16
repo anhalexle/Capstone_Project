@@ -1,12 +1,19 @@
-import React, { useRef, useEffect, useState } from "react";
-import ApexCharts from "apexcharts";
-import ReactApexChart from "react-apexcharts";
-import moment from "moment";
-import Checkbox from "@mui/material/Checkbox";
-import { Typography, Grid } from "@mui/material";
+import React, { useRef, useEffect, useState } from 'react';
+import ApexCharts from 'apexcharts';
+import ReactApexChart from 'react-apexcharts';
+import moment from 'moment';
+import Checkbox from '@mui/material/Checkbox';
+import { Typography, Grid } from '@mui/material';
 
 // eslint-disable-next-line react/prop-types
-function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title }) {
+function RealtimeChart({
+  data,
+  nameLine1,
+  nameLine2,
+  nameLine3,
+  nameLine4,
+  title,
+}) {
   const [line1, setLine1] = useState(false);
   const [line2, setLine2] = useState(false);
   const [line3, setLine3] = useState(false);
@@ -29,7 +36,7 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
       id: `${nameRef.current[4]}`,
       animations: {
         enabled: true,
-        easing: "linear",
+        easing: 'linear',
         dynamicAnimation: {
           speed: 1000,
         },
@@ -45,7 +52,7 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
       enabled: false,
     },
     stroke: {
-      curve: "smooth",
+      curve: 'smooth',
     },
     markers: {
       size: 0,
@@ -63,9 +70,9 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
       show: false,
     },
     grid: {
-      borderColor: "#e7e7e7",
+      borderColor: '#e7e7e7',
       row: {
-        colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
         opacity: 0.5,
       },
     },
@@ -74,7 +81,7 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
   const updateSeries = () => {
     // Thêm một phần tử mới vào cuối mảng với giá trị ngẫu nhiên và thời gian hiện tại
     dataUpdateSeries.current.push({
-      x: moment(Date.now()).format("hh:mm:ss"),
+      x: moment(Date.now()).format('hh:mm:ss'),
       y_1: dataRef.current[0],
       y_2: dataRef.current[1],
       y_3: dataRef.current[2],
@@ -87,41 +94,41 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
     // Gọi hàm ApexCharts.exec với ref của biểu đồ và dữ liệu mới
     ApexCharts.exec(
       `${nameRef.current[4]}`,
-      "updateSeries",
+      'updateSeries',
       [
         lineRef.current[0]
           ? {
               name: nameRef.current[0],
               data: dataUpdateSeries.current.map((value) => value.y_1),
-              color: "#FF0000", // Màu sắc đường thẳng 1
+              color: '#FF0000', // Màu sắc đường thẳng 1
             }
           : null,
         lineRef.current[1]
           ? {
               name: nameRef.current[1],
               data: dataUpdateSeries.current.map((value) => value.y_2),
-              color: "#FB8C00", // Màu sắc đường thẳng 2
+              color: '#FB8C00', // Màu sắc đường thẳng 2
             }
           : null,
         lineRef.current[2]
           ? {
               name: nameRef.current[2],
               data: dataUpdateSeries.current.map((value) => value.y_3),
-              color: "#1A73E8", // Màu sắc đường thẳng 3
+              color: '#1A73E8', // Màu sắc đường thẳng 3
             }
           : null,
         lineRef.current[3]
           ? {
               name: nameRef.current[3],
               data: dataUpdateSeries.current.map((value) => value.y_4),
-              color: "#495361", // Màu sắc đường thẳng 4
+              color: '#495361', // Màu sắc đường thẳng 4
             }
           : null,
       ].filter(Boolean)
     );
     ApexCharts.exec(
       `${nameRef.current[4]}`,
-      "updateOptions",
+      'updateOptions',
       {
         xaxis: {
           categories: dataUpdateSeries.current.map((value) => value.x),
@@ -129,7 +136,7 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
         },
         animations: {
           enabled: true,
-          easing: "linear",
+          easing: 'linear',
           dynamicAnimation: {
             speed: 1000,
           },
@@ -159,7 +166,11 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
           md={3}
           lg={3}
           xl={3}
-          style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
           <Checkbox
             checked={line1}
@@ -169,7 +180,7 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
             }}
           ></Checkbox>
           <Typography
-            style={{ textDecoration: line1 ? "" : "line-through" }}
+            style={{ textDecoration: line1 ? '' : 'line-through' }}
             color="error"
             variant="h6"
           >
@@ -183,7 +194,11 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
           md={3}
           lg={3}
           xl={3}
-          style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
           <Checkbox
             size="small"
@@ -194,7 +209,10 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
             }}
           ></Checkbox>
           <Typography
-            style={{ textDecoration: line2 ? "" : "line-through", color: "#FB8C00" }}
+            style={{
+              textDecoration: line2 ? '' : 'line-through',
+              color: '#FB8C00',
+            }}
             variant="h6"
           >
             {nameRef.current[1]}
@@ -207,7 +225,11 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
           md={3}
           lg={3}
           xl={3}
-          style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
           <Checkbox
             size="small"
@@ -218,7 +240,10 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
             }}
           ></Checkbox>
           <Typography
-            style={{ textDecoration: line3 ? "" : "line-through", color: "#1A73E8" }}
+            style={{
+              textDecoration: line3 ? '' : 'line-through',
+              color: '#1A73E8',
+            }}
             variant="h6"
           >
             {nameRef.current[2]}
@@ -231,7 +256,11 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
           md={3}
           lg={3}
           xl={3}
-          style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
           <Checkbox
             size="small"
@@ -242,14 +271,22 @@ function RealtimeChart({ data, nameLine1, nameLine2, nameLine3, nameLine4, title
             }}
           ></Checkbox>
           <Typography
-            style={{ textDecoration: line4 ? "" : "line-through", color: "#495361" }}
+            style={{
+              textDecoration: line4 ? '' : 'line-through',
+              color: '#495361',
+            }}
             variant="h6"
           >
             {nameRef.current[3]}
           </Typography>
         </Grid>
       </Grid>
-      <ReactApexChart options={options} series={series} type="line" height={500}></ReactApexChart>
+      <ReactApexChart
+        options={options}
+        series={series}
+        type="line"
+        height={500}
+      ></ReactApexChart>
     </div>
   );
 }

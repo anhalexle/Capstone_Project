@@ -1,56 +1,69 @@
 // @mui material components
-import * as React from "react";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import { Button } from "@mui/material";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { addDays, setHours, setMinutes } from "date-fns";
-import LineChart from "../chart/LineChart";
-import TableData from "../components/Table";
-import ExcelData from "../components/ExcelData";
+import * as React from 'react';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import { Button } from '@mui/material';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { addDays, setHours, setMinutes } from 'date-fns';
+import LineChart from '../chart/LineChart';
+import TableData from '../components/Table';
+import ExcelData from '../components/ExcelData';
 
-import Typography from "@mui/material/Typography";
+import Typography from '@mui/material/Typography';
 
 function BoxChart() {
   // eslint-disable-next-line react/jsx-filename-extension
 
-  const [startDate, setStartDate] = React.useState(setHours(setMinutes(new Date(), 0), 0));
+  const [startDate, setStartDate] = React.useState(
+    setHours(setMinutes(new Date(), 0), 0)
+  );
   const [endDate, setEndDate] = React.useState(new Date());
   // const [all, setAll] = React.useState(false);
-  const [type, setType] = React.useState("");
-  const [typeSpecific, setTypeSpecific] = React.useState("");
+  const [type, setType] = React.useState('');
+  const [typeSpecific, setTypeSpecific] = React.useState('');
   const [data, setData] = React.useState(null);
   // console.log("type", key);
   const typeList = [
-    "VOLTAGE",
-    "LINE VOLTAGE",
-    "CURRENT",
-    "FREQUENCY",
-    "PF",
-    "INTEGRAL ACTIVE POWER",
-    "INSTANTANEOUS ACTIVE POWER",
+    'VOLTAGE',
+    'LINE VOLTAGE',
+    'CURRENT',
+    'FREQUENCY',
+    'PF',
+    'INTEGRAL ACTIVE POWER',
+    'INSTANTANEOUS ACTIVE POWER',
   ];
-  const voltageList = ["Voltage_1", "Voltage_2", "Voltage_3", "Volt_average"];
-  const lineVoltageList = ["Line_V1_2", "Line_V2_3", "Line_V3_1", "Line_Average"];
-  const currentList = ["Current_1", "Current_2", "Current_3", "Current_phase_N", "Current_TB"];
-  const frequencyList = ["f1", "f2", "f3", "f_tb"];
-  const PFList = ["pf1", "pf2", "pf3", "pf_tb"];
+  const voltageList = ['Voltage_1', 'Voltage_2', 'Voltage_3', 'Volt_average'];
+  const lineVoltageList = [
+    'Line_V1_2',
+    'Line_V2_3',
+    'Line_V3_1',
+    'Line_Average',
+  ];
+  const currentList = [
+    'Current_1',
+    'Current_2',
+    'Current_3',
+    'Current_phase_N',
+    'Current_TB',
+  ];
+  const frequencyList = ['f1', 'f2', 'f3', 'f_tb'];
+  const PFList = ['pf1', 'pf2', 'pf3', 'pf_tb'];
   const integralList = [
-    "integral_active_power_1",
-    "integral_active_power_2",
-    "integral_active_power_3",
-    "total_integral_active_power",
+    'integral_active_power_1',
+    'integral_active_power_2',
+    'integral_active_power_3',
+    'total_integral_active_power',
   ];
   const instantaneousList = [
-    "instantaneous_active_power_1",
-    "instantaneous_active_power_2",
-    "instantaneous_active_power_3",
-    "total_instantaneous_active_power",
+    'instantaneous_active_power_1',
+    'instantaneous_active_power_2',
+    'instantaneous_active_power_3',
+    'total_instantaneous_active_power',
   ];
 
   async function onHandleSubmit() {
@@ -61,22 +74,25 @@ function BoxChart() {
     };
     console.log(request);
 
-    const response = await fetch("http://localhost:3001/api/v1/data/drawChart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(request),
-    });
+    const response = await fetch(
+      'http://localhost:3001/api/v1/data/drawChart',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(request),
+      }
+    );
 
     if (response.ok) {
       const data = await response.json();
-      console.log("data mới nhận nè", data);
-      console.log("Trừ thử", data.data[1].createdAt - data.data[0].createdAt);
+      console.log('data mới nhận nè', data);
+      console.log('Trừ thử', data.data[1].createdAt - data.data[0].createdAt);
       setData(data.data);
       // setData(data);
     } else {
-      console.log("Error occurred while fetching data");
+      console.log('Error occurred while fetching data');
     }
   }
 
@@ -117,43 +133,43 @@ function BoxChart() {
                 setTypeSpecific(event.target.value);
               }}
             >
-              {type === "VOLTAGE" &&
+              {type === 'VOLTAGE' &&
                 voltageList.map((item) => (
                   <MenuItem key={item} value={item}>
                     {item}
                   </MenuItem>
                 ))}
-              {type === "LINE VOLTAGE" &&
+              {type === 'LINE VOLTAGE' &&
                 lineVoltageList.map((item) => (
                   <MenuItem key={item} value={item}>
                     {item}
                   </MenuItem>
                 ))}
-              {type === "CURRENT" &&
+              {type === 'CURRENT' &&
                 currentList.map((item) => (
                   <MenuItem key={item} value={item}>
                     {item}
                   </MenuItem>
                 ))}
-              {type === "FREQUENCY" &&
+              {type === 'FREQUENCY' &&
                 frequencyList.map((item) => (
                   <MenuItem key={item} value={item}>
                     {item}
                   </MenuItem>
                 ))}
-              {type === "PF" &&
+              {type === 'PF' &&
                 PFList.map((item) => (
                   <MenuItem key={item} value={item}>
                     {item}
                   </MenuItem>
                 ))}
-              {type === "INTEGRAL ACTIVE POWER" &&
+              {type === 'INTEGRAL ACTIVE POWER' &&
                 integralList.map((item) => (
                   <MenuItem key={item} value={item}>
                     {item}
                   </MenuItem>
                 ))}
-              {type === "INSTANTANEOUS ACTIVE POWER" &&
+              {type === 'INSTANTANEOUS ACTIVE POWER' &&
                 instantaneousList.map((item) => (
                   <MenuItem key={item} value={item}>
                     {item}
@@ -200,9 +216,20 @@ function BoxChart() {
           </Grid>
         </Grid>
         {/* // */}
-        <Grid item xs={4} md={4} lg={4} container style={{ paddingTop: "40px" }}>
+        <Grid
+          item
+          xs={4}
+          md={4}
+          lg={4}
+          container
+          style={{ paddingTop: '40px' }}
+        >
           <Grid item xs={12} md={6} lg={6}>
-            <Button variant="contained" style={{ color: "white" }} onClick={onHandleSubmit}>
+            <Button
+              variant="contained"
+              style={{ color: 'white' }}
+              onClick={onHandleSubmit}
+            >
               Tra Cứu
             </Button>
           </Grid>
@@ -214,7 +241,9 @@ function BoxChart() {
         </Grid>
       </Grid>
       {/* <Grid>{data && <LineChart data={data}></LineChart>}</Grid> */}
-      <Grid>{data && <TableData data={data} name={typeSpecific}></TableData>}</Grid>
+      <Grid>
+        {data && <TableData data={data} name={typeSpecific}></TableData>}
+      </Grid>
       <Grid></Grid>
     </Box>
   );

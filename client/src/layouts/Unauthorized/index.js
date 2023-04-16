@@ -14,12 +14,12 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 React example components
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import { Button } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import { Button } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Unauthorized() {
   const navigate = useNavigate();
@@ -27,21 +27,21 @@ function Unauthorized() {
     <DashboardLayout>
       <Box
         sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          "& > :not(style)": {
+          display: 'flex',
+          flexWrap: 'wrap',
+          '& > :not(style)': {
             m: 1,
-            width: "100%",
+            width: '100%',
             height: 500,
           },
-          align: "center",
+          align: 'center',
         }}
       >
         <Paper align="center">
           <Typography
             sx={{
-              width: "100%",
-              color: "black",
+              width: '100%',
+              color: 'black',
             }}
             variant="h4"
             mt={20}
@@ -51,8 +51,8 @@ function Unauthorized() {
           </Typography>
           <Button
             variant="contained"
-            style={{ color: "white" }}
-            onClick={() => navigate("/", { replace: true })}
+            style={{ color: 'white' }}
+            onClick={() => navigate('/', { replace: true })}
           >
             Trở về
           </Button>

@@ -36,77 +36,76 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 React layouts
-import Dashboard from "layouts/dashboard";
-import Devices from "layouts/devices";
-import Billing from "layouts/billing";
-import RTL from "layouts/rtl";
-import Notifications from "layouts/notifications";
-import Profile from "layouts/profile";
-import SignIn from "layouts/authentication/sign-in";
-import SignUp from "layouts/authentication/sign-up";
-import Chart from "layouts/chart/Chart";
-import Data from "layouts/data/data";
+import Dashboard from 'layouts/dashboard';
+import Devices from 'layouts/devices';
+import Billing from 'layouts/billing';
+import RTL from 'layouts/rtl';
+import Notifications from 'layouts/notifications';
+import Profile from 'layouts/profile';
+import SignIn from 'layouts/authentication/sign-in';
+import SignUp from 'layouts/authentication/sign-up';
+import Data from 'layouts/data/data';
 
 // @mui icons
-import Icon from "@mui/material/Icon";
+import Icon from '@mui/material/Icon';
 
 const privateRoutes = [
   {
-    type: "collapse",
-    name: "Dashboard",
-    key: "dashboard",
+    type: 'collapse',
+    name: 'Dashboard',
+    key: 'dashboard',
     icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/dashboard",
+    route: '/dashboard',
     component: <Dashboard />,
   },
+  // {
+  //   type: "collapse",
+  //   name: "Chart",
+  //   key: "chart",
+  //   icon: <Icon fontSize="small">bar_chart</Icon>,
+  //   route: "/chart",
+  //   component: <Chart />,
+  // },
   {
-    type: "collapse",
-    name: "Chart",
-    key: "chart",
-    icon: <Icon fontSize="small">bar_chart</Icon>,
-    route: "/chart",
-    component: <Chart />,
-  },
-  {
-    type: "collapse",
-    name: "Notifications",
-    key: "notifications",
+    type: 'collapse',
+    name: 'Notifications',
+    key: 'notifications',
     icon: <Icon fontSize="small">notifications</Icon>,
-    route: "/notifications",
+    route: '/notifications',
     component: <Notifications />,
   },
   {
-    type: "collapse",
-    name: "Billing",
-    key: "billing",
-    icon: <Icon fontSize="small">receipt_long</Icon>,
-    route: "/billing",
-    component: <Billing />,
-  },
-  {
-    type: "collapse",
-    name: "Data",
-    key: "Data",
+    type: 'collapse',
+    name: 'Data',
+    key: 'Data',
     icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/data",
+    route: '/data',
     component: <Data />,
   },
   {
-    type: "collapse",
-    name: "Devices",
-    key: "Devices",
+    type: 'collapse',
+    name: 'Billing',
+    key: 'billing',
+    icon: <Icon fontSize="small">receipt_long</Icon>,
+    route: '/billing',
+    component: <Billing />,
+  },
+  {
+    type: 'collapse',
+    name: 'Devices',
+    key: 'Devices',
     icon: <Icon fontSize="small">construction</Icon>,
-    route: "/devices",
+    route: '/devices',
     component: <Devices />,
   },
-    // {
-    //   type: "collapse",
-    //   name: "Profile",
-    //   key: "profile",
-    //   icon: <Icon fontSize="small">person</Icon>,
-    //   route: "/profile",
-    //   component: <Profile />,
-    // },
+  // {
+  //   type: "collapse",
+  //   name: "Profile",
+  //   key: "profile",
+  //   icon: <Icon fontSize="small">person</Icon>,
+  //   route: "/profile",
+  //   component: <Profile />,
+  // },
   // {
   //   type: "collapse",
   //   name: "Sign Up",
@@ -119,11 +118,11 @@ const privateRoutes = [
 
 const pulicRoutes = [
   {
-    type: "collapse",
-    name: "Sign In",
-    key: "sign-in",
+    type: 'collapse',
+    name: 'Sign In',
+    key: 'sign-in',
     icon: <Icon fontSize="small">login</Icon>,
-    route: "/authentication/sign-in",
+    route: '/authentication/sign-in',
     component: <SignIn />,
   },
 ];

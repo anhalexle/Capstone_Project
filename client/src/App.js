@@ -13,50 +13,54 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from 'react';
 
 // react-router components
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import Basic from "./layouts/authentication/sign-in";
-import RequireAuth from "./RequireAuth";
-import jwt_decode from "jwt-decode";
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import Basic from './layouts/authentication/sign-in';
+import RequireAuth from './RequireAuth';
+import jwt_decode from 'jwt-decode';
 //trang không có quyền đăng nhập
-import Unauthorized from "../src/layouts/Unauthorized/index";
+import Unauthorized from '../src/layouts/Unauthorized/index';
 
 // @mui material components
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import Icon from "@mui/material/Icon";
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import Icon from '@mui/material/Icon';
 
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
+import MDBox from 'components/MDBox';
 
 // Material Dashboard 2 React example components
-import Sidenav from "examples/Sidenav";
-import Configurator from "examples/Configurator";
+import Sidenav from 'examples/Sidenav';
+import Configurator from 'examples/Configurator';
 
 // Material Dashboard 2 React themes
-import theme from "assets/theme";
-import themeRTL from "assets/theme/theme-rtl";
+import theme from 'assets/theme';
+import themeRTL from 'assets/theme/theme-rtl';
 
 // Material Dashboard 2 React Dark Mode themes
-import themeDark from "assets/theme-dark";
-import themeDarkRTL from "assets/theme-dark/theme-rtl";
+import themeDark from 'assets/theme-dark';
+import themeDarkRTL from 'assets/theme-dark/theme-rtl';
 
 // RTL plugins
-import rtlPlugin from "stylis-plugin-rtl";
-import { CacheProvider } from "@emotion/react";
-import createCache from "@emotion/cache";
+import rtlPlugin from 'stylis-plugin-rtl';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
 
 // Material Dashboard 2 React routes
-import { pulicRoutes, privateRoutes } from "routes";
-import useMultiContext from "useMultiContext";
+import { pulicRoutes, privateRoutes } from 'routes';
+import useMultiContext from 'useMultiContext';
 
 // Material Dashboard 2 React contexts
-import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
+import {
+  useMaterialUIController,
+  setMiniSidenav,
+  setOpenConfigurator,
+} from 'context';
 // Images
-import brandWhite from "assets/images/logo-ct.png";
-import brandDark from "assets/images/logo-ct-dark.png";
+import brandWhite from 'assets/images/logo-ct.png';
+import brandDark from 'assets/images/logo-ct-dark.png';
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -87,7 +91,7 @@ export default function App() {
 
   useMemo(() => {
     const cacheRtl = createCache({
-      key: "rtl",
+      key: 'rtl',
       stylisPlugins: [rtlPlugin],
     });
 
@@ -111,11 +115,12 @@ export default function App() {
   };
 
   // Change the openConfigurator state
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+  const handleConfiguratorOpen = () =>
+    setOpenConfigurator(dispatch, !openConfigurator);
 
   // Setting the dir attribute for the body element
   useEffect(() => {
-    document.body.setAttribute("dir", direction);
+    document.body.setAttribute('dir', direction);
   }, [direction]);
 
   // Setting page scroll to 0 when changing the route
@@ -131,7 +136,14 @@ export default function App() {
       }
 
       if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
+        return (
+          <Route
+            exact
+            path={route.route}
+            element={route.component}
+            key={route.key}
+          />
+        );
       }
 
       return null;
@@ -152,7 +164,7 @@ export default function App() {
       bottom="2rem"
       zIndex={99}
       color="dark"
-      sx={{ cursor: "pointer" }}
+      sx={{ cursor: 'pointer' }}
       onClick={handleConfiguratorOpen}
     >
       <Icon fontSize="small" color="inherit">
@@ -164,11 +176,15 @@ export default function App() {
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
-      {layout === "dashboard" && (
+      {layout === 'dashboard' && (
         <>
           <Sidenav
             color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+            brand={
+              (transparentSidenav && !darkMode) || whiteSidenav
+                ? brandDark
+                : brandWhite
+            }
             brandName="Đồ Án Tốt Nghiệp "
             routes={[...privateRoutes, ...pulicRoutes]}
             onMouseEnter={handleOnMouseEnter}
@@ -178,11 +194,11 @@ export default function App() {
           {configsButton}
         </>
       )}
-      {layout === "vr" && <Configurator />}
+      {layout === 'vr' && <Configurator />}
       <Routes>
         {/* <Route element={<RequireAuth allowedRoles={"admin"} />}>{getRoutes(privateRoutes)}</Route> */}
         {/* doashborad */}
-        <Route element={<RequireAuth allowedRoles={["admin", "user"]} />}>
+        <Route element={<RequireAuth allowedRoles={['admin', 'user']} />}>
           <Route
             exact
             path={privateRoutes[0].route}
@@ -198,7 +214,7 @@ export default function App() {
         </Route>
 
         {/* Notifications */}
-        <Route element={<RequireAuth allowedRoles={["admin"]} />}>
+        <Route element={<RequireAuth allowedRoles={['admin']} />}>
           <Route
             exact
             path={privateRoutes[2].route}
@@ -217,19 +233,17 @@ export default function App() {
             element={privateRoutes[4].component}
             key={privateRoutes[4].key}
           />
-          <Route
-            exact
-            path={privateRoutes[5].route}
-            element={privateRoutes[5].component}
-            key={privateRoutes[5].key}
-          />
         </Route>
         {getRoutes(pulicRoutes)}
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route
           path="/"
           element={
-            auth === null ? <Navigate to="authentication/sign-in" /> : <Navigate to="/dashboard" />
+            auth === null ? (
+              <Navigate to="authentication/sign-in" />
+            ) : (
+              <Navigate to="/dashboard" />
+            )
           }
         />
       </Routes>

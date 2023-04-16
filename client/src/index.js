@@ -13,16 +13,16 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter, Route } from "react-router-dom";
-import App from "App";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
+import App from 'App';
 
 // Material Dashboard 2 React Context Provider
-import { MaterialUIControllerProvider } from "context";
+import { MaterialUIControllerProvider } from 'context';
 
 //  provider socket
-import { MultiProvider, SocketContext } from "./multiContext";
+import { MultiProvider, SocketContext } from './multiContext';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -32,5 +32,5 @@ ReactDOM.render(
       </MultiProvider>
     </MaterialUIControllerProvider>
   </BrowserRouter>,
-  document.getElementById("root")
+  document.getElementById('root')
 );

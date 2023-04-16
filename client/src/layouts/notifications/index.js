@@ -13,9 +13,9 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { saveAs } from "file-saver";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { saveAs } from 'file-saver';
 
 //sửa lại thư viện
 import {
@@ -29,36 +29,42 @@ import {
   TableCell,
   TableRow,
   Alert,
-} from "@mui/material";
-import moment from "moment";
+} from '@mui/material';
+import moment from 'moment';
 
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-
+import MDBox from 'components/MDBox';
 
 // Material Dashboard 2 React example components
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
+import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 
 // import { DatePicker, TimePicker } from '@mui/lab';
-import { TextField, Button } from "@mui/material";
+import { TextField, Button } from '@mui/material';
 
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { addDays, setHours, setMinutes } from "date-fns";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { addDays, setHours, setMinutes } from 'date-fns';
+import { API_URL } from '../../api/Api';
 
 function Notifications() {
   //data alarm
   const [dataAlarm, setDataAlarm] = useState(null);
   // pick date time
-  const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), 0), 0));
+  const [startDate, setStartDate] = useState(
+    setHours(setMinutes(new Date(), 0), 0)
+  );
 
   const [endDate, setEndDate] = useState(new Date());
 
   const handleFindButtonClick = () => {
     // gửi yêu cầu fetch dữ liệu từ server với startDate và endDate đã chọn
+    console.log(
+      '+++++++++++++++++++',
+      `${API_URL}/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
+    );
     fetch(
-      `http://localhost:3001/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
+      `${API_URL}/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
     )
       .then((response) => response.json())
       // .then((data) => console.log(data))
@@ -67,25 +73,26 @@ function Notifications() {
         setDataAlarm(data.alarmFilter);
       })
       .catch((error) => {
-        Alert("Error fetching data from server:", error);
+        Alert('Error fetching data from server:', error);
       });
   };
 
   const handleExport = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/v1/data/exportExcel", {
-        method: "GET",
+      const response = await fetch(`${API_URL}/api/v1/data/exportExcel`, {
+        method: 'GET',
         headers: {
-          "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          Authorization: "Bearer token",
+          'Content-Type':
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          Authorization: 'Bearer token',
         },
       });
 
       const blob = await response.blob(); // get the blob data from response
       const url = window.URL.createObjectURL(blob); // create URL from blob
-      const link = document.createElement("a"); // create anchor element
+      const link = document.createElement('a'); // create anchor element
       link.href = url; // set URL as href attribute
-      link.setAttribute("download", "report.xlsx"); // set filename as download attribute
+      link.setAttribute('download', 'report.xlsx'); // set filename as download attribute
       document.body.appendChild(link); // append anchor element to body
       link.click(); // simulate click on anchor element to start download
       link.remove(); // remove anchor element after download
@@ -101,7 +108,10 @@ function Notifications() {
         <Grid container spacing={3} justifyContent="center">
           <Grid item xs={12} lg={8}>
             <Card>
-              {console.log("re-render", setHours(setMinutes(new Date(), 30), 20))}
+              {console.log(
+                're-render',
+                setHours(setMinutes(new Date(), 30), 20)
+              )}
               <Box p={2}>
                 <Grid align="center" mt={1} mb={3} container spacing={3}>
                   <Grid item xs={12} md={4} lg={4}>
@@ -140,11 +150,18 @@ function Notifications() {
                     </Grid>
                   </Grid>
                   {/* // */}
-                  <Grid item xs={12} md={4} lg={4} container style={{ paddingTop: "40px" }}>
+                  <Grid
+                    item
+                    xs={12}
+                    md={4}
+                    lg={4}
+                    container
+                    style={{ paddingTop: '40px' }}
+                  >
                     <Grid item xs={12} md={12} lg={12}>
                       <Button
                         variant="contained"
-                        style={{ color: "white" }}
+                        style={{ color: 'white' }}
                         onClick={handleFindButtonClick}
                       >
                         Tra Cứu
@@ -154,7 +171,7 @@ function Notifications() {
                       <Grid item xs={12} md={12} lg={12} mt={2}>
                         <Button
                           variant="contained"
-                          style={{ color: "white" }}
+                          style={{ color: 'white' }}
                           onClick={handleExport}
                         >
                           Xuất excel
@@ -215,7 +232,10 @@ function Notifications() {
                         <TableCell
                           align="center"
                           style={{
-                            color: item.type === "High" || item.type === "Low" ? "#FFCC00" : "red",
+                            color:
+                              item.type === 'High' || item.type === 'Low'
+                                ? '#FFCC00'
+                                : 'red',
                           }}
                         >
                           {item.type}
@@ -223,15 +243,23 @@ function Notifications() {
                         <TableCell
                           align="center"
                           style={{
-                            color: item.type === "High" || item.type === "Low" ? "#FFCC00" : "red",
+                            color:
+                              item.type === 'High' || item.type === 'Low'
+                                ? '#FFCC00'
+                                : 'red',
                           }}
                         >
-                          {moment(item.parameter.createdAt).format("DD/MM/YYYY hh:mm A")}
+                          {moment(item.parameter.createdAt).format(
+                            'DD/MM/YYYY hh:mm A'
+                          )}
                         </TableCell>
                         <TableCell
                           align="center"
                           style={{
-                            color: item.type === "High" || item.type === "Low" ? "#FFCC00" : "red",
+                            color:
+                              item.type === 'High' || item.type === 'Low'
+                                ? '#FFCC00'
+                                : 'red',
                           }}
                         >
                           {item.parameter.name}
@@ -239,7 +267,10 @@ function Notifications() {
                         <TableCell
                           align="center"
                           style={{
-                            color: item.type === "High" || item.type === "Low" ? "#FFCC00" : "red",
+                            color:
+                              item.type === 'High' || item.type === 'Low'
+                                ? '#FFCC00'
+                                : 'red',
                           }}
                         >
                           {item.parameter.value}

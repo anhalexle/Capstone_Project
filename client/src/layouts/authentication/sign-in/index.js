@@ -13,70 +13,73 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 // react-router-dom components
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 // import { useNavigate } from "react-router-dom";
-import { Alert } from "@mui/material";
+import { Alert } from '@mui/material';
 
 // @mui material components
-import Card from "@mui/material/Card";
-import Switch from "@mui/material/Switch";
-import Grid from "@mui/material/Grid";
-import MuiLink from "@mui/material/Link";
+import Card from '@mui/material/Card';
+import Switch from '@mui/material/Switch';
+import Grid from '@mui/material/Grid';
+import MuiLink from '@mui/material/Link';
 
 // @mui icons
-import FacebookIcon from "@mui/icons-material/Facebook";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import GoogleIcon from "@mui/icons-material/Google";
+import FacebookIcon from '@mui/icons-material/Facebook';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import GoogleIcon from '@mui/icons-material/Google';
 
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import MDInput from "components/MDInput";
-import MDButton from "components/MDButton";
+import MDBox from 'components/MDBox';
+import MDTypography from 'components/MDTypography';
+import MDInput from 'components/MDInput';
+import MDButton from 'components/MDButton';
 
 // Authentication layout components
-import BasicLayout from "layouts/authentication/components/BasicLayout";
+import BasicLayout from 'layouts/authentication/components/BasicLayout';
 
 // Images
-import bgImage from "assets/images/Truong_BK_CS1.jpg";
+import bgImage from 'assets/images/Truong_BK_CS1.jpg';
 
-import useMultiContext from "../../../useMultiContext";
+import useMultiContext from '../../../useMultiContext';
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
-  const { auth ,setAuth } = useMultiContext();
+  const { auth, setAuth } = useMultiContext();
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   // xử lí hiện thị ra thông báo khi đăng nhập sai
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   //khi chuyển sang trang log-in thì xóa localStorage
-  localStorage.removeItem("token");
+  localStorage.removeItem('token');
 
   const handleSignIn = async () => {
     try {
-      const response = await axios.post("http://localhost:3001/api/v1/users/login", {
-        email,
-        password,
-      });
-      console.log("nhận nè", response.data);
+      const response = await axios.post(
+        'http://localhost:3001/api/v1/users/login',
+        {
+          email,
+          password,
+        }
+      );
+      console.log('nhận nè', response.data);
       const roles = response?.data?.roles;
       const accessToken = response?.data?.accessToken;
-      console.log("nhận nè he", roles, accessToken);
+      console.log('nhận nè he', roles, accessToken);
       setAuth(response.data);
-      navigate("/", { replace: true });
+      navigate('/', { replace: true });
     } catch (error) {
       console.error(error);
-      setErrorMessage("Tên đăng nhập hoặc mật khẩu không đúng");
+      setErrorMessage('Tên đăng nhập hoặc mật khẩu không đúng');
     }
   };
- 
+
   //reset auth
   // useEffect(() => setAuth(null));
   return (
@@ -129,7 +132,12 @@ function Basic() {
             </MDBox> */}
             {/* nút nhấn sign in */}
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth onClick={handleSignIn}>
+              <MDButton
+                variant="gradient"
+                color="info"
+                fullWidth
+                onClick={handleSignIn}
+              >
                 sign in
               </MDButton>
               {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
