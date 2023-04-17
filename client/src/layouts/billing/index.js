@@ -71,7 +71,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Warning } from '@mui/icons-material';
 //import tiền điện
 import { priceIndustries } from './priceIndustries';
-
+import { API_URL } from '../../api/Api';
 function Billing() {
   const componentRef = useRef();
 
@@ -109,14 +109,9 @@ function Billing() {
 
   const [dataReport, setDataReport] = useState(null);
   const handleReport = () => {
-    ///
-    // fetch(
-    //   `http://localhost:3001/api/v1/alarms/getSpecificAlarm?startDate=${startIndexDay}&endDate=${endIndexDay}`
-    // )
-    ///giả lập
     fetch(
-      `http://localhost:3001/api/v1/data/getDataFromYear?year=${yearReport}&monthRequired=${monthReport}`
-    ) //"http://localhost:3001/api/v1/data/indexDay?startDate...&endDate=..."
+      `${API_URL}/api/v1/data/getDataFromYear?year=${yearReport}&monthRequired=${monthReport}`
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log('data report nè he', titleReport);
@@ -156,11 +151,11 @@ function Billing() {
   const handleFindIndexDay = () => {
     // gửi yêu cầu fetch dữ liệu từ server với startDate và endDate đã chọn
     console.log(
-      `http://localhost:3001/api/v1/data/getDataFromDay?startDate=${startIndexDay}&endDate=${endIndexDay}`
+      `${API_URL}/api/v1/data/getDataFromDay?startDate=${startIndexDay}&endDate=${endIndexDay}`
     );
 
     fetch(
-      `http://localhost:3001/api/v1/data/getDataFromDay?startDate=${startIndexDay}&endDate=${endIndexDay}`
+      `${API_URL}/api/v1/data/getDataFromDay?startDate=${startIndexDay}&endDate=${endIndexDay}`
     )
       // fetch(`http://localhost:3001/api/indexDay`)
       .then((response) => response.json())
@@ -182,9 +177,9 @@ function Billing() {
     ///giả lập
     console.log(
       'tìm năm',
-      `http://localhost:3001/api/v1/data/getDataFromYear?year=${yearIndex}`
+      `${API_URL}/api/v1/data/getDataFromYear?year=${yearIndex}`
     );
-    fetch(`http://localhost:3001/api/v1/data/getDataFromYear?year=${yearIndex}`)
+    fetch(`${API_URL}/api/v1/data/getDataFromYear?year=${yearIndex}`)
       // fetch("http://localhost:3001/api/v1/data")
       .then((response) => response.json())
       .then((data) => {
@@ -204,9 +199,9 @@ function Billing() {
     ///giả lập
     console.log(
       'tìm năm',
-      `http://localhost:3001/api/v1/data/getDataFromYear?year=${yearPrice}`
+      `${API_URL}/api/v1/data/getDataFromYear?year=${yearPrice}`
     );
-    fetch(`http://localhost:3001/api/v1/data/getDataFromYear?year=${yearPrice}`)
+    fetch(`${API_URL}/api/v1/data/getDataFromYear?year=${yearPrice}`)
       // fetch("http://localhost:3001/api/v1/data")
       .then((response) => response.json())
       .then((data) => {

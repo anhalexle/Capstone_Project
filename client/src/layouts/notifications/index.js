@@ -65,6 +65,7 @@ function Notifications() {
     );
     fetch(
       `${API_URL}/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
+      // `${API_URL}/api/v1/alarms`
     )
       .then((response) => response.json())
       // .then((data) => console.log(data))

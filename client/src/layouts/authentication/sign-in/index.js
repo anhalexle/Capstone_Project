@@ -45,6 +45,7 @@ import BasicLayout from 'layouts/authentication/components/BasicLayout';
 import bgImage from 'assets/images/Truong_BK_CS1.jpg';
 
 import useMultiContext from '../../../useMultiContext';
+import { API_URL } from '../../../api/Api';
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
@@ -61,13 +62,10 @@ function Basic() {
 
   const handleSignIn = async () => {
     try {
-      const response = await axios.post(
-        'http://localhost:3001/api/v1/users/login',
-        {
-          email,
-          password,
-        }
-      );
+      const response = await axios.post(`${API_URL}/api/v1/users/login`, {
+        email,
+        password,
+      });
       console.log('nhận nè', response.data);
       const roles = response?.data?.roles;
       const accessToken = response?.data?.accessToken;

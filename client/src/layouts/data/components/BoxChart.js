@@ -15,7 +15,7 @@ import TableData from '../components/Table';
 import ExcelData from '../components/ExcelData';
 
 import Typography from '@mui/material/Typography';
-
+import { API_URL } from '../../../api/Api';
 function BoxChart() {
   // eslint-disable-next-line react/jsx-filename-extension
 
@@ -74,16 +74,13 @@ function BoxChart() {
     };
     console.log(request);
 
-    const response = await fetch(
-      'http://localhost:3001/api/v1/data/drawChart',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(request),
-      }
-    );
+    const response = await fetch(`${API_URL}/api/v1/data/drawChart`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(request),
+    });
 
     if (response.ok) {
       const data = await response.json();
