@@ -39,7 +39,7 @@ class DataType {
     instantaneous_power: {
       address: [
         [238, 2],
-        [242, 6],
+        [240, 6],
       ],
       unit: 1000,
       threshHold: { hi_hi: 2000, hi: 1000 },

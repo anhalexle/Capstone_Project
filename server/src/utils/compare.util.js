@@ -13,7 +13,8 @@ const compareArrays = (arr1, arr2, type) => {
     // NewData must be different from oldData higher than 5 percent
     // Dead band
 
-    if (el - arr2[index] >= offset[type]) {
+    if (el !== arr2[index]) {
+      // if (el - arr2[index] !== offset[type]) {
       acc.push(index);
     }
     return acc;

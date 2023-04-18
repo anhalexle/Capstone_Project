@@ -3,6 +3,11 @@ const TotalIntegralOneMonth = require('../models/totalIntegral.model');
 
 const totalPowerOneMonth = async () => {
   try {
+    // demo ngay hom sau
+    // const temp = new Date();
+    // const now = new Date(temp);
+    // now.setDate(now.getDate() + 1);
+
     const now = new Date();
     const prev = new Date(now.getFullYear(), now.getMonth() - 1, 12, 7, 0, 0);
     const next = new Date(now.getFullYear(), now.getMonth(), 11, 7, 0, 0);
@@ -36,6 +41,14 @@ const totalPowerOneMonth = async () => {
         default:
           totalIntegralPeak += el.totalPower;
       }
+    });
+    totalIntegralPeak = totalIntegralPeak.toFixed(3);
+    totalIntegralOffPeak = totalIntegralOffPeak.toFixed(3);
+    totalIntegralRegular = totalIntegralRegular.toFixed(3);
+    console.log({
+      totalIntegralPeak,
+      totalIntegralOffPeak,
+      totalIntegralRegular,
     });
     await TotalIntegralOneMonth.findOneAndUpdate(
       { dateCreated },

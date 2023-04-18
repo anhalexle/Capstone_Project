@@ -1,6 +1,7 @@
 const DataType = require('../utils/dataFeatures.util');
 const Data = require('../models/data.model');
-const calculateElectricBill = require('../utils/billCalculate.util');
+// const calculateElectricBill = require('../utils/billCalculate.util');
+const checkImportData = require('../utils/checkImportData.util');
 
 const { getLatestDataFromDB } = require('../utils/database.util');
 const compareArrays = require('../utils/compare.util');
@@ -17,8 +18,11 @@ const handleNewData = async (newData) => {
   });
   global._io.emit('new-data-client', arr);
   if (name === 'total_integral_active_power') {
+    await checkImportData(newData.type);
     await totalPowerOneMonth();
   }
+  if (newData.type !== 'integral_power')
+    await dataFeatures.createAlarm(newData.type, newData);
 };
 class SocketServices {
   connection(socket) {
@@ -30,17 +34,16 @@ class SocketServices {
       try {
         const allData = [];
         const dataType = dataFeatures.getAllDataType();
-        const promises = dataType.map(async (type) =>
-          getLatestDataFromDB(type, false)
-        );
+        const promises = dataType.map(async (type) => {
+          await checkImportData(type);
+          await getLatestDataFromDB(type, false);
+        });
         allData.push(...(await Promise.all(promises)));
-        console.log(allData);
         let filterData = allData.flat(2);
         filterData = filterData.map((el) => {
           const { name, value, createdAt } = el;
           return { name, value, createdAt };
         });
-        console.log(filterData);
         global._io.emit('send-all-data-client', filterData);
       } catch (err) {
         console.log(err);
@@ -53,14 +56,6 @@ class SocketServices {
         return value;
       });
       const res = compareArrays(data.newModBusData, oldData, data.type);
-      if (data.type === 'pf') {
-        console.log({
-          type: data.type,
-          dataFromModBus: data.newModBusData,
-          oldData: oldData,
-          res,
-        });
-      }
       if (res.length !== 0) {
         await Promise.all(
           res.map(async (index) => {
@@ -72,9 +67,7 @@ class SocketServices {
               address: oldModBusData[index].address,
             });
             // console.log('newData', newDataCreated);
-            await Data.findOneAndDelete({
-              value: 0,
-            });
+
             handleNewData(newDataCreated);
           })
         );
@@ -99,13 +92,13 @@ class SocketServices {
     // socket.emit('new-data-client');
     // name value createdAt
 
-    socket.on('calculate-electric-bill', async () => {
-      try {
-        await calculateElectricBill(1);
-      } catch (err) {
-        console.log(err);
-      }
-    });
+    // socket.on('calculate-electric-bill', async () => {
+    //   try {
+    //     await calculateElectricBill(1);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // });
 
     socket.on('sendState', (data) => {
       global._io.emit('sendState', data);

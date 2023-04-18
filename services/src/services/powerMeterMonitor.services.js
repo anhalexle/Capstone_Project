@@ -43,7 +43,7 @@ const mainService = async (type) => {
       // console.log(res, features.getUnit(type));
       newModBusData = res.map((el) => el / features.getUnit(type));
     }
-
+    console.log({ newModBusData, type });
     global.socket.emit('new-data-service', { newModBusData, type });
 
     // const oldData = oldModBusData.map((el) => {

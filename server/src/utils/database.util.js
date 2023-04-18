@@ -61,6 +61,14 @@ const totalIntegralPower = async (date, arr) => {
         },
         {
           $sort: {
+            createdAt: -1,
+          },
+        },
+        {
+          $limit: 2,
+        },
+        {
+          $sort: {
             createdAt: 1,
           },
         },
@@ -76,18 +84,31 @@ const totalIntegralPower = async (date, arr) => {
           },
         },
         {
+          $addFields: {
+            _firstValue: { $toDouble: '$firstValue' },
+            _lastValue: { $toDouble: '$lastValue' },
+          },
+        },
+        {
           $project: {
             _id: 0,
             totalIntegralPower: {
               $switch: {
                 branches: [
                   {
-                    case: { $eq: ['$firstValue', '$lastValue'] },
+                    case: { $eq: ['$_firstValue', '$_lastValue'] },
                     then: 0,
                   },
                 ],
-                default: { $subtract: ['$lastValue', '$firstValue'] },
+                default: { $subtract: ['$_lastValue', '$_firstValue'] },
               },
+            },
+          },
+        },
+        {
+          $project: {
+            totalIntegralPower: {
+              $round: ['$totalIntegralPower', 3],
             },
           },
         },

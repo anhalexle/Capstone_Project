@@ -1,3 +1,5 @@
+const convertFromBinaryToUInt = require('./convertFromBinaryToUInt');
+
 class DataType {
   #dataType = {
     volt: {
@@ -71,7 +73,14 @@ class DataType {
       this.#dataType[type].address[1]
     );
     if (type === 'pf') {
-      console.log(mbData.data[0] / this.#dataType[type].unit);
+      const pfModBusData = mbData.data.map((el) => {
+        const binaryString = el.toString(2);
+        if (binaryString[0] === '1') {
+          return convertFromBinaryToUInt(el, 16);
+        }
+        return el;
+      });
+      return pfModBusData.map((el) => el / this.#dataType[type].unit);
     }
     return mbData.data.map((el) => el / this.#dataType[type].unit);
   }

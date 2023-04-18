@@ -30,7 +30,7 @@ process.env.DATABASE = process.env.DATABASE_ONL.replace(
 
 // CONNECT TO DB
 server.listen(port, async () => {
-  await connectDB(process.env.DATABASE);
+  await connectDB(process.env.DATABASE_LOCAL);
   io.on('connect', SocketServices.connection);
   console.log(`App listening on port ${port}`);
 });
