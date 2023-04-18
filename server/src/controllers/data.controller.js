@@ -183,6 +183,7 @@ exports.getDataFromDay = catchAsync(async (req, res, next) => {
 
 exports.getDataFromYear = catchAsync(async (req, res, next) => {
   const { year, monthRequired } = req.query;
+  console.log(year, monthRequired);
   let month;
   if (monthRequired) {
     month = monthRequired < 10 ? `0${monthRequired}` : `${monthRequired}`;
@@ -196,11 +197,14 @@ exports.getDataFromYear = catchAsync(async (req, res, next) => {
     }
     month = month < 10 ? `0${month}` : `${month}`;
   }
+  console.log(month, year);
   const dataLastYear = await getDataFromYearFunc(new Date('2022-12-01'));
+  console.log(dataLastYear);
   const dataThisYear = await getDataFromYearFunc(
     new Date(`${year}-${month}-01`),
     new Date(`${year}-01-01`)
   );
+  console.log(dataThisYear);
   const result = dataLastYear.map((el) => {
     let ThisYear;
     const data = dataThisYear.find((value) => value.Month === el.Month);

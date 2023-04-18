@@ -2,35 +2,24 @@ const DataType = require('../utils/dataFeatures.util');
 const Data = require('../models/data.model');
 const calculateElectricBill = require('../utils/billCalculate.util');
 
-const getLatestDataFromDB = async (type, noId = true) =>
-  await Data.aggregate([
-    { $match: { type } },
-    { $sort: { createdAt: 1 } },
-    {
-      $group: {
-        _id: { name: '$name', type: '$type' },
-        newData: { $last: '$value' },
-        newAddress: { $last: '$address' },
-        createdDate: { $last: '$createdAt' },
-        newId: { $last: '$_id' },
-      },
-    },
-    {
-      $sort: { newAddress: 1 },
-    },
-    {
-      $project: {
-        _id: { $cond: { if: noId, then: null, else: '$newId' } },
-        name: '$_id.name',
-        type: '$_id.type',
-        value: '$newData',
-        address: '$newAddress',
-        createdAt: '$createdDate',
-      },
-    },
-  ]);
-const dataFeatures = new DataType();
+const { getLatestDataFromDB } = require('../utils/database.util');
+const compareArrays = require('../utils/compare.util');
+const totalPowerOneMonth = require('../utils/integralOneDay.util');
 
+const dataFeatures = new DataType();
+const handleNewData = async (newData) => {
+  const arr = [];
+  const { name, value, createdAt } = newData;
+  const filterData = { name, value, createdAt };
+  arr.push(filterData);
+  console.log({
+    data: arr,
+  });
+  global._io.emit('new-data-client', arr);
+  if (name === 'total_integral_active_power') {
+    await totalPowerOneMonth();
+  }
+};
 class SocketServices {
   connection(socket) {
     socket.on('disconnect', () => {
@@ -57,22 +46,56 @@ class SocketServices {
         console.log(err);
       }
     });
-
-    socket.on('new-data', async (newData) => {
-      try {
-        const arr = [];
-        const { name, value, createdAt } = newData;
-        const filterData = { name, value, createdAt };
-        arr.push(filterData);
-        console.log(arr);
-        global._io.emit('new-data-client', arr);
-        console.log(newData.type, newData);
-        // if (newData.type !== 'integral_power')
-        //   await dataFeatures.createAlarm(newData.type, newData);
-      } catch (err) {
-        console.log(err);
+    socket.on('new-data-service', async (data) => {
+      const oldModBusData = await getLatestDataFromDB(data.type);
+      const oldData = oldModBusData.map((el) => {
+        const { value } = el;
+        return value;
+      });
+      const res = compareArrays(data.newModBusData, oldData, data.type);
+      if (data.type === 'pf') {
+        console.log({
+          type: data.type,
+          dataFromModBus: data.newModBusData,
+          oldData: oldData,
+          res,
+        });
+      }
+      if (res.length !== 0) {
+        await Promise.all(
+          res.map(async (index) => {
+            oldModBusData[index].value = data.newModBusData[index];
+            const newDataCreated = await Data.create({
+              name: oldModBusData[index].name,
+              type: oldModBusData[index].type,
+              value: oldModBusData[index].value,
+              address: oldModBusData[index].address,
+            });
+            // console.log('newData', newDataCreated);
+            await Data.findOneAndDelete({
+              value: 0,
+            });
+            handleNewData(newDataCreated);
+          })
+        );
       }
     });
+
+    // socket.on('new-data', async (newData) => {
+    //   try {
+    //     const arr = [];
+    //     const { name, value, createdAt } = newData;
+    //     const filterData = { name, value, createdAt };
+    //     arr.push(filterData);
+    //     console.log(arr);
+    //     global._io.emit('new-data-client', arr);
+    //     console.log(newData.type, newData);
+    //     // if (newData.type !== 'integral_power')
+    //     //   await dataFeatures.createAlarm(newData.type, newData);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // });
     // socket.emit('new-data-client');
     // name value createdAt
 

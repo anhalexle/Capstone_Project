@@ -114,7 +114,7 @@ function Billing() {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log('data report nè he', titleReport);
+        console.log('data report nè he', data);
         setTitleReport(
           `Tháng ${monthReport}/${yearReport} ( Từ ngày ${startDateReport.toLocaleString(
             'en-GB',

@@ -70,6 +70,9 @@ class DataType {
       this.#dataType[type].address[0],
       this.#dataType[type].address[1]
     );
+    if (type === 'pf') {
+      console.log(mbData.data[0] / this.#dataType[type].unit);
+    }
     return mbData.data.map((el) => el / this.#dataType[type].unit);
   }
 

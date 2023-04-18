@@ -20,6 +20,7 @@ client.connectRTUBuffered(process.env.PORT, {
 global.socket = socket;
 global.client = client;
 let _flag = false;
+
 const freqObj = {
   flag: false,
   value: 0,
@@ -41,36 +42,43 @@ const reverseObj = {
 // } else {
 //   process.env.DATABASE = process.env.DATABASE_LOCAL;
 // }
-process.env.DATABASE = process.env.DATABASE_ONL.replace(
-  '<PASSWORD>',
-  process.env.DATABASE_PASSWORD
-);
+// process.env.DATABASE = process.env.DATABASE_ONL.replace(
+//   '<PASSWORD>',
+//   process.env.DATABASE_PASSWORD
+// );
+socket.on('sendState', async (flag) => {
+  _flag = flag;
+  if (_flag) {
+    socket.on('changeState', (data) => {
+      stateObj.flag = true;
+      stateObj.value = data;
+    });
+    socket.on('frequency', (data) => {
+      freqObj.flag = true;
+      freqObj.value = data;
+    });
+    socket.on('run', (data) => {
+      runObj.flag = true;
+      runObj.value = data;
+    });
+    socket.on('reverse', (data) => {
+      reverseObj.flag = true;
+      reverseObj.value = data;
+    });
+  }
+});
 
-connectDB(process.env.DATABASE).then(async () => {
-  socket.on('sendState', async (flag) => {
-    _flag = flag;
-    if (_flag) {
-      socket.on('changeState', (data) => {
-        stateObj.flag = true;
-        stateObj.value = data;
-      });
-      socket.on('frequency', (data) => {
-        freqObj.flag = true;
-        freqObj.value = data;
-      });
-      socket.on('run', (data) => {
-        runObj.flag = true;
-        runObj.value = data;
-      });
-      socket.on('reverse', (data) => {
-        reverseObj.flag = true;
-        reverseObj.value = data;
-      });
-    }
-  });
-  while (true) {
+setInterval(async () => {
+  try {
     await main();
-    console.log(_flag);
+    console.log({
+      flag: _flag,
+      stateObj,
+      freqObj,
+      runObj,
+      reverseObj,
+    });
+
     if (_flag) {
       const state = await motorService.sendStateToClient();
       console.log(state);
@@ -92,5 +100,7 @@ connectDB(process.env.DATABASE).then(async () => {
         reverseObj.flag = false;
       }
     }
+  } catch (e) {
+    console.log(e);
   }
-});
+}, 500);

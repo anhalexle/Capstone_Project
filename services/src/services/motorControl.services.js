@@ -83,11 +83,11 @@ const readOutPut = async () => {
 const sendStateToClient = async () => {
   try {
     const state = await readState();
-    // console.log(state);
+
     const runAndReverse = await readRunAndReverse();
-    // console.log(runAndReverse);
+
     const output = await readOutPut();
-    // console.log(output);
+
     const data = { ...state, ...runAndReverse, ...output };
     console.log(data);
     return data;

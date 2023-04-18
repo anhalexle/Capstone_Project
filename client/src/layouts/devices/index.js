@@ -160,8 +160,8 @@ function Devices() {
           <Grid item style={{ height: 250 }}>
             <ReactSpeedometer
               sx={{ height: 100 }}
-              maxValue={200}
-              value={dataPrint.data[3] / 10}
+              maxValue={400}
+              value={dataPrint.data[3] / 100}
               needleColor="red"
               startColor="green"
               segments={10}
@@ -177,8 +177,9 @@ function Devices() {
                 width: { xs: 300, sm: 500, md: 700 },
               }}
               value={frequency}
+              max={400}
               onChange={(event: Event, newValue: number | number[]) => {
-                socket.emit('frequency', newValue * 10);
+                socket.emit('frequency', newValue * 100);
                 setFrequency(newValue);
               }}
             />
@@ -266,7 +267,7 @@ function Devices() {
             >
               <Grid item>
                 {dataPrint.data[1] ? (
-                  <img style={{ width: 70, height: 70 }} src={iconOn}></img>
+                  <img style={{ width: 100, height: 100 }} src={iconOn}></img>
                 ) : (
                   <img style={{ width: 100, height: 100 }} src={iconOff}></img>
                 )}
@@ -337,7 +338,7 @@ function Devices() {
             >
               <Grid item>
                 {dataPrint.data[2] ? (
-                  <img style={{ width: 70, height: 70 }} src={iconOn}></img>
+                  <img style={{ width: 100, height: 100 }} src={iconOn}></img>
                 ) : (
                   <img style={{ width: 100, height: 100 }} src={iconOff}></img>
                 )}
@@ -348,7 +349,7 @@ function Devices() {
         </Box>
       </Box>
 
-      <Box mt={3}>
+      {/* <Box mt={3}>
         <Grid container>
           <Grid>
             <Button
@@ -388,7 +389,7 @@ function Devices() {
             <img src={iconOff}></img>
           )}
         </Grid>
-      </Box>
+      </Box> */}
     </DashboardLayout>
   );
 }

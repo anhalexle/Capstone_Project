@@ -1,5 +1,5 @@
 const Data = require('../models/data.model');
-// const ToTalIntegralOneMonth = require('../models/totalIntegral.model');
+const ToTalIntegralOneMonth = require('../models/totalIntegral.model');
 
 const getLatestDataFromDB = async (type, noId = true) =>
   await Data.aggregate([
@@ -83,7 +83,7 @@ const totalIntegralPower = async (date, arr) => {
                 branches: [
                   {
                     case: { $eq: ['$firstValue', '$lastValue'] },
-                    then: '$lastValue',
+                    then: 0,
                   },
                 ],
                 default: { $subtract: ['$lastValue', '$firstValue'] },
