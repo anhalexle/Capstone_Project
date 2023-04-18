@@ -37,16 +37,16 @@ const reverseObj = {
   value: 0,
 };
 
-if (process.env.NODE_ENV === 'production') {
-  process.env.DATABASE = process.env.DATABASE_ONL.replace(
-    '<PASSWORD>',
-    process.env.DATABASE_PASSWORD
-  );
-} else {
-  process.env.DATABASE = process.env.DATABASE_LOCAL;
-}
+// if (process.env.NODE_ENV === 'production') {
+// } else {
+//   process.env.DATABASE = process.env.DATABASE_LOCAL;
+// }
+process.env.DATABASE = process.env.DATABASE_ONL.replace(
+  '<PASSWORD>',
+  process.env.DATABASE_PASSWORD
+);
 
-connectDB(process.env.DATABASE_LOCAL).then(async () => {
+connectDB(process.env.DATABASE).then(async () => {
   socket.on('sendState', async (flag) => {
     _flag = flag;
     if (_flag) {
@@ -68,12 +68,12 @@ connectDB(process.env.DATABASE_LOCAL).then(async () => {
       });
     }
   });
-
-  setInterval(async () => {
+  while (true) {
     await main();
     console.log(_flag);
     if (_flag) {
       const state = await motorService.sendStateToClient();
+      console.log(state);
       socket.emit('receiveState', state);
       if (stateObj.flag) {
         await motorService.writeState(stateObj.value);
@@ -92,9 +92,5 @@ connectDB(process.env.DATABASE_LOCAL).then(async () => {
         reverseObj.flag = false;
       }
     }
-  }, 500);
-
-  socket.on('send-me-data-service', async () => {
-    await getAllDataAndEmit();
-  });
+  }
 });

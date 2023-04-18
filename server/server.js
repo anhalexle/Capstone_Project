@@ -19,14 +19,14 @@ global._io = io;
 
 const port = process.env.PORT || 3001;
 
-if (process.env.NODE_ENV === 'production') {
-  process.env.DATABASE = process.env.DATABASE_ONL.replace(
-    '<PASSWORD>',
-    process.env.DATABASE_PASSWORD
-  );
-} else {
-  process.env.DATABASE = process.env.DATABASE_LOCAL;
-}
+process.env.DATABASE = process.env.DATABASE_ONL.replace(
+  '<PASSWORD>',
+  process.env.DATABASE_PASSWORD
+);
+// if (process.env.NODE_ENV === 'production') {
+// } else {
+//   process.env.DATABASE = process.env.DATABASE_LOCAL;
+// }
 
 // CONNECT TO DB
 server.listen(port, async () => {

@@ -2,16 +2,34 @@ const DataType = require('../utils/dataFeatures.util');
 const Data = require('../models/data.model');
 const calculateElectricBill = require('../utils/billCalculate.util');
 
+const getLatestDataFromDB = async (type, noId = true) =>
+  await Data.aggregate([
+    { $match: { type } },
+    { $sort: { createdAt: 1 } },
+    {
+      $group: {
+        _id: { name: '$name', type: '$type' },
+        newData: { $last: '$value' },
+        newAddress: { $last: '$address' },
+        createdDate: { $last: '$createdAt' },
+        newId: { $last: '$_id' },
+      },
+    },
+    {
+      $sort: { newAddress: 1 },
+    },
+    {
+      $project: {
+        _id: { $cond: { if: noId, then: null, else: '$newId' } },
+        name: '$_id.name',
+        type: '$_id.type',
+        value: '$newData',
+        address: '$newAddress',
+        createdAt: '$createdDate',
+      },
+    },
+  ]);
 const dataFeatures = new DataType();
-
-const checkAndCreateAllAlarm = async (allData) =>
-  await Promise.all(
-    allData.map(async (data) => {
-      if (data.type !== 'integral_power') {
-        await dataFeatures.createAlarm(data.type, data);
-      }
-    })
-  );
 
 class SocketServices {
   connection(socket) {
@@ -19,12 +37,15 @@ class SocketServices {
       console.log(`User disconnected ${socket.id}`);
     });
 
-    socket.on('send-me-data', (data) => {
-      global._io.emit('send-me-data-service');
-    });
-
-    socket.on('send-all-data', (allData) => {
+    socket.on('send-me-data', async () => {
       try {
+        const allData = [];
+        const dataType = dataFeatures.getAllDataType();
+        const promises = dataType.map(async (type) =>
+          getLatestDataFromDB(type, false)
+        );
+        allData.push(...(await Promise.all(promises)));
+        console.log(allData);
         let filterData = allData.flat(2);
         filterData = filterData.map((el) => {
           const { name, value, createdAt } = el;
@@ -36,6 +57,7 @@ class SocketServices {
         console.log(err);
       }
     });
+
     socket.on('new-data', async (newData) => {
       try {
         const arr = [];
