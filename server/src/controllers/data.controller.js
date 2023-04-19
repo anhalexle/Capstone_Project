@@ -3,6 +3,8 @@ const fs = require('fs');
 const ExcelJS = require('exceljs');
 const PDFDocument = require('pdfkit');
 
+const moment = require('moment-timezone');
+
 const CRUDFactory = require('./factory.controller');
 const Data = require('../models/data.model');
 
@@ -12,6 +14,7 @@ const convertTotalIntegralToMoney = require('../utils/bill.util');
 const AppError = require('../utils/appError.util');
 const getDatesBetween = require('../utils/getDates.util');
 const totalPowerOneDay = require('../utils/totalOneDay.util');
+const totalIntegralOneDayAPI = require('../utils/totalIntegralOneDayAPI.util');
 
 // const createPipeLine = (date, name) => {
 //   let theDate;
@@ -115,6 +118,7 @@ const createPipeLine = (startDate, endDate, name) => {
 };
 exports.drawChart = catchAsync(async (req, res, next) => {
   const { startDate, endDate, name } = req.body;
+  // console.log(startDate, endDate);
   if (!startDate || !endDate)
     return next(new AppError('Please provide date', 404));
   if (!name) return next(new AppError('Please provide name', 404));
@@ -159,31 +163,45 @@ exports.exportPDF = catchAsync(async (req, res, next) => {
 
 exports.getDataFromDay = catchAsync(async (req, res, next) => {
   const { startDate, endDate } = req.query;
-  const ISOstartDate = new Date(startDate);
-  const ISOendDate = new Date(endDate);
+  console.log(startDate, endDate);
+  const tempStartDate = new Date(startDate);
+  const tempEndDate = new Date(endDate);
+
+  // chuyển đổi đối tượng moment sang Date object
+  const ISOstartDate = new Date(
+    tempStartDate.getFullYear(),
+    tempStartDate.getMonth(),
+    tempStartDate.getDate() - 1,
+    7,
+    0,
+    0
+  );
+  const ISOendDate = new Date(
+    tempEndDate.getFullYear(),
+    tempEndDate.getMonth(),
+    tempEndDate.getDate(),
+    7,
+    0,
+    0
+  );
   const dates = getDatesBetween(ISOstartDate, ISOendDate);
-  const promises = dates.map(async (date) => {
-    const data = await totalPowerOneDay(date);
+  console.log(dates);
+  const promises = dates.map(async (el) => {
+    const data = await totalIntegralOneDayAPI(el.rawDate);
     return {
-      Date: date
-        .toLocaleString('en-GB', {
-          day: 'numeric',
-          month: 'numeric',
-          year: 'numeric',
-        })
-        .split(',')[0],
+      Date: el.VNDate,
       Peak: data[2] ? data[2].totalPower : 0,
       Normal: data[1] ? data[1].totalPower : 0,
       OffPeak: data[0] ? data[0].totalPower : 0,
     };
   });
   const data = await Promise.all(promises);
+  console.log(data);
   res.status(200).json({ status: 'success', data: { data } });
 });
 
 exports.getDataFromYear = catchAsync(async (req, res, next) => {
   const { year, monthRequired } = req.query;
-  console.log(year, monthRequired);
   let month;
   const now = new Date();
   if (monthRequired) {
@@ -197,14 +215,13 @@ exports.getDataFromYear = catchAsync(async (req, res, next) => {
     }
     month = month < 10 ? `0${month}` : `${month}`;
   }
-  console.log(month, year);
+  // console.log(month, year);
   const dataLastYear = await getDataFromYearFunc(
     new Date(`${year - 1}-12-01`),
     new Date(`${year - 1}-01-01`)
   );
-  console.log(dataLastYear);
   let dataThisYear;
-  if (year === now.getFullYear()) {
+  if (year * 1 === now.getFullYear() * 1) {
     dataThisYear = await getDataFromYearFunc(
       new Date(`${year}-${month}-01`),
       new Date(`${year}-01-01`)
@@ -215,7 +232,7 @@ exports.getDataFromYear = catchAsync(async (req, res, next) => {
       new Date(`${year}-01-01`)
     );
   }
-  console.log(dataThisYear);
+  console.log({ dataThisYear, month });
   const result = dataLastYear.map((el) => {
     let ThisYear;
     const data = dataThisYear.find((value) => value.Month === el.Month);

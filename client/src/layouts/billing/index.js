@@ -639,14 +639,6 @@ function Billing() {
                     onChange={(date) => setEndIndexDay(date)}
                     maxDate={new Date()}
                     dateFormat="dd/MM/yyyy"
-                    style={{
-                      border: '2px solid #00bfff',
-                      borderRadius: '5px',
-                      padding: '10px',
-                    }}
-                    className="custom-datepicker"
-                    calendarClassName="custom-datepicker-calendar"
-                    dayClassName="custom-datepicker-day"
                   ></DatePicker>
                 </Grid>
               </Grid>
