@@ -23,13 +23,29 @@ const globalErrorHandler = require('./src/controllers/error.controller');
 // app.set('views', path.join(__dirname, 'src\\views'));
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: '*',
+  })
+);
+
 app.use(express.json({ limit: '10kb' }));
 app.use(cookieParser());
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  next();
+});
+app.use('/test', (req, res) => {
+  return res.status(200).json({ message: 'test' });
+});
 app.use('/api/v1/data', dataRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/alarms', alarmRouter);

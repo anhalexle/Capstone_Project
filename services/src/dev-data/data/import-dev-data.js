@@ -27,8 +27,8 @@ const data = JSON.parse(
 // IMPORT DATA INTO DB
 const importData = async () => {
   try {
-    // await connectDB(DB);
-    await connectDB(process.env.DATABASE_LOCAL);
+    await connectDB(DB);
+    // await connectDB(process.env.DATABASE_LOCAL);
     await Data.create(data);
     // await Bill.create(bill);
     console.log('Data successfully created');
@@ -42,8 +42,8 @@ const importData = async () => {
 // DELETE DATA INTO DB
 const deleteData = async () => {
   try {
-    // await connectDB(DB);
-    await connectDB(process.env.DATABASE_LOCAL);
+    await connectDB(DB);
+    // await connectDB(process.env.DATABASE_LOCAL);
     console.log('Connected to database');
     await Data.deleteMany();
     // await Bill.deleteMany();

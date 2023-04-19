@@ -21,7 +21,11 @@ const handleNewData = async (newData) => {
     await checkImportData(newData.type);
     await totalPowerOneMonth();
   }
-  if (newData.type !== 'integral_power')
+  if (
+    newData.type !== 'integral_power' &&
+    newData.name !== 'Current_phase_N' &&
+    newData.type !== 'pf'
+  )
     await dataFeatures.createAlarm(newData.type, newData);
 };
 class SocketServices {
@@ -36,10 +40,11 @@ class SocketServices {
         const dataType = dataFeatures.getAllDataType();
         const promises = dataType.map(async (type) => {
           await checkImportData(type);
-          await getLatestDataFromDB(type, false);
+          return await getLatestDataFromDB(type, false);
         });
         allData.push(...(await Promise.all(promises)));
         let filterData = allData.flat(2);
+        console.log(filterData);
         filterData = filterData.map((el) => {
           const { name, value, createdAt } = el;
           return { name, value, createdAt };
@@ -56,6 +61,12 @@ class SocketServices {
         return value;
       });
       const res = compareArrays(data.newModBusData, oldData, data.type);
+      console.log({
+        type: data.type,
+        oldData,
+        newData: data.newModBusData,
+        res,
+      });
       if (res.length !== 0) {
         await Promise.all(
           res.map(async (index) => {

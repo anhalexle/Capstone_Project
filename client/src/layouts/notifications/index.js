@@ -169,7 +169,7 @@ function Notifications() {
                       </Button>
                     </Grid>
                     {dataAlarm && (
-                      <Grid item xs={12} md={12} lg={12} mt={2}>
+                      <Grid item xs={12} md={12} lg={12}>
                         <Button
                           variant="contained"
                           style={{ color: 'white' }}

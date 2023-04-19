@@ -1,10 +1,10 @@
 const offset = {
   volt: 1,
   volt_line: 1,
-  current: 0.25,
+  current: 0.2,
   frequency: 0.1,
   pf: 0.01,
-  integral_power: 0.001,
+  integral_power: 0.002,
   instantaneous_power: 0.01,
 };
 const compareArrays = (arr1, arr2, type) => {
@@ -13,8 +13,8 @@ const compareArrays = (arr1, arr2, type) => {
     // NewData must be different from oldData higher than 5 percent
     // Dead band
 
-    if (el !== arr2[index]) {
-      // if (el - arr2[index] !== offset[type]) {
+    // if (el !== arr2[index]) {
+    if (Math.abs(el - arr2[index]) >= offset[type]) {
       acc.push(index);
     }
     return acc;

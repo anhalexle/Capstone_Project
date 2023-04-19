@@ -7,12 +7,12 @@ class DataType {
     volt: {
       address: [164, 8],
       unit: 10,
-      threshHold: { hi_hi: 300, hi: 230, lo: 50, lo_lo: 0 },
+      threshHold: { hi_hi: 300, hi: 250, lo: 50, lo_lo: 0 },
     },
     volt_line: {
       address: [172, 8],
       unit: 10,
-      threshHold: { hi_hi: 500, hi: 400, lo: 50, lo_lo: 0 },
+      threshHold: { hi_hi: 500, hi: 450, lo: 50, lo_lo: 0 },
     },
     current: {
       address: [180, 10],
@@ -64,7 +64,8 @@ class DataType {
       let alarmType;
       if (
         (type === 'instantaneous_power' && dataCreated.value < hi) ||
-        (dataCreated.value > lo && dataCreated.value < hi)
+        (dataCreated.value > lo && dataCreated.value < hi) ||
+        (type === 'pf' && dataCreated.value > lo)
       )
         return;
       if (type !== 'instantaneous_power') {
@@ -74,10 +75,12 @@ class DataType {
           alarmType = 'Low';
         }
       }
-      if (type !== 'pf' && dataCreated.value > hi_hi) {
-        alarmType = 'High High';
-      } else if (type !== 'pf' && dataCreated.value >= hi) {
-        alarmType = 'High';
+      if (type !== 'pf') {
+        if (dataCreated.value > hi_hi) {
+          alarmType = 'High High';
+        } else if (dataCreated.value >= hi) {
+          alarmType = 'High';
+        }
       }
 
       const alarmData = {
@@ -100,9 +103,9 @@ class DataType {
       //   'parameter type'
       // );
       console.log(alarmFilter);
-      // const user = await User.findOne({ role: 'user' });
-      // const newAlarmEmail = new Email(user, alarmFilter);
-      // await newAlarmEmail.sendAlarm();
+      const user = await User.findOne({ role: 'user' });
+      const newAlarmEmail = new Email(user, alarmFilter);
+      await newAlarmEmail.sendAlarm();
     } catch (err) {
       console.log(err);
     }

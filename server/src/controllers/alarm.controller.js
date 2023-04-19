@@ -16,12 +16,14 @@ exports.getSpecificAlarm = catchAsync(async (req, res, next) => {
     path: 'parameter',
     select: 'name value createdAt',
   });
-  // console.log(allAlarm);
-  const alarmFilter = allAlarm.filter(
-    (data) =>
-      data.parameter.createdAt >= ISOstartDate &&
-      data.parameter.createdAt < ISOendDate
-  );
-  console.log(alarmFilter);
-  res.status(200).json({ status: 'success', alarmFilter });
+  if (allAlarm.parameter) {
+    const alarmFilter = allAlarm.filter(
+      (data) =>
+        data.parameter.createdAt >= ISOstartDate &&
+        data.parameter.createdAt < ISOendDate
+    );
+    console.log(alarmFilter);
+    res.status(200).json({ status: 'success', alarmFilter });
+  }
+  res.status(200).json({ status: 'success', alarmFilter: null });
 });

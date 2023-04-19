@@ -9,8 +9,8 @@ dotenv.config({ path: './config.env' });
 const socket = socketIO(process.env.SOCKET);
 const client = new ModBusRTU();
 
-client.connectRTUBuffered(process.env.PORT_AO, {
-  baudRate: process.env.BAUDRATE_AO * 1,
+client.connectRTUBuffered(process.env.PORT, {
+  baudRate: process.env.BAUDRATE * 1,
 });
 
 global.socket = socket;

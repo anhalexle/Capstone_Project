@@ -185,10 +185,10 @@ exports.getDataFromYear = catchAsync(async (req, res, next) => {
   const { year, monthRequired } = req.query;
   console.log(year, monthRequired);
   let month;
+  const now = new Date();
   if (monthRequired) {
     month = monthRequired < 10 ? `0${monthRequired}` : `${monthRequired}`;
   } else {
-    const now = new Date();
     const prev = new Date(now.getFullYear(), now.getMonth() - 1, 12, 7, 0, 0);
     const future = new Date(now.getFullYear(), now.getMonth(), 11, 7, 0, 0);
     month = now.getMonth();
@@ -198,12 +198,23 @@ exports.getDataFromYear = catchAsync(async (req, res, next) => {
     month = month < 10 ? `0${month}` : `${month}`;
   }
   console.log(month, year);
-  const dataLastYear = await getDataFromYearFunc(new Date('2022-12-01'));
-  console.log(dataLastYear);
-  const dataThisYear = await getDataFromYearFunc(
-    new Date(`${year}-${month}-01`),
-    new Date(`${year}-01-01`)
+  const dataLastYear = await getDataFromYearFunc(
+    new Date(`${year - 1}-12-01`),
+    new Date(`${year - 1}-01-01`)
   );
+  console.log(dataLastYear);
+  let dataThisYear;
+  if (year === now.getFullYear()) {
+    dataThisYear = await getDataFromYearFunc(
+      new Date(`${year}-${month}-01`),
+      new Date(`${year}-01-01`)
+    );
+  } else {
+    dataThisYear = await getDataFromYearFunc(
+      new Date(`${year}-12-01`),
+      new Date(`${year}-01-01`)
+    );
+  }
   console.log(dataThisYear);
   const result = dataLastYear.map((el) => {
     let ThisYear;
@@ -212,7 +223,7 @@ exports.getDataFromYear = catchAsync(async (req, res, next) => {
     else ThisYear = data.TotalPower;
     el.ThisYear = ThisYear;
     el.LastYear = el.TotalPower;
-    el.Year = 2023;
+    el.Year = year;
     delete el.TotalPower;
     return el;
   });
@@ -234,6 +245,7 @@ exports.getDataFromYear = catchAsync(async (req, res, next) => {
       return el;
     });
   }
+  console.log(result, totalMoney);
   res.status(200).json({
     status: 'success',
     type: 1,

@@ -1,11 +1,11 @@
 const dotenv = require('dotenv');
-
 const app = require('./app');
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {
   cors: {
     origin: '*',
   },
+  transports: ['polling', 'websocket'],
 });
 
 const connectDB = require('./src/db/connect');
@@ -30,7 +30,7 @@ process.env.DATABASE = process.env.DATABASE_ONL.replace(
 
 // CONNECT TO DB
 server.listen(port, async () => {
-  await connectDB(process.env.DATABASE_LOCAL);
+  await connectDB(process.env.DATABASE);
   io.on('connect', SocketServices.connection);
   console.log(`App listening on port ${port}`);
 });

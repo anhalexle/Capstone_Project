@@ -1,6 +1,6 @@
 const TotalIntegralOneMonth = require('../models/totalIntegral.model');
 
-const getDataFromYear = async (endDate, startDate = new Date('2022-01-01')) =>
+const getDataFromYear = async (endDate, startDate) =>
   await TotalIntegralOneMonth.aggregate([
     {
       $addFields: {
