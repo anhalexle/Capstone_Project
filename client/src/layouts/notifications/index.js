@@ -140,6 +140,8 @@ function Notifications() {
                     </Grid>
                     <Grid>
                       <DatePicker
+                        // style={{ padding: '12px' }}
+                        style={{ width: 70, height: 70 }}
                         selected={endDate}
                         onChange={(date) => setEndDate(date)}
                         maxDate={new Date()}
