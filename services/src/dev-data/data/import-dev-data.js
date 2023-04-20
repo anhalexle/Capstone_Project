@@ -13,10 +13,10 @@ dotenv.config({
   path: path.resolve(__dirname, '..', '..', '..', 'config.env'),
 });
 
-// const DB = process.env.DATABASE_ONL.replace(
-//   '<PASSWORD>',
-//   process.env.DATABASE_PASSWORD
-// );
+const DB = process.env.DATABASE_ONL.replace(
+  '<PASSWORD>',
+  process.env.DATABASE_PASSWORD
+);
 
 // READ FILE JSON
 const data = JSON.parse(
@@ -27,7 +27,7 @@ const data = JSON.parse(
 // IMPORT DATA INTO DB
 const importData = async () => {
   try {
-    await connectDB(process.env.DATABASE_LOCAL);
+    await connectDB(DB);
     await Data.create(data);
     // await Bill.create(bill);
     console.log('Data successfully created');
@@ -41,7 +41,7 @@ const importData = async () => {
 // DELETE DATA INTO DB
 const deleteData = async () => {
   try {
-    await connectDB(process.env.DATABASE_LOCAL);
+    await connectDB(DB);
     console.log('Connected to database');
     await Data.deleteMany();
     // await Bill.deleteMany();

@@ -23,6 +23,7 @@ const mainService = async (type) => {
   try {
     global.client.setID(process.env.ID_POWERMETER);
     let newModBusData = await features.readDataFromModBus(global.client, type);
+
     if (type !== 'pf' && type !== 'frequency' && type !== 'integral_power') {
       newModBusData = newModBusData.filter((data, index) => index % 2 === 0);
     }
@@ -57,6 +58,7 @@ const mainService = async (type) => {
         value: oldModBusData[index].value,
         address: oldModBusData[index].address,
       });
+      console.log(newDataCreated);
       if (global.socket.connected) {
         global.socket.emit('new-data', newDataCreated);
       }
@@ -68,18 +70,18 @@ const mainService = async (type) => {
   }
 };
 
-const getAllDataAndEmit = async () => {
-  try {
-    const allData = [];
-    const promises = dataType.map(async (type) =>
-      getLatestDataFromDB(type, false)
-    );
-    allData.push(...(await Promise.all(promises)));
-    global.socket.emit('send-all-data', allData);
-  } catch (err) {
-    console.log(err);
-  }
-};
+// const getAllDataAndEmit = async () => {
+//   try {
+//     const allData = [];
+//     const promises = dataType.map(async (type) =>
+//       getLatestDataFromDB(type, false)
+//     );
+//     allData.push(...(await Promise.all(promises)));
+//     global.socket.emit('send-all-data', allData);
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
 
 const main = async () => {
   await dataType.myAsyncForEach(async (type) => {
@@ -88,7 +90,7 @@ const main = async () => {
       const totalIntegralValue = allValue.find(
         (el) => el.name === 'total_integral_active_power'
       );
-      if (totalIntegralValue) await totalPowerOneMonth();
+      // if (totalIntegralValue) await totalPowerOneMonth();
       // if (totalIntegralValue && global.socket.connected) {
       //   global.socket.emit('calculate-total-power')
       // }
@@ -96,4 +98,4 @@ const main = async () => {
   });
 };
 
-module.exports = { main, getAllDataAndEmit };
+module.exports = { main };
