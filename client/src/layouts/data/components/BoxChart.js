@@ -26,6 +26,7 @@ function BoxChart() {
   // const [all, setAll] = React.useState(false);
   const [type, setType] = React.useState('');
   const [typeSpecific, setTypeSpecific] = React.useState('');
+  const [typeSpecificTable, setTypeSpecificTable] = React.useState('');
   const [data, setData] = React.useState(null);
   // console.log("type", key);
   const typeList = [
@@ -73,6 +74,7 @@ function BoxChart() {
       name: typeSpecific,
     };
     console.log(request);
+    console.log(`${API_URL}/api/v1/data/drawChart`);
 
     const response = await fetch(`${API_URL}/api/v1/data/drawChart`, {
       method: 'POST',
@@ -86,6 +88,7 @@ function BoxChart() {
       const data = await response.json();
       console.log('data mới nhận nè', data);
       console.log('Trừ thử', data.data[1].createdAt - data.data[0].createdAt);
+      setTypeSpecificTable(typeSpecific);
       setData(data.data);
       // setData(data);
     } else {
@@ -215,11 +218,12 @@ function BoxChart() {
         {/* // */}
         <Grid
           item
-          xs={4}
+          xs={12}
           md={4}
           lg={4}
           container
           style={{ paddingTop: '40px' }}
+          spacing={3}
         >
           <Grid item xs={12} md={6} lg={6}>
             <Button
@@ -232,14 +236,18 @@ function BoxChart() {
           </Grid>
           {data && (
             <Grid item xs={12} md={6} lg={6}>
-              <ExcelData data={data} name={typeSpecific}></ExcelData>
+              <ExcelData data={data} name={typeSpecificTable}></ExcelData>
             </Grid>
           )}
         </Grid>
       </Grid>
       {/* <Grid>{data && <LineChart data={data}></LineChart>}</Grid> */}
       <Grid>
-        {data && <TableData data={data} name={typeSpecific}></TableData>}
+        {data && (
+          <Box padding={3}>
+            <TableData data={data} name={typeSpecificTable}></TableData>
+          </Box>
+        )}
       </Grid>
       <Grid></Grid>
     </Box>

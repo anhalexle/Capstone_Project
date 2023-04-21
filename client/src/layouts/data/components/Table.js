@@ -33,35 +33,39 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function TableData({ data, name }) {
   console.log('fsfdfs', data);
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="customized table">
-        <TableBody>
-          <TableRow sx={{ backgroundColor: '#bf68e68a' }}>
-            <StyledTableCell sx={{ fontWeight: 'bold' }} align="center">
-              Tên
-            </StyledTableCell>
-            <StyledTableCell sx={{ fontWeight: 'bold' }} align="center">
-              Time Stamp
-            </StyledTableCell>
-            <StyledTableCell sx={{ fontWeight: 'bold' }} align="center">
-              Giá trị
-            </StyledTableCell>
-          </TableRow>
-          {data.map((row) => {
-            return (
-              row.ThisYear !== 0 && (
-                <StyledTableRow key={row.createdAt}>
-                  <StyledTableCell align="center">{name}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    {moment(row.createdAt).format('DD/MM/YYYY hh:mm A')}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{row.value}</StyledTableCell>
-                </StyledTableRow>
-              )
-            );
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div style={{ maxHeight: '100vh', overflow: 'auto' }}>
+      <TableContainer component={Paper}>
+        <Table aria-label="customized table">
+          <TableBody>
+            <TableRow sx={{ backgroundColor: '#bf68e68a' }}>
+              <StyledTableCell sx={{ fontWeight: 'bold' }} align="center">
+                Tên
+              </StyledTableCell>
+              <StyledTableCell sx={{ fontWeight: 'bold' }} align="center">
+                Time Stamp
+              </StyledTableCell>
+              <StyledTableCell sx={{ fontWeight: 'bold' }} align="center">
+                Giá trị
+              </StyledTableCell>
+            </TableRow>
+            {data.map((row) => {
+              return (
+                row.ThisYear !== 0 && (
+                  <StyledTableRow key={row.createdAt}>
+                    <StyledTableCell align="center">{name}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {moment(row.createdAt).format('DD/MM/YYYY hh:mm A')}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.value}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                )
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
   );
 }

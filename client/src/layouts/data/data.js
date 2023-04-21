@@ -34,6 +34,7 @@ function Data() {
       <DashboardNavbar />
       {boxCharts.map((boxChart) => (
         <Box
+          pb={3}
           key={boxChart.key}
           style={{ background: 'white', position: 'relative' }}
         >
