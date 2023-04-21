@@ -166,7 +166,7 @@ exports.getDataFromDay = catchAsync(async (req, res, next) => {
   console.log(startDate, endDate);
   const tempStartDate = new Date(startDate);
   const tempEndDate = new Date(endDate);
-
+  console.log(tempStartDate.getDate(), tempEndDate.getDate());
   // chuyển đổi đối tượng moment sang Date object
   const ISOstartDate = new Date(
     tempStartDate.getFullYear(),

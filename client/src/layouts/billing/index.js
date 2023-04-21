@@ -153,11 +153,19 @@ function Billing() {
   const handleFindIndexDay = () => {
     // gửi yêu cầu fetch dữ liệu từ server với startDate và endDate đã chọn
     console.log(
-      `${API_URL}/api/v1/data/getDataFromDay?startDate=${startIndexDay}&endDate=${endIndexDay}`
+      `${API_URL}/api/v1/data/getDataFromDay?startDate=${moment(
+        startIndexDay
+      ).format('YYYY-MM-DD')}&endDate=${moment(endIndexDay).format(
+        'YYYY-MM-DD'
+      )}`
     );
 
     fetch(
-      `${API_URL}/api/v1/data/getDataFromDay?startDate=${startIndexDay}&endDate=${endIndexDay}`
+      `${API_URL}/api/v1/data/getDataFromDay?startDate=${moment(
+        startIndexDay
+      ).format('YYYY-MM-DD')}&endDate=${moment(endIndexDay).format(
+        'YYYY-MM-DD'
+      )}`
     )
       // fetch(`http://localhost:3001/api/indexDay`)
       .then((response) => response.json())

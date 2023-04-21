@@ -1,10 +1,10 @@
 const offset = {
-  volt: 1,
-  volt_line: 1,
-  current: 0.5,
-  frequency: 0.1,
-  pf: 0.05,
-  integral_power: 0.01,
+  volt: 1.5,
+  volt_line: 1.5,
+  current: 0.75,
+  frequency: 0.5,
+  pf: 0.1,
+  integral_power: 0.03,
   instantaneous_power: 0.1,
 };
 const compareArrays = (arr1, arr2, type) => {

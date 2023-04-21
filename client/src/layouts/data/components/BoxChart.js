@@ -16,6 +16,7 @@ import ExcelData from '../components/ExcelData';
 
 import Typography from '@mui/material/Typography';
 import { API_URL } from '../../../api/Api';
+import moment from 'moment';
 function BoxChart() {
   // eslint-disable-next-line react/jsx-filename-extension
 
@@ -187,7 +188,15 @@ function BoxChart() {
           <Grid>
             <DatePicker
               selected={startDate}
-              onChange={(date) => setStartDate(date)}
+              onChange={(date) => {
+                setStartDate(date);
+                console.log(
+                  'ngày đã sang string',
+                  moment(date).format('YYYY-MM-DD'),
+                  'chuyển lại',
+                  new Date(moment(date).format('YYYY-MM-DD'))
+                );
+              }}
               maxDate={new Date()}
               showTimeSelect
               // maxTime={startDate.getDate() === new Date().getDate() ? setHours(setMinutes(new Date(), new Date().getMinutes()), new Date().getHours()) : null}
