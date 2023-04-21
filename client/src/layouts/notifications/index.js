@@ -13,21 +13,9 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useEffect, useState } from "react";
-
-// @mui material components
-// import Grid from "@mui/material/Grid";
-// import Card from "@mui/material/Card";
-
-// import {
-//   Box,
-//   Typography,
-//   Table,
-//   TableHead,
-//   TableBody,
-//   TableCell,
-//   TableRow
-// } from '@material-ui/core';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { saveAs } from 'file-saver';
 
 //sửa lại thư viện
 import {
@@ -40,167 +28,161 @@ import {
   TableBody,
   TableCell,
   TableRow,
-} from "@mui/material";
-import moment from "moment";
-//thêm thư viện chọn ngày chọn giờ
-// import { DatePicker, TimePicker } from '@material-ui/lab';
-
-// cài thêm thư viện "npm install @mui/lab"
-// import AdapterDateFns from '@mui/lab/AdapterDateFns';
-// import LocalizationProvider from '@mui/lab/LocalizationProvider';
-// import { DatePicker } from '@mui/x-date-pickers';
-// import TimePicker from '@mui/lab/TimePicker';
+  Alert,
+} from '@mui/material';
+import moment from 'moment';
 
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import MDAlert from "components/MDAlert";
-import MDButton from "components/MDButton";
-import MDSnackbar from "components/MDSnackbar";
+import MDBox from 'components/MDBox';
 
 // Material Dashboard 2 React example components
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
+import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
+import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 
 // import { DatePicker, TimePicker } from '@mui/lab';
-import { TextField, Button } from "@mui/material";
+import { TextField, Button } from '@mui/material';
 
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { addDays, setHours, setMinutes } from "date-fns";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { addDays, setHours, setMinutes } from 'date-fns';
+import { API_URL } from '../../api/Api';
 
 function Notifications() {
   //data alarm
-  const [dataAlarm, setDataAlarm] = useState([]);
+  const [dataAlarm, setDataAlarm] = useState(null);
   // pick date time
-  const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), 0), 0));
+  const [startDate, setStartDate] = useState(
+    setHours(setMinutes(new Date(), 0), 0)
+  );
 
   const [endDate, setEndDate] = useState(new Date());
 
-  const [successSB, setSuccessSB] = useState(false);
-  const [infoSB, setInfoSB] = useState(false);
-  const [warningSB, setWarningSB] = useState(false);
-  const [errorSB, setErrorSB] = useState(false);
-
-  const openSuccessSB = () => setSuccessSB(true);
-  const closeSuccessSB = () => setSuccessSB(false);
-  const openInfoSB = () => setInfoSB(true);
-  const closeInfoSB = () => setInfoSB(false);
-  const openWarningSB = () => setWarningSB(true);
-  const closeWarningSB = () => setWarningSB(false);
-  const openErrorSB = () => setErrorSB(true);
-  const closeErrorSB = () => setErrorSB(false);
-
-  const alertContent = (name) => (
-    <MDTypography variant="body2" color="white">
-      A simple {name} alert with{" "}
-      <MDTypography component="a" href="#" variant="body2" fontWeight="medium" color="white">
-        an example link
-      </MDTypography>
-      . Give it a click if you like.
-    </MDTypography>
-  );
-
-  const renderSuccessSB = (
-    <MDSnackbar
-      color="success"
-      icon="check"
-      title="Material Dashboard"
-      content="Hello, world! This is a notification message"
-      dateTime="11 mins ago"
-      open={successSB}
-      onClose={closeSuccessSB}
-      close={closeSuccessSB}
-      bgWhite
-    />
-  );
-
-  const renderInfoSB = (
-    <MDSnackbar
-      icon="notifications"
-      title="Material Dashboard"
-      content="Hello, world! This is a notification message"
-      dateTime="11 mins ago"
-      open={infoSB}
-      onClose={closeInfoSB}
-      close={closeInfoSB}
-    />
-  );
-
-  const renderWarningSB = (
-    <MDSnackbar
-      color="warning"
-      icon="star"
-      title="Material Dashboard"
-      content="Hello, world! This is a notification message"
-      dateTime="11 mins ago"
-      open={warningSB}
-      onClose={closeWarningSB}
-      close={closeWarningSB}
-      bgWhite
-    />
-  );
-
-  const renderErrorSB = (
-    <MDSnackbar
-      color="error"
-      icon="warning"
-      title="Material Dashboard"
-      content="Hello, world! This is a notification message"
-      dateTime="11 mins ago"
-      open={errorSB}
-      onClose={closeErrorSB}
-      close={closeErrorSB}
-      bgWhite
-    />
-  );
-
-  // xử lí API
-  useEffect(() => {
-    console.log("fetch nè con đũy");
-    fetch("http://localhost:3005/api/data")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        // Xử lý dữ liệu trả về ở đây
-        setDataAlarm(data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
-  //nhấn nút để lấy dữ liệu
   const handleFindButtonClick = () => {
-    // console.log(
-    //   `http://localhost:3001/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
-    // );
     // gửi yêu cầu fetch dữ liệu từ server với startDate và endDate đã chọn
+    console.log(
+      '+++++++++++++++++++',
+      `${API_URL}/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
+    );
     fetch(
-      `http://localhost:3001/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
+      `${API_URL}/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
+      // `${API_URL}/api/v1/alarms`
     )
       .then((response) => response.json())
-      .then(data => console.log(data))
-      // .then(data => {
-      //   // xử lý dữ liệu trả về từ server
-      //   setDataAlarm(data);
-      // })
+      // .then((data) => console.log(data))
+      .then((data) => {
+        // xử lý dữ liệu trả về từ server
+        setDataAlarm(data.alarmFilter);
+      })
       .catch((error) => {
-        console.error("Error fetching data from server:", error);
+        Alert('Error fetching data from server:', error);
       });
+  };
+
+  const handleExport = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/v1/data/exportExcel`, {
+        method: 'GET',
+        headers: {
+          'Content-Type':
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          Authorization: 'Bearer token',
+        },
+      });
+
+      const blob = await response.blob(); // get the blob data from response
+      const url = window.URL.createObjectURL(blob); // create URL from blob
+      const link = document.createElement('a'); // create anchor element
+      link.href = url; // set URL as href attribute
+      link.setAttribute('download', 'report.xlsx'); // set filename as download attribute
+      document.body.appendChild(link); // append anchor element to body
+      link.click(); // simulate click on anchor element to start download
+      link.remove(); // remove anchor element after download
+    } catch (error) {
+      console.log(error); // handle error here
+    }
   };
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <Grid>con cho nhác</Grid>
       <MDBox mt={6} mb={3}>
         <Grid container spacing={3} justifyContent="center">
           <Grid item xs={12} lg={8}>
             <Card>
-              {console.log("re-render", setHours(setMinutes(new Date(), 30), 20))}
+              {console.log(
+                're-render',
+                setHours(setMinutes(new Date(), 30), 20)
+              )}
               <Box p={2}>
-                <Typography variant="h5">
+                <Grid align="center" mt={1} mb={3} container spacing={3}>
+                  <Grid item xs={12} md={4} lg={4}>
+                    <Grid>
+                      <Typography>Ngày bắt đầu:</Typography>
+                    </Grid>
+                    <Grid>
+                      <DatePicker
+                        selected={startDate}
+                        onChange={(date) => setStartDate(date)}
+                        maxDate={new Date()}
+                        showTimeSelect
+                        // maxTime={startDate.getDate() === new Date().getDate() ? setHours(setMinutes(new Date(), new Date().getMinutes()), new Date().getHours()) : null}
+
+                        //  minTime={new Date()}
+                        timeIntervals={15}
+                        dateFormat="dd/MM/yyyy h:mm aa"
+                      />
+                    </Grid>
+                  </Grid>
+                  {/* // */}
+                  <Grid item xs={12} md={4} lg={4}>
+                    <Grid>
+                      <Typography>Ngày kết thúc:</Typography>
+                    </Grid>
+                    <Grid>
+                      <DatePicker
+                        selected={endDate}
+                        onChange={(date) => setEndDate(date)}
+                        maxDate={new Date()}
+                        minDate={startDate}
+                        showTimeSelect
+                        timeIntervals={15}
+                        dateFormat="dd/MM/yyyy h:mm aa"
+                      />
+                    </Grid>
+                  </Grid>
+                  {/* // */}
+                  <Grid
+                    item
+                    xs={12}
+                    md={4}
+                    lg={4}
+                    container
+                    style={{ paddingTop: '40px' }}
+                  >
+                    <Grid item xs={12} md={12} lg={12}>
+                      <Button
+                        variant="contained"
+                        style={{ color: 'white' }}
+                        onClick={handleFindButtonClick}
+                      >
+                        Tra Cứu
+                      </Button>
+                    </Grid>
+                    {dataAlarm && (
+                      <Grid item xs={12} md={12} lg={12}>
+                        <Button
+                          variant="contained"
+                          style={{ color: 'white' }}
+                          onClick={handleExport}
+                        >
+                          Xuất excel
+                        </Button>
+                      </Grid>
+                    )}
+                  </Grid>
+                </Grid>
+
+                {/* <Typography variant="h5">
                   From&nbsp;
                   <DatePicker
                     selected={startDate}
@@ -226,117 +208,83 @@ function Notifications() {
                   <Button variant="contained" color="inherit" onClick={handleFindButtonClick}>
                     Find
                   </Button>
-                  {/* <TextField type="date" 
-                  variant="outlined" 
-                  dateFormat='DD/MM/yyy'
-                  maxDate={new Date()}
-                  value = {new Date()}/>
-                  <TextField type="time" variant="outlined" />
-                  &nbsp;To&nbsp;
-                  <TextField type="date" variant="outlined" />
-                  <TextField type="time" variant="outlined" />
-                  &nbsp;
-                  <Button variant="contained" color="primary">
-                    Find
-                  </Button> */}
-                </Typography>
+                  <Button variant="contained" color="inherit" onClick={handleExport}>
+                    Export Excel
+                  </Button>
+                </Typography> */}
               </Box>
-              <Table>
-                <TableBody>
-                  <TableCell align="center">
-                    <Typography variant="h5">Type</Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography variant="h5">Time</Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography variant="h5">Name</Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography variant="h5">Value</Typography>
-                  </TableCell>
-                  {dataAlarm.map((item) => (
-                    <TableRow key={item.parameter.createdAt}>
-                      <TableCell
-                        align="center"
-                        style={{
-                          color: item.type === "HI" || item.type === "LO" ? "#FFCC00" : "red",
-                        }}
-                      >
-                        {item.type}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        style={{
-                          color: item.type === "HI" || item.type === "LO" ? "#FFCC00" : "red",
-                        }}
-                      >
-                        {moment(item.parameter.createdAt).format("DD/MM/YYYY hh:mm A")}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        style={{
-                          color: item.type === "HI" || item.type === "LO" ? "#FFCC00" : "red",
-                        }}
-                      >
-                        {item.parameter.name}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        style={{
-                          color: item.type === "HI" || item.type === "LO" ? "#FFCC00" : "red",
-                        }}
-                      >
-                        {item.parameter.value}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} lg={8}>
-            <Card>
-              <MDBox p={2} lineHeight={0}>
-                <MDTypography variant="h5">Notifications</MDTypography>
-                <MDTypography variant="button" color="text" fontWeight="regular">
-                  Notifications on this page use Toasts from Bootstrap. Read more details here.
-                </MDTypography>
-              </MDBox>
-              <MDBox p={2}>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} sm={6} lg={3}>
-                    <MDButton variant="gradient" color="success" onClick={openSuccessSB} fullWidth>
-                      success notification
-                    </MDButton>
-                    {renderSuccessSB}
-                  </Grid>
-                  <Grid item xs={12} sm={6} lg={3}>
-                    <MDButton variant="gradient" color="info" onClick={openInfoSB} fullWidth>
-                      info notification
-                    </MDButton>
-                    {renderInfoSB}
-                  </Grid>
-                  <Grid item xs={12} sm={6} lg={3}>
-                    <MDButton variant="gradient" color="warning" onClick={openWarningSB} fullWidth>
-                      warning notification
-                    </MDButton>
-                    {renderWarningSB}
-                  </Grid>
-                  <Grid item xs={12} sm={6} lg={3}>
-                    <MDButton variant="gradient" color="error" onClick={openErrorSB} fullWidth>
-                      error notification
-                    </MDButton>
-                    {renderErrorSB}
-                  </Grid>
-                </Grid>
-              </MDBox>
+              {dataAlarm && (
+                <Table>
+                  <TableBody>
+                    <TableCell align="center">
+                      <Typography variant="h5">Type</Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography variant="h5">Time</Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography variant="h5">Name</Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography variant="h5">Value</Typography>
+                    </TableCell>
+                    {dataAlarm.map((item) => (
+                      <TableRow key={item.parameter.createdAt}>
+                        <TableCell
+                          align="center"
+                          style={{
+                            color:
+                              item.type === 'High' || item.type === 'Low'
+                                ? '#FFCC00'
+                                : 'red',
+                          }}
+                        >
+                          {item.type}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          style={{
+                            color:
+                              item.type === 'High' || item.type === 'Low'
+                                ? '#FFCC00'
+                                : 'red',
+                          }}
+                        >
+                          {moment(item.parameter.createdAt).format(
+                            'DD/MM/YYYY hh:mm A'
+                          )}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          style={{
+                            color:
+                              item.type === 'High' || item.type === 'Low'
+                                ? '#FFCC00'
+                                : 'red',
+                          }}
+                        >
+                          {item.parameter.name}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          style={{
+                            color:
+                              item.type === 'High' || item.type === 'Low'
+                                ? '#FFCC00'
+                                : 'red',
+                          }}
+                        >
+                          {item.parameter.value}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
             </Card>
           </Grid>
         </Grid>
       </MDBox>
-      <Footer />
     </DashboardLayout>
   );
 }

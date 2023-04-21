@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 /* eslint-disable no-dupe-keys */
 
 // Material Dashboard 2 React base styles
-import colors from "assets/theme/base/colors";
+import colors from 'assets/theme/base/colors';
 
 const { gradients } = colors;
 
@@ -29,10 +29,14 @@ function configs(color, labels, label, data) {
           label,
           tension: 0,
           pointRadius: 3,
-          pointBackgroundColor: gradients[color] ? gradients[color].main : gradients.info.main,
-          borderColor: gradients[color] ? gradients[color].main : gradients.info.main,
+          pointBackgroundColor: gradients[color]
+            ? gradients[color].main
+            : gradients.info.main,
+          borderColor: gradients[color]
+            ? gradients[color].main
+            : gradients.info.main,
           borderWidth: 4,
-          backgroundColor: "transparent",
+          backgroundColor: 'transparent',
           maxBarThickness: 6,
           fill: true,
           data,
@@ -49,7 +53,7 @@ function configs(color, labels, label, data) {
       },
       interaction: {
         intersect: false,
-        mode: "index",
+        mode: 'index',
       },
       scales: {
         y: {
@@ -63,12 +67,12 @@ function configs(color, labels, label, data) {
           ticks: {
             display: true,
             padding: 10,
-            color: "#9ca2b7",
+            color: '#9ca2b7',
             font: {
               size: 14,
               weight: 300,
-              family: "Roboto",
-              style: "normal",
+              family: 'Roboto',
+              style: 'normal',
               lineHeight: 2,
             },
           },
@@ -80,17 +84,17 @@ function configs(color, labels, label, data) {
             drawOnChartArea: true,
             drawTicks: false,
             borderDash: [5, 5],
-            color: "#c1c4ce5c",
+            color: '#c1c4ce5c',
           },
           ticks: {
             display: true,
             padding: 10,
-            color: "#9ca2b7",
+            color: '#9ca2b7',
             font: {
               size: 14,
               weight: 300,
-              family: "Roboto",
-              style: "normal",
+              family: 'Roboto',
+              style: 'normal',
               lineHeight: 2,
             },
           },

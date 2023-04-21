@@ -1,0 +1,649 @@
+[{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3e2"
+  },
+  "name": "Voltage_3",
+  "value": 0,
+  "address": 168,
+  "type": "volt",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.258Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3e3"
+  },
+  "name": "Volt_average",
+  "value": 0,
+  "address": 170,
+  "type": "volt",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.258Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3e4"
+  },
+  "name": "Line_V1_2",
+  "value": 0,
+  "address": 172,
+  "type": "volt_line",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.258Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3e0"
+  },
+  "name": "Voltage_1",
+  "value": 0,
+  "address": 164,
+  "type": "volt",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.258Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3e6"
+  },
+  "name": "Line_V3_1",
+  "value": 0,
+  "address": 176,
+  "type": "volt_line",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.258Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3e7"
+  },
+  "name": "Line_Average",
+  "value": 0,
+  "address": 178,
+  "type": "volt_line",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.258Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3e8"
+  },
+  "name": "Current_1",
+  "value": 0,
+  "address": 180,
+  "type": "current",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.258Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3e9"
+  },
+  "name": "Current_2",
+  "value": 0,
+  "address": 182,
+  "type": "current",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.258Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3e1"
+  },
+  "name": "Voltage_2",
+  "value": 0,
+  "address": 166,
+  "type": "volt",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.258Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3eb"
+  },
+  "name": "Current_phase_N",
+  "value": 0,
+  "address": 186,
+  "type": "current",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.258Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3ec"
+  },
+  "name": "Current_TB",
+  "value": 0,
+  "address": 188,
+  "type": "current",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.258Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3ed"
+  },
+  "name": "f1",
+  "value": 0,
+  "address": 190,
+  "type": "frequency",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.258Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3e5"
+  },
+  "name": "Line_V2_3",
+  "value": 0,
+  "address": 174,
+  "type": "volt_line",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.258Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3ef"
+  },
+  "name": "f3",
+  "value": 0,
+  "address": 192,
+  "type": "frequency",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.259Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3f0"
+  },
+  "name": "f_tb",
+  "value": 0,
+  "address": 193,
+  "type": "frequency",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.259Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3f1"
+  },
+  "name": "pf1",
+  "value": 0,
+  "address": 194,
+  "type": "pf",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.259Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3f2"
+  },
+  "name": "pf2",
+  "value": 0,
+  "address": 195,
+  "type": "pf",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.259Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3f3"
+  },
+  "name": "pf3",
+  "value": 0,
+  "address": 196,
+  "type": "pf",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.259Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3f4"
+  },
+  "name": "pf_tb",
+  "value": 0,
+  "address": 197,
+  "type": "pf",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.259Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3ea"
+  },
+  "name": "Current_3",
+  "value": 0,
+  "address": 184,
+  "type": "current",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.258Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3f9"
+  },
+  "name": "instantaneous_active_power_1",
+  "value": 0,
+  "address": 238,
+  "type": "instantaneous_power",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.259Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3fa"
+  },
+  "name": "instantaneous_active_power_2",
+  "value": 0,
+  "address": 242,
+  "type": "instantaneous_power",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.259Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3ee"
+  },
+  "name": "f2",
+  "value": 0,
+  "address": 191,
+  "type": "frequency",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.259Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3fc"
+  },
+  "name": "total_instantaneous_active_power",
+  "value": 0,
+  "address": 246,
+  "type": "instantaneous_power",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.259Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed561726e7bffdbb4d3fb"
+  },
+  "name": "instantaneous_active_power_3",
+  "value": 0,
+  "address": 244,
+  "type": "instantaneous_power",
+  "createdAt": {
+    "$date": "2023-04-18T17:37:37.259Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02ce"
+  },
+  "name": "Voltage_1",
+  "value": 360,
+  "address": 164,
+  "type": "volt",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.632Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02cf"
+  },
+  "name": "Voltage_2",
+  "value": 360,
+  "address": 166,
+  "type": "volt",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.633Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02d0"
+  },
+  "name": "Voltage_3",
+  "value": 400,
+  "address": 168,
+  "type": "volt",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.633Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02d7"
+  },
+  "name": "Line_V1_2",
+  "value": 600,
+  "address": 172,
+  "type": "volt_line",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.651Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02d8"
+  },
+  "name": "Line_V2_3",
+  "value": 400,
+  "address": 174,
+  "type": "volt_line",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.651Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02d9"
+  },
+  "name": "Line_V3_1",
+  "value": 350,
+  "address": 176,
+  "type": "volt_line",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.651Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02d1"
+  },
+  "name": "Volt_average",
+  "value": 500,
+  "address": 170,
+  "type": "volt",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.633Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02da"
+  },
+  "name": "Line_Average",
+  "value": 220,
+  "address": 178,
+  "type": "volt_line",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.652Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02e0"
+  },
+  "name": "Current_1",
+  "value": 59.35,
+  "address": 180,
+  "type": "current",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.669Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02e1"
+  },
+  "name": "Current_2",
+  "value": 15.7,
+  "address": 182,
+  "type": "current",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.669Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02e2"
+  },
+  "name": "Current_3",
+  "value": 15.6,
+  "address": 184,
+  "type": "current",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.669Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02e3"
+  },
+  "name": "Current_phase_N",
+  "value": 14.62,
+  "address": 186,
+  "type": "current",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.669Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02e4"
+  },
+  "name": "Current_TB",
+  "value": 14.62,
+  "address": 188,
+  "type": "current",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.669Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02eb"
+  },
+  "name": "f1",
+  "value": 500,
+  "address": 190,
+  "type": "frequency",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.696Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02ec"
+  },
+  "name": "f2",
+  "value": 500,
+  "address": 191,
+  "type": "frequency",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.697Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02ed"
+  },
+  "name": "f3",
+  "value": 500,
+  "address": 192,
+  "type": "frequency",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.697Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02ee"
+  },
+  "name": "f_tb",
+  "value": 500,
+  "address": 193,
+  "type": "frequency",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.697Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02f4"
+  },
+  "name": "pf1",
+  "value": -0.037,
+  "address": 194,
+  "type": "pf",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.731Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02f5"
+  },
+  "name": "pf2",
+  "value": -0.046,
+  "address": 195,
+  "type": "pf",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.732Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02f6"
+  },
+  "name": "pf3",
+  "value": 0.056,
+  "address": 196,
+  "type": "pf",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.732Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02f7"
+  },
+  "name": "pf_tb",
+  "value": -0.029,
+  "address": 197,
+  "type": "pf",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.732Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02fd"
+  },
+  "name": "integral_active_power_1",
+  "value": 71.303,
+  "address": 198,
+  "type": "integral_power",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.794Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02fe"
+  },
+  "name": "integral_active_power_2",
+  "value": 1.5,
+  "address": 200,
+  "type": "integral_power",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.794Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c02ff"
+  },
+  "name": "integral_active_power_3",
+  "value": 66.998,
+  "address": 202,
+  "type": "integral_power",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.794Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c0300"
+  },
+  "name": "total_integral_active_power",
+  "value": 1,
+  "address": 204,
+  "type": "integral_power",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.794Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c0311"
+  },
+  "name": "instantaneous_active_power_1",
+  "value": 1.462,
+  "address": 238,
+  "type": "instantaneous_power",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.855Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c0312"
+  },
+  "name": "instantaneous_active_power_2",
+  "value": 1.462,
+  "address": 242,
+  "type": "instantaneous_power",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.855Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c0313"
+  },
+  "name": "instantaneous_active_power_3",
+  "value": 2,
+  "address": 244,
+  "type": "instantaneous_power",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.855Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "643ed5ef6dcf00e0106c0314"
+  },
+  "name": "total_instantaneous_active_power",
+  "value": 5.751,
+  "address": 246,
+  "type": "instantaneous_power",
+  "createdAt": {
+    "$date": "2023-04-18T17:39:59.855Z"
+  },
+  "__v": 0
+}]

@@ -1,17 +1,20 @@
-const AppError = require('../utils/appError');
+const AppError = require('../utils/appError.util');
 
 const sendErrorDev = (err, req, res) => {
-  res.status(err.statusCode).json({
+  // A) API
+
+  return res.status(err.statusCode).json({
     status: err.status,
     error: err,
     message: err.message,
     stack: err.stack,
   });
-  console.error('ERROR 💥', err);
-  return res.status(err.statusCode).render('error', {
-    title: 'Something went wrong',
-    msg: err.message,
-  });
+  // B) RENDERED WEBSITE
+  // console.error('ERROR 💥', err);
+  // return res.status(err.statusCode).render('error', {
+  //   title: 'Something went wrong',
+  //   msg: err.message,
+  // });
 };
 
 module.exports = (err, req, res, next) => {

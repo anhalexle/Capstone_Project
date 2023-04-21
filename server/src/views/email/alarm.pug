@@ -1,5 +1,34 @@
-extends baseEmail 
+doctype html
+html
+  head
+    meta(name='viewport', content='width=device-width')
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    title= subject
 
-block content 
-    p The alarm name is #{alarm.name} and type #{alarm.type}
-        p The alarm problem is #{alarm.value}, which is created at #{alarm.createdAt}
+    include _style
+
+  body
+    .container
+      .header
+        p Capstone Project
+      .background
+        div
+          h1 Control your work mean control your life
+          p(style='font-size: 20px; font-weight: bold;')
+            | Give you the solution to supervise your electrical energy
+            | use and keep your money save
+          button GET STARTED
+      .information
+        h1 Alarm Information
+        .main
+          .col.focus
+            p Name
+            h1= name
+          .col.focus
+            p Problem Type
+            h1= type
+          .col.focus
+            p Problem Value
+            h1= value
+          p.date= createdAt 
+          
