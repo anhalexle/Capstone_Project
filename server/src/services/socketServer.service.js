@@ -8,6 +8,20 @@ const compareArrays = require('../utils/compare.util');
 const totalPowerOneMonth = require('../utils/integralOneDay.util');
 
 const dataFeatures = new DataType();
+
+const emitNewData = (newValue, oldDatabase) => {
+  oldDatabase.forEach((oldData, index) => {
+    const now = new Date();
+    const valueEmit = {
+      name: oldData.name,
+      value: newValue[index],
+      createdAt: now,
+    };
+    console.log(valueEmit);
+    global._io.emit('new-data-client', valueEmit);
+  });
+};
+
 const handleNewData = async (newData) => {
   const arr = [];
   const { name, value, createdAt } = newData;
@@ -16,7 +30,6 @@ const handleNewData = async (newData) => {
   console.log({
     data: arr,
   });
-  global._io.emit('new-data-client', arr);
   if (name === 'total_integral_active_power') {
     await checkImportData(newData.type);
     await totalPowerOneMonth();
@@ -56,6 +69,7 @@ class SocketServices {
     });
     socket.on('new-data-service', async (data) => {
       const oldModBusData = await getLatestDataFromDB(data.type);
+      emitNewData(data.newModBusData, oldModBusData);
       const oldData = oldModBusData.map((el) => {
         const { value } = el;
         return value;
