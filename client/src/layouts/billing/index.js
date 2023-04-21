@@ -86,12 +86,13 @@ function Billing() {
   const [yearReport, setYearReport] = useState(new Date().getFullYear());
   const [monthReport, setMonthReport] = useState(new Date().getMonth() - 1);
   const [monthReportInTable, setMonthReportInTable] = useState(null);
+  console.log('month Repor', monthReportInTable);
 
   const startDateReport = new Date(
     monthReport === 1
       ? `12/12/${yearReport - 1}`
       : `${monthReport - 1}/12/${yearReport}`
-  )
+  );
 
   const endDateReport = new Date(`${monthReport}/11/${yearReport}`);
   console.log(
@@ -101,6 +102,11 @@ function Billing() {
   );
   const [titleReport, setTitleReport] = useState(null);
   const [dataReport, setDataReport] = useState(null);
+  if (dataReport)
+    console.log(
+      'data report kiem tra',
+      dataReport.data.result[monthReportInTable - 1]
+    );
   const handleReport = () => {
     fetch(
       `${API_URL}/api/v1/data/getDataFromYear?year=${yearReport}&monthRequired=${monthReport}`
@@ -108,6 +114,7 @@ function Billing() {
       .then((response) => response.json())
       .then((data) => {
         console.log('data report nè he', data);
+
         setTitleReport(
           `Tháng ${monthReport}/${yearReport} ( Từ ngày ${startDateReport.toLocaleString(
             'en-GB',
@@ -122,14 +129,16 @@ function Billing() {
             year: 'numeric',
           })})`
         );
-
+        setDataReport(null);
         setMonthReportInTable(monthReport);
-        setDataReport(data);
+        if (data.data.result[monthReport - 1].ThisYear !== 0) {
+          setDataReport(data);
+        }
 
         // setShowReport(true);
       })
       .catch((error) => {
-        Alert('Error fetching data from server:', error);
+        console.log(error);
       });
   };
   // ----------------------------------------------------------------------------------------------------------------

@@ -17,8 +17,8 @@ const emitNewData = (newValue, oldDatabase) => {
       value: newValue[index],
       createdAt: now,
     };
-    console.log(valueEmit);
-    global._io.emit('new-data-client', valueEmit);
+    // console.log(valueEmit);
+    global._io.emit('new-data-client', [valueEmit]);
   });
 };
 

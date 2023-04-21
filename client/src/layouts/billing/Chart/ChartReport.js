@@ -29,8 +29,6 @@ const legend = {
 };
 
 function ChartReport({ data }) {
-  console.log('cccccccccccccccccccccccccccccccccccccccc', data);
-
   const chartData = {
     labels,
     datasets: [

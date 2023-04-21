@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, memo } from 'react';
 import ApexCharts from 'apexcharts';
 import ReactApexChart from 'react-apexcharts';
 import moment from 'moment';
@@ -290,4 +290,4 @@ function RealtimeChart({
     </div>
   );
 }
-export default RealtimeChart;
+export default memo(RealtimeChart);

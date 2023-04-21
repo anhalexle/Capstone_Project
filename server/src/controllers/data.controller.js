@@ -171,7 +171,7 @@ exports.getDataFromDay = catchAsync(async (req, res, next) => {
   const ISOstartDate = new Date(
     tempStartDate.getFullYear(),
     tempStartDate.getMonth(),
-    tempStartDate.getDate() - 1,
+    tempStartDate.getDate(),
     7,
     0,
     0
@@ -184,6 +184,7 @@ exports.getDataFromDay = catchAsync(async (req, res, next) => {
     0,
     0
   );
+  console.log(ISOstartDate, ISOendDate);
   const dates = getDatesBetween(ISOstartDate, ISOendDate);
   console.log(dates);
   const promises = dates.map(async (el) => {
@@ -262,7 +263,7 @@ exports.getDataFromYear = catchAsync(async (req, res, next) => {
       return el;
     });
   }
-  console.log(result, totalMoney);
+  console.log({ result, totalMoney });
   res.status(200).json({
     status: 'success',
     type: 1,

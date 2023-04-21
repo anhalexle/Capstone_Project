@@ -1,4 +1,6 @@
+// eslint-disable-next-line react/jsx-filename-extension
 // @mui
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { alpha, styled } from '@mui/material/styles';
 import { Card, Typography } from '@mui/material';
@@ -22,22 +24,14 @@ const StyledIcon = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-AppWidgetSummary.propTypes = {
-  color: PropTypes.string,
-  icon: PropTypes.string,
-  title: PropTypes.string.isRequired,
-  total: PropTypes.number.isRequired,
-  sx: PropTypes.object,
-};
-
-export default function AppWidgetSummary({
+const AppWidgetSummary = ({
   title,
   total,
   icon,
   color = 'primary',
   sx,
   ...other
-}) {
+}) => {
   return (
     <Card
       raised={true}
@@ -73,4 +67,14 @@ export default function AppWidgetSummary({
       </Typography>
     </Card>
   );
-}
+};
+
+AppWidgetSummary.propTypes = {
+  color: PropTypes.string,
+  icon: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  total: PropTypes.number.isRequired,
+  sx: PropTypes.object,
+};
+
+export default memo(AppWidgetSummary);
