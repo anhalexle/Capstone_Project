@@ -24,7 +24,7 @@ function ExcelData({ data, name }) {
     <CSVLink
       data={dataFormatted}
       headers={headers}
-      filename={`Sản lượng tiêu thụ trong ngày.csv`}
+      filename={`Data ${name}.csv`}
     >
       <Button variant="contained" style={{ color: 'white' }}>
         Xuất Excel

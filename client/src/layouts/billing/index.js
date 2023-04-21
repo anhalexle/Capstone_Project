@@ -72,6 +72,7 @@ import { Warning } from '@mui/icons-material';
 //import tiền điện
 import { priceIndustries } from './priceIndustries';
 import { API_URL } from '../../api/Api';
+import moment from 'moment';
 function Billing() {
   const componentRef = useRef();
 
@@ -89,24 +90,16 @@ function Billing() {
   const startDateReport = new Date(
     monthReport === 1
       ? `12/12/${yearReport - 1}`
-      : `12/${monthReport - 1}/${yearReport}`
-  );
-  const endDateReport = new Date(`11/${monthReport}/${yearReport}`);
+      : `${monthReport - 1}/12/${yearReport}`
+  )
+
+  const endDateReport = new Date(`${monthReport}/11/${yearReport}`);
   console.log(
     'ngày',
-    startDateReport.toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    }),
-    endDateReport.toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    })
+    startDateReport.toLocaleDateString('en-GB'),
+    endDateReport.toLocaleDateString('en-GB')
   );
   const [titleReport, setTitleReport] = useState(null);
-
   const [dataReport, setDataReport] = useState(null);
   const handleReport = () => {
     fetch(
