@@ -12,7 +12,7 @@ const signToken = (payload) =>
   });
 
 const createSendTokenToClient = (user, statusCode, req, res) => {
-  const token = signToken(user._id);
+  const token = signToken(user._id, user.role);
   // send JWT via cookie
   res.cookie('jwt', token, {
     expires: new Date(
@@ -66,6 +66,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
 exports.protect = catchAsync(async (req, res, next) => {
   // 1) Get token and check if it's there
+  // res.headers.authorization = 'Bearer ' + token
   let token;
   if (
     req.headers.authorization &&
@@ -81,7 +82,7 @@ exports.protect = catchAsync(async (req, res, next) => {
       new AppError('You are not logged in! Please log in to get access ')
     );
   }
-
+  console.log(token);
   // 2 Verification token
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   // 3 Check if user still exist

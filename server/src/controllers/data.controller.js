@@ -137,16 +137,22 @@ exports.exportExcel = catchAsync(async (req, res, next) => {
   const output = await readTemplateExcelFile(data);
 
   res.setHeader(
-    'Content-Type',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-  );
-  res.setHeader(
     'Content-Disposition',
     `attachment; filename=report-${now.getDate()}-${
       now.getMonth() + 1
     }-${now.getFullYear()}.xlsx`
   );
+  res.setHeader(
+    'Content-Type',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  );
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
 
+  console.log(res.getHeaders());
   // send the Excel file to the client
   res.send(output);
 });
