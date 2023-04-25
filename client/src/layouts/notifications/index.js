@@ -50,6 +50,7 @@ import { API_URL } from '../../api/Api';
 function Notifications() {
   //data alarm
   const [dataAlarm, setDataAlarm] = useState(null);
+  console.log('data alarm', dataAlarm, dataAlarm && dataAlarm.length);
   // pick date time
   const [startDate, setStartDate] = useState(
     setHours(setMinutes(new Date(), 0), 0)
@@ -59,10 +60,7 @@ function Notifications() {
 
   const handleFindButtonClick = () => {
     // gửi yêu cầu fetch dữ liệu từ server với startDate và endDate đã chọn
-    console.log(
-      '+++++++++++++++++++',
-      `${API_URL}/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
-    );
+    setDataAlarm(null);
     fetch(
       `${API_URL}/api/v1/alarms/getSpecificAlarm?startDate=${startDate}&endDate=${endDate}`
       // `${API_URL}/api/v1/alarms`
@@ -71,6 +69,7 @@ function Notifications() {
       // .then((data) => console.log(data))
       .then((data) => {
         // xử lý dữ liệu trả về từ server
+        console.log('////////', data, data.alarmFilter);
         setDataAlarm(data.alarmFilter);
       })
       .catch((error) => {
@@ -168,7 +167,7 @@ function Notifications() {
                         Tra Cứu
                       </Button>
                     </Grid>
-                    {dataAlarm && (
+                    {dataAlarm && dataAlarm.length > 0 && (
                       <Grid item xs={12} md={12} lg={12}>
                         <Button
                           variant="contained"
@@ -181,74 +180,58 @@ function Notifications() {
                     )}
                   </Grid>
                 </Grid>
-
-                {/* <Typography variant="h5">
-                  From&nbsp;
-                  <DatePicker
-                    selected={startDate}
-                    onChange={(date) => setStartDate(date)}
-                    maxDate={new Date()}
-                    showTimeSelect
-                    // maxTime={startDate.getDate() === new Date().getDate() ? setHours(setMinutes(new Date(), new Date().getMinutes()), new Date().getHours()) : null}
-
-                    //  minTime={new Date()}
-                    timeIntervals={15}
-                    dateFormat="dd/MM/yyyy h:mm aa"
-                  />
-                  &nbsp;To&nbsp;
-                  <DatePicker
-                    selected={endDate}
-                    onChange={(date) => setEndDate(date)}
-                    maxDate={new Date()}
-                    minDate={startDate}
-                    showTimeSelect
-                    timeIntervals={15}
-                    dateFormat="dd/MM/yyyy h:mm aa"
-                  />
-                  <Button variant="contained" color="inherit" onClick={handleFindButtonClick}>
-                    Find
-                  </Button>
-                  <Button variant="contained" color="inherit" onClick={handleExport}>
-                    Export Excel
-                  </Button>
-                </Typography> */}
               </Box>
-              {dataAlarm && (
+              {dataAlarm && dataAlarm.length === 0 && (
+                <Typography style={{ textAlign: 'center' }} variant="h5">
+                  Không có dữ liệu
+                </Typography>
+              )}
+              {dataAlarm && dataAlarm.length > 0 && (
                 <Table>
                   <TableBody>
-                    <TableCell align="center">
-                      <Typography variant="h5">Type</Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="h5">Time</Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="h5">Name</Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="h5">Value</Typography>
-                    </TableCell>
+                    <TableRow>
+                      <TableCell align="center">
+                        <Typography variant="h5">Type</Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography variant="h5">Time</Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography variant="h5">Name</Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography variant="h5">Value</Typography>
+                      </TableCell>
+                    </TableRow>
                     {dataAlarm.map((item) => (
-                      <TableRow key={item.parameter.createdAt}>
+                      <TableRow
+                        key={item.parameter.id}
+                        sx={{
+                          backgroundColor:
+                            item.type === 'High' || item.type === 'Low'
+                              ? '#FFCC00'
+                              : '#FF4040',
+                        }}
+                      >
                         <TableCell
                           align="center"
-                          style={{
-                            color:
-                              item.type === 'High' || item.type === 'Low'
-                                ? '#FFCC00'
-                                : 'red',
-                          }}
+                          // style={{
+                          //   color:
+                          //     item.type === 'High' || item.type === 'Low'
+                          //       ? '#EEB422'
+                          //       : '#CD2626',
+                          // }}
                         >
                           {item.type}
                         </TableCell>
                         <TableCell
                           align="center"
-                          style={{
-                            color:
-                              item.type === 'High' || item.type === 'Low'
-                                ? '#FFCC00'
-                                : 'red',
-                          }}
+                          // style={{
+                          //   color:
+                          //     item.type === 'High' || item.type === 'Low'
+                          //       ? '#FFCC00'
+                          //       : 'red',
+                          // }}
                         >
                           {moment(item.parameter.createdAt).format(
                             'DD/MM/YYYY hh:mm A'
@@ -256,23 +239,23 @@ function Notifications() {
                         </TableCell>
                         <TableCell
                           align="center"
-                          style={{
-                            color:
-                              item.type === 'High' || item.type === 'Low'
-                                ? '#FFCC00'
-                                : 'red',
-                          }}
+                          // style={{
+                          //   color:
+                          //     item.type === 'High' || item.type === 'Low'
+                          //       ? '#FFCC00'
+                          //       : 'red',
+                          // }}
                         >
                           {item.parameter.name}
                         </TableCell>
                         <TableCell
                           align="center"
-                          style={{
-                            color:
-                              item.type === 'High' || item.type === 'Low'
-                                ? '#FFCC00'
-                                : 'red',
-                          }}
+                          // style={{
+                          //   color:
+                          //     item.type === 'High' || item.type === 'Low'
+                          //       ? '#FFCC00'
+                          //       : 'red',
+                          // }}
                         >
                           {item.parameter.value}
                         </TableCell>

@@ -91,14 +91,9 @@ function Billing() {
     monthReport === 1
       ? `12/12/${yearReport - 1}`
       : `${monthReport - 1}/12/${yearReport}`
-  )
+  );
 
   const endDateReport = new Date(`${monthReport}/11/${yearReport}`);
-  console.log(
-    'ngày',
-    startDateReport.toLocaleDateString('en-GB'),
-    endDateReport.toLocaleDateString('en-GB')
-  );
   const [titleReport, setTitleReport] = useState(null);
   const [dataReport, setDataReport] = useState(null);
   const handleReport = () => {
@@ -108,6 +103,7 @@ function Billing() {
       .then((response) => response.json())
       .then((data) => {
         console.log('data report nè he', data);
+
         setTitleReport(
           `Tháng ${monthReport}/${yearReport} ( Từ ngày ${startDateReport.toLocaleString(
             'en-GB',
@@ -122,14 +118,16 @@ function Billing() {
             year: 'numeric',
           })})`
         );
-
+        setDataReport(null);
         setMonthReportInTable(monthReport);
-        setDataReport(data);
+        if (data.data.result[monthReport - 1].ThisYear !== 0) {
+          setDataReport(data);
+        }
 
         // setShowReport(true);
       })
       .catch((error) => {
-        Alert('Error fetching data from server:', error);
+        console.log(error);
       });
   };
   // ----------------------------------------------------------------------------------------------------------------
@@ -144,11 +142,19 @@ function Billing() {
   const handleFindIndexDay = () => {
     // gửi yêu cầu fetch dữ liệu từ server với startDate và endDate đã chọn
     console.log(
-      `${API_URL}/api/v1/data/getDataFromDay?startDate=${startIndexDay}&endDate=${endIndexDay}`
+      `${API_URL}/api/v1/data/getDataFromDay?startDate=${moment(
+        startIndexDay
+      ).format('YYYY-MM-DD')}&endDate=${moment(endIndexDay).format(
+        'YYYY-MM-DD'
+      )}`
     );
 
     fetch(
-      `${API_URL}/api/v1/data/getDataFromDay?startDate=${startIndexDay}&endDate=${endIndexDay}`
+      `${API_URL}/api/v1/data/getDataFromDay?startDate=${moment(
+        startIndexDay
+      ).format('YYYY-MM-DD')}&endDate=${moment(endIndexDay).format(
+        'YYYY-MM-DD'
+      )}`
     )
       // fetch(`http://localhost:3001/api/indexDay`)
       .then((response) => response.json())

@@ -99,4 +99,4 @@ setInterval(async () => {
   } catch (e) {
     console.log(e);
   }
-}, 500);
+}, 5000);

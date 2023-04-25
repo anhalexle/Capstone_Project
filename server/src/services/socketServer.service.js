@@ -23,8 +23,7 @@ const handleNewData = async (newData) => {
   }
   if (
     newData.type !== 'integral_power' &&
-    newData.name !== 'Current_phase_N' &&
-    newData.type !== 'pf'
+    newData.name !== 'Current_phase_N' 
   )
     await dataFeatures.createAlarm(newData.type, newData);
 };

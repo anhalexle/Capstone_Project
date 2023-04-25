@@ -80,8 +80,7 @@ function Devices() {
   });
   console.log(arrayDataPrint);
   const { socket } = useMultiContext();
-  const [frequency, setFrequency] = useState(dataPrint.data[4]);
-
+  const [frequency, setFrequency] = useState(dataPrint.data[4] / 100);
   useEffect(() => {
     const handleData = (data) => {
       console.log('djfhdakjhfdkjhf', data);

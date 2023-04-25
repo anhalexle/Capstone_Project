@@ -92,6 +92,7 @@ function Dashboard() {
   const intervalRef = useRef(null); // lưu trữ reference tới interval
   useEffect(() => {
     const handleServerData = (newData) => {
+      console.log("data nhận từ socket",newData);
       newData.flat().map((d) => {
         switch (d.name) {
           case 'Voltage_1':

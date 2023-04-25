@@ -87,7 +87,6 @@ function BoxChart() {
     if (response.ok) {
       const data = await response.json();
       console.log('data mới nhận nè', data);
-      console.log('Trừ thử', data.data[1].createdAt - data.data[0].createdAt);
       setTypeSpecificTable(typeSpecific);
       setData(data.data);
       // setData(data);

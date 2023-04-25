@@ -166,12 +166,12 @@ exports.getDataFromDay = catchAsync(async (req, res, next) => {
   console.log(startDate, endDate);
   const tempStartDate = new Date(startDate);
   const tempEndDate = new Date(endDate);
-
+  console.log(tempStartDate, tempEndDate);
   // chuyển đổi đối tượng moment sang Date object
   const ISOstartDate = new Date(
     tempStartDate.getFullYear(),
     tempStartDate.getMonth(),
-    tempStartDate.getDate() - 1,
+    tempStartDate.getDate(),
     7,
     0,
     0
@@ -184,15 +184,16 @@ exports.getDataFromDay = catchAsync(async (req, res, next) => {
     0,
     0
   );
+  console.log(ISOstartDate, ISOendDate);
   const dates = getDatesBetween(ISOstartDate, ISOendDate);
   console.log(dates);
   const promises = dates.map(async (el) => {
     const data = await totalIntegralOneDayAPI(el.rawDate);
     return {
       Date: el.VNDate,
-      Peak: data[2] ? data[2].totalPower : 0,
-      Normal: data[1] ? data[1].totalPower : 0,
-      OffPeak: data[0] ? data[0].totalPower : 0,
+      Peak: data[2] ? ((data[2].totalPower).toFixed(3))*1 : 0,
+      Normal: data[1] ? ((data[1].totalPower).toFixed(3))*1 : 0,
+      OffPeak: data[0] ? ((data[0].totalPower).toFixed(3))*1 : 0,
     };
   });
   const data = await Promise.all(promises);

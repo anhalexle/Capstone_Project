@@ -13,11 +13,13 @@ class DataType {
       address: [172, 8],
       unit: 10,
       threshHold: { hi_hi: 500, hi: 450, lo: 50, lo_lo: 0 },
+      // threshHold: { hi_hi: 390, hi: 450, lo: 50, lo_lo: 0 },
     },
     current: {
       address: [180, 10],
       unit: 100,
       threshHold: { hi_hi: 100, hi: 50, lo: 0.5, lo_lo: 0 },
+      // threshHold: { hi_hi: 100, hi: 1, lo: 0.5, lo_lo: 0 },
     },
     frequency: {
       address: [190, 4],
@@ -27,7 +29,7 @@ class DataType {
     pf: {
       address: [194, 4],
       unit: 1000,
-      threshHold: { lo: 0.9, lo_lo: 0.85 },
+      threshHold: { lo: -0.9, lo_lo: -0.85 },
     },
     integral_power: {
       address: [

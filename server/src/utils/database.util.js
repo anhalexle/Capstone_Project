@@ -48,6 +48,7 @@ const totalIntegralPower = async (date, arr) => {
         el.to[0],
         el.to[1]
       );
+      
       // [ [ { totalIntegralPower: 250 } ], [] ]
       return await Data.aggregate([
         {
@@ -55,7 +56,7 @@ const totalIntegralPower = async (date, arr) => {
             name: 'total_integral_active_power',
             createdAt: {
               $gte: startOfDay,
-              $lt: endOfDay,
+              $lte: endOfDay,
             },
           },
         },
@@ -115,6 +116,7 @@ const totalIntegralPower = async (date, arr) => {
       ]);
     });
     const arrOfRes = await Promise.all(promises);
+    console.log({res: arrOfRes});
     return arrOfRes.reduce((acc, el) => {
       const [value] = el;
       if (value) return acc + value.totalIntegralPower;
